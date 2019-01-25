@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Link, withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { Link, withRouter } from "react-router-dom";
+import { compose } from "recompose";
+import { SignInLink } from "../SignIn";
 
-import { withFirebase } from '../Firebase';
+import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 import { Div } from "./styles";
 
@@ -10,6 +11,7 @@ const SignUpPage = () => (
   <Div>
     <h2>Sign Up</h2>
     <SignUpForm />
+    <SignInLink />
   </Div>
 );
 
@@ -29,7 +31,6 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-
     const { username, email, passwordOne } = this.state;
 
     this.props.firebase
@@ -73,7 +74,8 @@ class SignUpFormBase extends Component {
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
-        /><br></br>
+        />
+        <br />
         <input
           name="passwordOne"
           value={passwordOne}
@@ -87,7 +89,8 @@ class SignUpFormBase extends Component {
           onChange={this.onChange}
           type="password"
           placeholder="Confirm Password"
-        /><br></br>
+        />
+        <br />
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>
@@ -106,7 +109,7 @@ const SignUpLink = () => (
 
 const SignUpForm = compose(
   withRouter,
-  withFirebase,
+  withFirebase
 )(SignUpFormBase);
 
 export default SignUpPage;
