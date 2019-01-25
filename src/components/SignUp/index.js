@@ -4,12 +4,13 @@ import { compose } from 'recompose';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from "../../constants/routes";
+import { Div } from "./styles";
 
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
+  <Div>
+    <h2>Sign Up</h2>
     <SignUpForm />
-  </div>
+  </Div>
 );
 
 const INITIAL_STATE = {
@@ -72,7 +73,7 @@ class SignUpFormBase extends Component {
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
-        />
+        /><br></br>
         <input
           name="passwordOne"
           value={passwordOne}
@@ -86,7 +87,7 @@ class SignUpFormBase extends Component {
           onChange={this.onChange}
           type="password"
           placeholder="Confirm Password"
-        />
+        /><br></br>
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>
@@ -98,9 +99,9 @@ class SignUpFormBase extends Component {
 }
 
 const SignUpLink = () => (
-  <p>
+  <form>
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
+  </form>
 );
 
 const SignUpForm = compose(

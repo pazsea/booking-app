@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Nav = styled.div`
+  position: absolute;
   margin: 0;
   padding: 0;
   width: 200px;

@@ -7,12 +7,12 @@ import * as ROUTES from '../../constants/routes';
 import { AuthUserContext } from '../Session';
 
 const Navigation = () => (
-  <div>
+  <Nav>
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? <NavigationAuth /> : <NavigationNonAuth />
       }
-    </AuthUserContext.Consumer></div>
+    </AuthUserContext.Consumer></Nav>
 );
 
 
