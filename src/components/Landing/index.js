@@ -1,9 +1,11 @@
 import React from 'react';
+import { Div } from './styles';
 
 const Landing = () => (
-  <div>
+  <Div>
     <h1>Landing</h1>
-  </div>
+  </Div>
+
 );
 
 export default Landing;

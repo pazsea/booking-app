@@ -23,7 +23,7 @@ export const Div = styled.div`
     border-radius: 3px;
   }
 
-  h2 {
+  h1 {
     background: #28d;
     padding: 20px;
     font-size: 1.4em;

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { compose } from "recompose";
-import { SignInLink } from "../SignIn";
 
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
@@ -9,9 +7,8 @@ import { Div } from "./styles";
 
 const SignUpPage = () => (
   <Div>
-    <h2>Sign Up</h2>
+    <h1>SignUp</h1>
     <SignUpForm />
-    <SignInLink />
   </Div>
 );
 
@@ -36,8 +33,20 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        // Create a user in your Firebase realtime database
+        this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            username,
+            email
+          })
+          .then(() => {
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push(ROUTES.HOME);
+          })
+          .catch(error => {
+            this.setState({ error });
+          });
       })
       .catch(error => {
         this.setState({ error });
@@ -75,7 +84,6 @@ class SignUpFormBase extends Component {
           type="text"
           placeholder="Email Address"
         />
-        <br />
         <input
           name="passwordOne"
           value={passwordOne}
@@ -90,7 +98,6 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
-        <br />
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>
@@ -106,12 +113,6 @@ const SignUpLink = () => (
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
   </form>
 );
-
-const SignUpForm = compose(
-  withRouter,
-  withFirebase
-)(SignUpFormBase);
-
+const SignUpForm = withRouter(withFirebase(SignUpFormBase));
 export default SignUpPage;
-
 export { SignUpForm, SignUpLink };

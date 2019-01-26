@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Div } from './style';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
+import { Div } from './styles';
+
+import { withFirebase } from "../Firebase";
+import * as ROUTES from "../../constants/routes";
 
 const PasswordForgetPage = () => (
   <Div>
-    <h1>Password RESET</h1>
+    <h1>PasswordForget</h1>
     <PasswordForgetForm />
   </Div>
 );
 
 const INITIAL_STATE = {
-  email: '',
-  error: null,
+  email: "",
+  error: null
 };
 
 class PasswordForgetFormBase extends Component {
@@ -46,7 +47,7 @@ class PasswordForgetFormBase extends Component {
   render() {
     const { email, error } = this.state;
 
-    const isInvalid = email === '';
+    const isInvalid = email === "";
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -56,7 +57,7 @@ class PasswordForgetFormBase extends Component {
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
-        /><br></br>
+        />
         <button disabled={isInvalid} type="submit">
           Reset My Password
         </button>

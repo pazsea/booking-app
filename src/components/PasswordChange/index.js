@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
+
 import { withFirebase } from "../Firebase";
+import { Div } from "./styles";
 
 const INITIAL_STATE = {
   passwordOne: "",
@@ -40,6 +42,7 @@ class PasswordChangeForm extends Component {
     const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 
     return (
+
       <form onSubmit={this.onSubmit}>
         <input
           name="passwordOne"
@@ -61,6 +64,7 @@ class PasswordChangeForm extends Component {
 
         {error && <p>{error.message}</p>}
       </form>
+
     );
   }
 }
