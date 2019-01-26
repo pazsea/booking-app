@@ -1,19 +1,21 @@
 import styled from "styled-components";
 
 export const Nav = styled.div`
-  position: absolute;
+  position: relative;
   margin: 0;
   padding: 0;
-  width: 200px;
-  height: 100%;
+  width: 100%;
+  height: 100px;
   overflow: auto;
   display: flex;
-  flex-direction: column;
+
   background-color: beige;
   transition: width 0.5s;
 
   ul {
     padding: 0;
+    display: flex;
+    list-style: none;
   }
   li {
     flex: 1;

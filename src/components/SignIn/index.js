@@ -2,19 +2,19 @@ import React, { Component, Fragment } from "react";
 import { withRouter, Link } from "react-router-dom";
 import { compose } from "recompose";
 
-import { PasswordForgetLink } from '../PasswordForget'; 
+import { PasswordForgetLink } from "../PasswordForget";
 import { SignUpLink } from "../SignUp";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
 import { Div } from "./styles";
 
 const SignInPage = () => (
-    <Div>
-      <h2>Log in</h2>
-      <SignInForm />
-      <PasswordForgetLink />
-      <SignUpLink />
-    </Div>
+  <Div>
+    <h2>Log in</h2>
+    <SignInForm />
+    <PasswordForgetLink />
+    <SignUpLink />
+  </Div>
 );
 
 const INITIAL_STATE = {
@@ -63,19 +63,27 @@ class SignInFormBase extends Component {
           onChange={this.onChange}
           type="text"
           placeholder="Email Address"
-        /><br></br>
+        />
+        <br />
         <input
           name="password"
           value={password}
           onChange={this.onChange}
           type="password"
           placeholder="Password"
-        /><br></br><br></br>
+        />
+        <br />
+        <br />
         <button disabled={isInvalid} type="submit">
           Sign In
         </button>
 
-        {error && <Fragment><p style={{ color: "red", weight: "700" }}>Error</p><p>{error.message}</p></Fragment>}
+        {error && (
+          <Fragment>
+            <p style={{ color: "red", weight: "700" }}>Error</p>
+            <p>{error.message}</p>
+          </Fragment>
+        )}
       </form>
     );
   }
