@@ -1,11 +1,11 @@
 import React from "react";
 import { Div } from "./styles";
 
+
 const Landing = () => (
-  <Div style={{ backgroundImage: `url(${"./pics/note.jpg"})` }}>
+  <Div>
     <p>
-      <button>Sign In</button>
-      <button>Register User</button>
+      Hello
     </p>
   </Div>
 );

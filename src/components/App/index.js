@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../Navigation";
@@ -13,26 +13,43 @@ import AdminPage from "../Admin";
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
 
-const App = () => (
-  <Router>
-    <div>
-      <Navigation />
+class App extends Component {
 
-      <hr />
+  state = {
+    isOpen: false
+  };
 
-      <Route exact path={ROUTES.LANDING} component={LandingPage} />
-      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route
-        exact
-        path={ROUTES.PASSWORD_FORGET}
-        component={PasswordForgetPage}
-      />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-      <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-      <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-    </div>
-  </Router>
-);
+  navToggle = () => {
+    console.log("Nu jävlar!!!!");
+    this.setState(prevState => {
+      return {
+         isOpen: !prevState.isOpen 
+        
+      };
+    });
+  };
+
+  render() {
+    return (
+      <Router>
+        <div>
+          <Navigation navToggle={this.navToggle} stateNav={this.state.isOpen} />
+
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route
+            exact
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForgetPage}
+          />
+          <Route exact path={ROUTES.HOME} component={HomePage} />
+          <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+        </div>
+      </Router>
+    );
+  }
+}
 
 export default withAuthentication(App);
