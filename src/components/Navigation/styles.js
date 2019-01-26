@@ -1,29 +1,18 @@
 import styled from "styled-components";
 
-export const SpanArrow = styled.span`
-  i {
-    color: white;
-    position:absolute;
-
-    :hover {
-      color: gold;
-      cursor: pointer;
-    }
-  }
-`;
 
 export const Nav = styled.div`
          position: relative;
          margin: 0;
          padding: 0;
          width: 100%;
-         height: ${props => (props.stateNav ? "100px" : "0px")};
+         height: ${props => (props.stateNav ? "fit-content" : "0px")};
          overflow: auto;
          display: flex;
 
          background-color: beige;
-         transition: height 0.5s;
-         transition: padding 0.5s;
+         transition: ${props => (props.stateNav ? "height 0.5s" : "height 0.5s")};
+         transition: ${props => (props.stateNav ? "padding 0.5s" : "padding 0.5s")};
          justify-content: center;
          /*   @media screen and (max-width: 700px) {
     height: 0;

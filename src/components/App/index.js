@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
+
 import Navigation from "../Navigation";
 import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
@@ -12,6 +13,7 @@ import AdminPage from "../Admin";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
+import { SpanArrow } from "./styles";
 
 class App extends Component {
 
@@ -20,7 +22,7 @@ class App extends Component {
   };
 
   navToggle = () => {
-    console.log("Nu jävlar!!!!");
+    console.log("togglar Navbaren");
     this.setState(prevState => {
       return {
          isOpen: !prevState.isOpen 
@@ -33,7 +35,10 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navigation navToggle={this.navToggle} stateNav={this.state.isOpen} />
+          <SpanArrow>
+            <i className="fas fa-arrow-circle-down fa-4x" onClick= {this.navToggle} />
+          </SpanArrow>
+          <Navigation  stateNav={this.state.isOpen} />
 
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />

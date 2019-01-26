@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Nav, SpanArrow } from "./styles";
+import { Nav } from "./styles";
 import SignOutButton from "../SignOut";
 import * as ROUTES from "../../constants/routes";
 
@@ -26,9 +26,7 @@ const Navigation = (props) => (
 
 const NavigationAuth = () => (
   <React.Fragment>
-    <SpanArrow>
-      <i className="fas fa-arrow-circle-down fa-4x" />
-    </SpanArrow>
+
 
     <ul>
       <li>
@@ -52,9 +50,6 @@ const NavigationAuth = () => (
 
 const NavigationNonAuth = (props) => (
   <React.Fragment>
-    <SpanArrow>
-      <i className="fas fa-arrow-circle-down fa-4x" onClick={props.navToggle} />
-    </SpanArrow>
     <ul>
       <li>
         <Link to={ROUTES.LANDING}>Landing</Link>
