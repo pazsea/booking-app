@@ -13,10 +13,9 @@ export const Div = styled.div`
   flex-direction: column; */
 
   width: 500px;
-  margin-left: 30%;
-  margin-right: 10%;
-  margin-top: 8%;
+  margin: 10% auto;
   font-size: 16px;
+  border: 2px solid white;
 
   button {
     background: white;

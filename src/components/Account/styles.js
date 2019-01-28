@@ -17,6 +17,7 @@ export const Div = styled.div`
   margin-right: 10%;
   margin-top: 8%;
   font-size: 16px;
+  border: 2px solid white;
 
   button {
     background: white;

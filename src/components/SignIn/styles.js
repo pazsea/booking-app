@@ -17,10 +17,15 @@ export const Div = styled.div`
   margin-right: 10%;
   margin-top: 8%;
   font-size: 16px;
+  border: 2px solid white;
 
   button {
     background: white;
     border-radius: 3px;
+  }
+
+  input[type="submit"]:disabled {
+    background: red;
   }
 
   h2 {
@@ -57,7 +62,7 @@ export const Div = styled.div`
     cursor: pointer;
     padding: 12px;
     text-transform: uppercase;
-    width:100%;
+    width: 100%;
   }
 
   button[type="submit"]:hover {
@@ -80,9 +85,10 @@ export const Div = styled.div`
     font-family: inherit;
     font-size: 0.95em;
   }
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 768px) {
     margin-left: 10%;
     margin-right: 10%;
+    margin-top: 20%;
     width: 80%;
   }
 `;

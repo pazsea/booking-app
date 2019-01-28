@@ -1,12 +1,12 @@
 import React from "react";
 import { Div } from "./styles";
 
-
 const Landing = () => (
   <Div>
-    <p>
-      Hello
-    </p>
+    <h1>
+      KYH <br />
+      Booking App
+    </h1>
   </Div>
 );
 

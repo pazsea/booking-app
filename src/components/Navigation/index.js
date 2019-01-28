@@ -7,9 +7,7 @@ import * as ROUTES from "../../constants/routes";
 
 import { AuthUserContext } from "../Session";
 
-
-
-const Navigation = (props) => (
+const Navigation = props => (
   <Nav stateNav={props.stateNav}>
     {/* stateNav={props.stateNav} */}
     <AuthUserContext.Consumer>
@@ -26,14 +24,24 @@ const Navigation = (props) => (
 
 const NavigationAuth = () => (
   <React.Fragment>
-
-
     <ul>
-      <li>
+      {/*       <li>
         <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
+      </li> */}
       <li>
         <Link to={ROUTES.HOME}>Home</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.INVITES}>Invites</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.MY_EVENTS}>My Events</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.BOOK_ROOM}>Book a room</Link>
       </li>
       <li>
         <Link to={ROUTES.ACCOUNT}>Account</Link>
@@ -48,7 +56,7 @@ const NavigationAuth = () => (
   </React.Fragment>
 );
 
-const NavigationNonAuth = (props) => (
+const NavigationNonAuth = props => (
   <React.Fragment>
     <ul>
       <li>

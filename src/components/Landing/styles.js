@@ -9,7 +9,12 @@ export const Div = styled.div`
   display: flex;
   justify-content: center;
   height: 100vh;
-  p {
+  h1 {
+    text-align: center;
+    border: 2px solid white;
+    background: lightseagreen;
+    color: white;
+    margin: 10% auto;
     width: 50%;
     height: fit-content;
     justify-content: space-around;
@@ -17,7 +22,7 @@ export const Div = styled.div`
     padding: 10px;
     @media screen and (max-width: 700px) {
       width: 80%;
+      margin: 30% auto;
     }
-    
-    }
+  }
 `;
