@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import { withAuthorization } from "../Session";
+
 import { withFirebase } from "../Firebase";
 import { Div } from "./styles";
 
@@ -68,4 +70,6 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-export default withFirebase(AdminPage);
+const condition = authUser => !!authUser;
+
+export default withFirebase(withAuthorization(condition)(AdminPage));
