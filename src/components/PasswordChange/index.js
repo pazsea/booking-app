@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-
 import { withFirebase } from "../Firebase";
 import { Div } from "./styles";
 
@@ -42,7 +41,6 @@ class PasswordChangeForm extends Component {
     const isInvalid = passwordOne !== passwordTwo || passwordOne === "";
 
     return (
-
       <form onSubmit={this.onSubmit}>
         <input
           name="passwordOne"
@@ -59,12 +57,11 @@ class PasswordChangeForm extends Component {
           placeholder="Confirm New Password"
         />
         <button disabled={isInvalid} type="submit">
-          Reset My Password
+          Change My Password
         </button>
 
         {error && <p>{error.message}</p>}
       </form>
-
     );
   }
 }
