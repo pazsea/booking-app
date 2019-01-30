@@ -1,20 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+
 import { Nav } from "./styles";
+import SignOutButton from "../SignOut";
+import * as ROUTES from "../../constants/routes";
 
-import * as ROUTES from '../../constants/routes';
+import { AuthUserContext } from "../Session";
 
-const Navigation = () => (
-  <div>
+const Navigation = props => (
+  <Nav stateNav={props.stateNav}>
+    {/* stateNav={props.stateNav} */}
+    <AuthUserContext.Consumer>
+      {authUser =>
+        authUser ? (
+          <NavigationAuth />
+        ) : (
+          <NavigationNonAuth navToggle={props.navToggle} />
+        )
+      }
+    </AuthUserContext.Consumer>
+  </Nav>
+);
+
+const NavigationAuth = () => (
+  <React.Fragment>
     <ul>
-      <li>
-        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-      </li>
-      <li>
+      {/*       <li>
         <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
+      </li> */}
       <li>
         <Link to={ROUTES.HOME}>Home</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.INVITES}>Invites</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.MY_EVENTS}>My Events</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.BOOK_ROOM}>Book a room</Link>
       </li>
       <li>
         <Link to={ROUTES.ACCOUNT}>Account</Link>
@@ -22,41 +49,24 @@ const Navigation = () => (
       <li>
         <Link to={ROUTES.ADMIN}>Admin</Link>
       </li>
+      <li>
+        <SignOutButton />
+      </li>
     </ul>
-  </div>
+  </React.Fragment>
+);
+
+const NavigationNonAuth = props => (
+  <React.Fragment>
+    <ul>
+      <li>
+        <Link to={ROUTES.LANDING}>Landing</Link>
+      </li>
+      <li>
+        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+      </li>
+    </ul>
+  </React.Fragment>
 );
 
 export default Navigation;
-
-
-/* export class Sidebar extends Component {
-  render() {
-    return (
-      <Router>
-        <Nav>
-          <ul>
-            <li>
-              <Link to="/">Upcoming Events</Link>
-            </li>
-            <li>
-              <Link to="/invites">Invites</Link>
-            </li>
-            <li>
-              <Link to="/rooms">Book Room</Link>
-            </li>
-
-            <li>
-              <Link to="/myevents">My Events</Link>
-            </li>
-            <li>
-              <Link to="/statistic">Statistic</Link>
-            </li>
-          </ul>
-
-        </Nav>
-      </Router>
-    );
-  }
-}
-
-export default Sidebar; */

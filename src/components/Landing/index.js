@@ -1,9 +1,13 @@
-import React from 'react';
+import React from "react";
+import { Div } from "./styles";
 
 const Landing = () => (
-  <div>
-    <h1>Landing</h1>
-  </div>
+  <Div>
+    <h1>
+      KYH <br />
+      Booking App
+    </h1>
+  </Div>
 );
 
 export default Landing;

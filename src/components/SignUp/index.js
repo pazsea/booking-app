@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import { compose } from "recompose";
 
-import { FirebaseContext } from '../Firebase';
+import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
+import { Div } from "./styles";
 
 const SignUpPage = () => (
-  <div>
+  <Div>
     <h1>SignUp</h1>
-    <FirebaseContext.Consumer>
-      {firebase => <SignUpForm firebase={firebase} />}
-    </FirebaseContext.Consumer>
-  </div>
+    <SignUpForm />
+  </Div>
 );
 
 const INITIAL_STATE = {
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   error: null
 };
 
-class SignUpForm extends Component {
+class SignUpFormBase extends Component {
   constructor(props) {
     super(props);
 
@@ -29,13 +29,25 @@ class SignUpForm extends Component {
   }
 
   onSubmit = event => {
-
     const { username, email, passwordOne } = this.state;
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-        this.setState({ ...INITIAL_STATE });
+        // Create a user in your Firebase realtime database
+        this.props.firebase
+          .user(authUser.user.uid)
+          .set({
+            username,
+            email
+          })
+          .then(() => {
+            this.setState({ ...INITIAL_STATE });
+            this.props.history.push(ROUTES.HOME);
+          })
+          .catch(error => {
+            this.setState({ error });
+          });
       })
       .catch(error => {
         this.setState({ error });
@@ -98,11 +110,14 @@ class SignUpForm extends Component {
 }
 
 const SignUpLink = () => (
-  <p>
+  <form>
     Don't have an account? <Link to={ROUTES.SIGN_UP}>Sign Up</Link>
-  </p>
+  </form>
 );
+const SignUpForm = compose(
+  withRouter,
+  withFirebase
+)(SignUpFormBase);
 
 export default SignUpPage;
-
 export { SignUpForm, SignUpLink };
