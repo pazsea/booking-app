@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { Div } from "./styles";
+import { AuthUserContext } from "../Session";
 
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
@@ -9,7 +10,9 @@ import * as ROUTES from "../../constants/routes";
 const BookRoom = () => (
   <Div>
     <h1>SignUp</h1>
-    <BookRoomForm />
+    <AuthUserContext.Consumer>
+      {authUser => <BookRoomForm authUser={authUser} />}
+    </AuthUserContext.Consumer>
   </Div>
 );
 
@@ -28,35 +31,23 @@ class BookRoomBase extends Component {
 
   onSubmit = event => {
     const { groupRoom, date, time } = this.state;
-
+    console.log(this.props.authUser.uid);
     this.props.firebase
-
-      .then(authUser => {
-        // Create a Grouproom in your Firebase realtime database
-        this.props.firebase
-
-          .groupRoom(authUser.user.uid)
-          .set({
-            groupRoom,
-            date,
-            time
-          })
-          .then(() => {
-            this.setState({ ...INITIAL_STATE });
-            this.props.history.push(ROUTES.HOME);
-          })
-          .catch(error => {
-            this.setState({ error });
-          });
+      .groupRoom(this.props.authUser.uid)
+      .set({
+        groupRoom,
+        date,
+        time
       })
       .catch(error => {
         this.setState({ error });
       });
-
+    debugger;
     event.preventDefault();
   };
 
   onChange = event => {
+    console.log({ ...this.state });
     this.setState({ [event.target.name]: event.target.value });
   };
 
