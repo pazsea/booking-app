@@ -10,3 +10,7 @@ export const UPCOMING_EVENTS = "/up-events";
 export const INVITES = "/invites";
 export const MY_EVENTS = "/my-events";
 export const BOOK_ROOM = "/book-room";
+
+/* //Timeslots for BookRoom component
+
+export const BOOK_TIME_SLOT = "/book-time-slot";  TABORT??*/

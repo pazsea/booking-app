@@ -27,7 +27,7 @@ const NavigationAuth = () => (
     <ul>
       {/*       <li>
         <Link to={ROUTES.LANDING}>Landing</Link>
-      </li> */}
+      </li> TA BORT?!?!*/}
       <li>
         <Link to={ROUTES.HOME}>Home</Link>
       </li>
