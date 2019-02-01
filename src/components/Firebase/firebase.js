@@ -67,9 +67,9 @@ class Firebase {
 
   users = () => this.db.ref("users");
 
-  groupRoom = uid => this.db.ref(`groupRooms/${uid}`);
-
-  groupRooms = () => this.db.ref("groupRooms");
+  // *** Message API ***
+  message = uid => this.db.ref(`messages/${uid}`);
+  messages = () => this.db.ref("messages");
 }
 
 export default Firebase;
