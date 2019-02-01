@@ -30,7 +30,7 @@ class BookRoomBase extends Component {
 
     this.state = {
       ...INITIAL_STATE,
-      bookDate: new Date(),
+      bookDate: new Date().toLocaleDateString(),
       showComponent: 0
     };
     this.handleChange = this.handleChange.bind(this);

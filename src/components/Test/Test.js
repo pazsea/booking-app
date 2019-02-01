@@ -1,72 +1,96 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
-import { withAuthorization, withEmailVerification } from "../Session";
+import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 const HomePage = () => (
   <div>
     <h1>Home Page</h1>
     <p>The Home Page is accessible by every signed in user.</p>
-    <groupRooms />
+    <Messages />
   </div>
 );
-class groupRoomsBase extends Component {
+class MessagesBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      text: "",
       loading: false,
-      groupRooms: []
+      messages: []
     };
   }
   componentDidMount() {
     this.setState({ loading: true });
-    this.props.firebase.groupRooms().on("value", snapshot => {
-      const groupRoomObject = snapshot.val();
-      if (groupRoomObject) {
-        const groupRoomList = Object.keys(groupRoomObject).map(key => ({
-          ...groupRoomObject[key],
+    this.props.firebase.messages().on("value", snapshot => {
+      const messageObject = snapshot.val();
+      if (messageObject) {
+        const messageList = Object.keys(messageObject).map(key => ({
+          ...messageObject[key],
           uid: key
         }));
-        // convert groupRooms list from snapshot
-        this.setState({ groupRooms: groupRoomList, loading: false });
+        // convert messages list from snapshot
+        this.setState({
+          messages: messageList,
+          loading: false
+        });
       } else {
-        this.setState({ groupRooms: null, loading: false });
+        this.setState({ messages: null, loading: false });
       }
     });
   }
+
+  onChangeText = event => {
+    this.setState({ text: event.target.value });
+  };
+  onCreateMessage = (event, authUser) => {
+    this.props.firebase.messages().push({
+      text: this.state.text,
+      userId: authUser.uid
+    });
+    this.setState({ text: "" });
+    event.preventDefault();
+  };
+
   componentWillUnmount() {
-    this.props.firebase.groupRooms().off();
+    this.props.firebase.messages().off();
   }
   render() {
-    const { groupRooms, loading } = this.state;
+    const { text, messages, loading } = this.state;
     return (
-      <div>
-        {loading && <div>Loading ...</div>}
-        {groupRooms ? (
-          <groupRoomList groupRooms={groupRooms} />
-        ) : (
-          <div>There are no groupRooms ...</div>
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <div>
+            {loading && <div>Loading ...</div>}
+            {messages ? (
+              <MessageList messages={messages} />
+            ) : (
+              <div>There are no messages ...</div>
+            )}
+
+            <form onSubmit={event => this.onCreateMessage(event, authUser)}>
+              <input type="text" value={text} onChange={this.onChangeText} />
+              <button type="submit">Send</button>
+            </form>
+          </div>
         )}
-      </div>
+      </AuthUserContext.Consumer>
     );
   }
 }
 
-const groupRoomList = ({ groupRooms }) => (
+const MessageList = ({ messages }) => (
   <ul>
-    {groupRooms.map(groupRoom => (
-      <groupRoomItem key={groupRoom.uid} groupRoom={groupRoom} />
+    {messages.map(message => (
+      <MessageItem key={message.uid} message={message} />
     ))}
   </ul>
 );
-const groupRoomItem = ({ groupRoom }) => (
+const MessageItem = ({ message }) => (
   <li>
-    <strong>{groupRoom.userId}</strong> {groupRoom.text}
+    <strong>{message.userId}</strong> {message.text}
   </li>
 );
 
-const groupRooms = withFirebase(groupRoomsBase);
+const condition = authUser => !!authUser;
 
-export default compose(
-  withEmailVerification,
-  withAuthorization(condition)
-)(HomePage);
+const Messages = withFirebase(MessagesBase);
+export default compose(withAuthorization(condition))(HomePage);
