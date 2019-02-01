@@ -6,6 +6,7 @@ import SignOutButton from "../SignOut";
 import * as ROUTES from "../../constants/routes";
 
 import { AuthUserContext } from "../Session";
+import * as ROLES from "../../constants/roles";
 
 const Navigation = props => (
   <Nav stateNav={props.stateNav}>
@@ -13,7 +14,7 @@ const Navigation = props => (
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? (
-          <NavigationAuth />
+          <NavigationAuth authUser={authUser} />
         ) : (
           <NavigationNonAuth navToggle={props.navToggle} />
         )
@@ -22,7 +23,7 @@ const Navigation = props => (
   </Nav>
 );
 
-const NavigationAuth = () => (
+const NavigationAuth = ({ authUser }) => (
   <React.Fragment>
     <ul>
       {/*       <li>
@@ -46,9 +47,11 @@ const NavigationAuth = () => (
       <li>
         <Link to={ROUTES.ACCOUNT}>Account</Link>
       </li>
-      <li>
-        <Link to={ROUTES.ADMIN}>Admin</Link>
-      </li>
+      {authUser.roles.includes(ROLES.ADMIN) && (
+        <li>
+          <Link to={ROUTES.ADMIN}>Admin</Link>
+        </li>
+      )}
       <li>
         <SignOutButton />
       </li>
