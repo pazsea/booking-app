@@ -20,14 +20,18 @@ class BookTimeBase extends Component {
   }
 
   onChangeCheckbox = event => {
-    this.setState({ [event.target.name]: event.target.checked });
+    this.setState({ time: event.target.name });
   };
 
   sendToDB = (event, authUser) => {
-    this.props.firebase.room().push({
-      ...this.state,
-      userId: authUser.uid
-    });
+    this.props.firebase
+      .rooms()
+      .child(this.props.groupRoom)
+      .push({
+        date: this.props.bookDate,
+        user: authUser.uid,
+        time: this.state.time
+      });
     event.preventDefault();
   };
 

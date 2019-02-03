@@ -70,7 +70,8 @@ class Firebase {
   // *** Message API ***
   /*   message = uid => this.db.ref(`messages/${uid}`);
   messages = () => this.db.ref("messages"); */
-  room = uid => this.db.ref(`rooms/${uid}`);
+
+  room = uid => this.db.ref(`rooms/`);
   rooms = () => this.db.ref("rooms");
 }
 

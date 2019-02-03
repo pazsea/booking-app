@@ -69,12 +69,21 @@ class BookRoomBase extends Component {
     });
   };
 
-  onChange = event => {
+  /*   onChange = event => {
     this.setState({
       groupRoom: event.target.name,
       showComponent: 1
     });
     console.log({ ...this.state });
+  }; */
+
+  onChange = event => {
+    this.setState({
+      /* [event.target.name] */ groupRoom: event.target.name,
+      showComponent: 1
+    });
+    // alternatively using template strings for strings
+    // this.setState({ [`key${event.target.id}`]: event.target.value });
   };
 
   render() {
