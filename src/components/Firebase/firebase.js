@@ -72,6 +72,7 @@ class Firebase {
   messages = () => this.db.ref("messages"); */
 
   room = uid => this.db.ref(`rooms/`);
+
   rooms = () => this.db.ref("rooms");
 }
 

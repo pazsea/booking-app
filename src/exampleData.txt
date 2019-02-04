@@ -1,0 +1,35 @@
+{'users': {
+    'user1': {
+        'name': 'Jan Banan',
+        'email': 'kjdfksd@dkfjkd.se'
+    }
+},{
+    
+    'groupRooms':
+    'room1': {
+        'name': 'Steve Jobs'
+        'location': 'Plan 6, rum 304'
+
+    }
+},
+'bookings': {
+    'room1': {
+        'name': 'user1',
+        'date': '2019-02-08',
+        'timestart': '13.00',
+        'timeend': '14.00','
+        'host': user1',
+        'member_status': {
+            'user1': {'isInvited' || 'hasAccepted' || 'hasDeclined' || 'hasJoined'}
+        }
+    },
+    'room1': {
+        'name': 'user1',
+        'date': '2019-02-09',
+        'timestart': '09.00',
+        'timeend': '12.00',
+    }
+}
+}
+
+

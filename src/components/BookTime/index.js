@@ -10,17 +10,57 @@ const BookTime = props => (
   </div>
 );
 
+const times = [
+  "07:00-08:00",
+  "08:00-09:00",
+  "09:00-10:00",
+  "10:00-11:00",
+  "11:00-12:00",
+  "12:00-13:00",
+  "13:00-14:00",
+  "14:00-15:00",
+  "15:00-16:00",
+  "16:00-17:00"
+];
+
+const returnFalseTimes = () =>
+  Object.assign({}, ...times.map(item => ({ [item]: false })));
+
+export const MyInput = ({ name, time, onChangeCheckbox }) => (
+  <React.Fragment>
+    <label>
+      <input
+        type="checkbox"
+        name={name}
+        onChange={() => onChangeCheckbox(name)}
+        checked={time[{ name }]}
+      />
+      {name}
+    </label>
+    <br />
+  </React.Fragment>
+);
+
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       bookDate: this.props.bookDate,
-      room: this.props.groupRoom
+      time: returnFalseTimes()
     };
   }
-
-  onChangeCheckbox = event => {
-    this.setState({ time: event.target.name });
+  componentWillReceiveProps() {
+    this.setState({
+      time: returnFalseTimes()
+    });
+  }
+  onChangeCheckbox = name => {
+    this.setState(prevState => ({
+      time: {
+        ...prevState.time,
+        [name]: !prevState.time[name]
+      }
+    }));
   };
 
   sendToDB = (event, authUser) => {
@@ -30,7 +70,7 @@ class BookTimeBase extends Component {
       .push({
         date: this.props.bookDate,
         user: authUser.uid,
-        time: this.state.time
+        time: { ...this.state.time }
       });
     event.preventDefault();
   };
@@ -45,22 +85,14 @@ class BookTimeBase extends Component {
               <button onClick={close}>Close</button>
               <p>{bookDate}</p>
               <p>{groupRoom}</p>
-              <label>
-                <input
-                  type="checkbox"
-                  name="07:00-08:00"
-                  onChange={this.onChangeCheckbox}
+              {times.map(time => (
+                <MyInput
+                  key={time}
+                  name={time}
+                  time={this.state.time}
+                  onChangeCheckbox={this.onChangeCheckbox}
                 />
-                07:00-08:00
-              </label>
-              <label>
-                <input
-                  type="checkbox"
-                  name="08:00-09:00"
-                  onChange={this.onChangeCheckbox}
-                />
-                08:00-09:00
-              </label>
+              ))}
             </div>
 
             <br />
