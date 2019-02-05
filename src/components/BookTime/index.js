@@ -65,7 +65,14 @@ class BookTimeBase extends Component {
 
   sendToDB = (event, authUser) => {
     this.props.firebase
-      .rooms()
+      .bookedEventDateTimes()
+      .child(this.props.groupRoom)
+      .child(this.props.bookDate)
+      .set({ time: { ...this.state.time } });
+    event.preventDefault();
+
+    this.props.firebase
+      .events()
       .child(this.props.groupRoom)
       .push({
         date: this.props.bookDate,

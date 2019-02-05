@@ -24,7 +24,8 @@ class BookRoomBase extends Component {
     super(props);
 
     this.state = {
-      showComponent: false
+      showComponent: false,
+      bookDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -70,7 +71,11 @@ class BookRoomBase extends Component {
     return (
       <React.Fragment>
         <p>Please type a day:</p>
-        <DayPickerInput onDayChange={day => this.handleChange(day)} />
+        <DayPickerInput
+          placeholder="Select Date"
+          value={this.state.bookDate}
+          onDayChange={day => this.handleChange(day)}
+        />
         <ul>
           <li>
             <button name="Group Room 1" onClick={this.onChange}>
