@@ -26,29 +26,43 @@ const times = [
 const returnFalseTimes = () =>
   Object.assign({}, ...times.map(item => ({ [item]: false })));
 
-export const MyInput = ({ name, time, onChangeCheckbox }) => (
-  <React.Fragment>
-    <label>
-      <input
-        type="checkbox"
-        name={name}
-        onChange={() => onChangeCheckbox(name)}
-        checked={time[{ name }]}
-      />
-      {name}
-    </label>
-    <br />
-  </React.Fragment>
-);
-
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       bookDate: this.props.bookDate,
-      time: returnFalseTimes()
+      time: returnFalseTimes(),
+      loading: false
     };
   }
+
+  componentDidMount() {
+    this.setState({ loading: true });
+    this.props.firebase
+      .bookedEventDateTimes()
+      .child(this.props.groupRoom)
+      .child(this.props.bookDate)
+      .child("time")
+      .on("value", snapshot => {
+        const bookedObject = snapshot.val();
+        if (bookedObject) {
+          const bookedList = bookedObject;
+          // convert booked list from snapshot
+          this.setState({ time: bookedList, loading: false });
+          console.log(this.state.time);
+        } else {
+          this.setState({ time: returnFalseTimes() });
+        }
+      });
+  }
+  componentWillUnmount() {
+    this.props.firebase
+      .bookedEventDateTimes()
+      .child(this.props.groupRoom)
+      .child(this.props.bookDate)
+      .off();
+  }
+
   componentWillReceiveProps() {
     this.setState({
       time: returnFalseTimes()
@@ -84,6 +98,7 @@ class BookTimeBase extends Component {
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
+    const { booked, loading } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -113,6 +128,35 @@ class BookTimeBase extends Component {
     );
   }
 }
+
+/* const BookedList = ({ booked }) => (
+  <ul>
+    {booked.map(booked => (
+      <BookedItem key={booked.uid} booked={booked} />
+    ))}
+  </ul>
+);
+
+const BookedItem = ({ booked }) => (
+  <li>
+    <strong>{booked.userId}</strong> {booked.text}
+  </li>
+); */
+
+export const MyInput = ({ name, time, onChangeCheckbox }) => (
+  <React.Fragment>
+    <label>
+      <input
+        type="checkbox"
+        name={name}
+        onChange={() => onChangeCheckbox(name)}
+        checked={time[{ name }]}
+      />
+      {name}
+    </label>
+    <br />
+  </React.Fragment>
+);
 
 const condition = authUser => !!authUser;
 
