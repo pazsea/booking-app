@@ -49,7 +49,7 @@ class BookTimeBase extends Component {
           const bookedList = bookedObject;
           // convert booked list from snapshot
           this.setState({ time: bookedList, loading: false });
-          console.log(this.state.time);
+          console.log(Object.keys(this.state.time));
         } else {
           this.setState({ time: returnFalseTimes() });
         }
@@ -98,7 +98,6 @@ class BookTimeBase extends Component {
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
-    const { booked, loading } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -107,14 +106,16 @@ class BookTimeBase extends Component {
               <button onClick={close}>Close</button>
               <p>{bookDate}</p>
               <p>{groupRoom}</p>
-              {times.map(time => (
-                <MyInput
-                  key={time}
-                  name={time}
-                  time={this.state.time}
-                  onChangeCheckbox={this.onChangeCheckbox}
-                />
-              ))}
+              {times
+                .filter(time => !this.state.time[time])
+                .map(time => (
+                  <MyInput
+                    key={time}
+                    name={time}
+                    time={this.state.time}
+                    onChangeCheckbox={this.onChangeCheckbox}
+                  />
+                ))}
             </div>
 
             <br />
@@ -128,20 +129,6 @@ class BookTimeBase extends Component {
     );
   }
 }
-
-/* const BookedList = ({ booked }) => (
-  <ul>
-    {booked.map(booked => (
-      <BookedItem key={booked.uid} booked={booked} />
-    ))}
-  </ul>
-);
-
-const BookedItem = ({ booked }) => (
-  <li>
-    <strong>{booked.userId}</strong> {booked.text}
-  </li>
-); */
 
 export const MyInput = ({ name, time, onChangeCheckbox }) => (
   <React.Fragment>
