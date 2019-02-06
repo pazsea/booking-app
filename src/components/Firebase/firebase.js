@@ -67,12 +67,13 @@ class Firebase {
 
   users = () => this.db.ref("users");
 
-  // *** Message API ***
-  /*   message = uid => this.db.ref(`messages/${uid}`);
-  messages = () => this.db.ref("messages"); */
+  // *** EVENTS (CONTAINING: DATE, TIME, INVITEES, HOST) API ***
 
-  room = uid => this.db.ref(`rooms/`);
-  rooms = () => this.db.ref("rooms");
+  events = () => this.db.ref("events");
+
+  // *** EVENT DATE AND TIME API ***
+
+  bookedEventDateTimes = () => this.db.ref("bookedEventDateTimes");
 }
 
 export default Firebase;

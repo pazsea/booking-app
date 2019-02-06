@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { Div } from "./styles";
 import { AuthUserContext } from "../Session";
-import DatePicker from "react-datepicker";
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import "react-day-picker/lib/style.css";
 
 import BookTime from "../BookTime";
-
-import "react-datepicker/dist/react-datepicker.css";
 
 import { withFirebase } from "../Firebase";
 
@@ -20,18 +19,13 @@ const BookRoom = () => (
   </Div>
 );
 
-const INITIAL_STATE = {
-  groupRoom: ""
-};
-
 class BookRoomBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      ...INITIAL_STATE,
-      bookDate: new Date().toLocaleDateString(),
-      showComponent: 0
+      showComponent: false,
+      bookDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -51,69 +45,47 @@ class BookRoomBase extends Component {
       });
     event.preventDefault();
   };
-  handleChange(date) {
+
+  handleChange(day) {
     this.setState({
-      bookDate: date
+      bookDate: day.toLocaleDateString()
     });
   }
 
-  /*   pickTime = () => {
-    this.setState({
-      time: event.target.name
-    });
-  }; */
-
   closeTime = () => {
-    this.setState({
-      showComponent: 0
-    });
+    this.setState(prevState => ({
+      showComponent: !prevState.showComponent
+    }));
   };
-
-  /*   onChange = event => {
-    this.setState({
-      groupRoom: event.target.name,
-      showComponent: 1
-    });
-    console.log({ ...this.state });
-  }; */
 
   onChange = event => {
     this.setState({
-      /* [event.target.name] */ groupRoom: event.target.name,
-      showComponent: 1
+      groupRoom: event.target.name
     });
-    // alternatively using template strings for strings
-    // this.setState({ [`key${event.target.id}`]: event.target.value });
+    this.setState({
+      showComponent: true
+    });
   };
 
   render() {
-    const { groupRoom } = this.state;
-
     return (
       <React.Fragment>
-        <DatePicker
-          dateFormat="yyyy/MM/dd"
-          selected={this.state.bookDate}
-          onChange={this.handleChange}
+        <p>Please type a day:</p>
+        <DayPickerInput
+          placeholder="Select Date"
+          value={this.state.bookDate}
+          onDayChange={day => this.handleChange(day)}
         />
         <ul>
           <li>
-            <button
-              name="Group Room 1"
-              value={groupRoom}
-              onClick={this.onChange}
-            >
+            <button name="Group Room 1" onClick={this.onChange}>
               Grouproom 1
             </button>
 
-            <button
-              name="Group Room 2"
-              value={groupRoom}
-              onClick={this.onChange}
-            >
+            <button name="Group Room 2" onClick={this.onChange}>
               Grouproom 2
             </button>
-            {this.state.showComponent === 1 ? (
+            {this.state.showComponent ? (
               <BookTime {...this.state} close={this.closeTime} />
             ) : null}
           </li>
@@ -129,28 +101,3 @@ const BookRoomForm = compose(
 )(BookRoomBase);
 
 export default BookRoom;
-
-/*       <form onSubmit={this.onSubmit}>
-        <input
-          name="groupRoom"
-          value={groupRoom}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Group Rooms"
-        />
-        <input
-          name="date"
-          value={date}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Date"
-        />
-        <input
-          name="time"
-          value={time}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Time"
-        />
-        <button type="submit">Send to DB</button>
-      </form> */
