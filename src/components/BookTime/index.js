@@ -26,12 +26,16 @@ const times = [
 const returnFalseTimes = () =>
   Object.assign({}, ...times.map(item => ({ [item]: false })));
 
+const returnTrueTimes = () =>
+  Object.assign({}, ...times.map(item => ({ [item]: true })));
+
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       bookDate: this.props.bookDate,
       time: returnFalseTimes(),
+      reservedTime: returnFalseTimes(),
       loading: false
     };
   }
@@ -49,12 +53,36 @@ class BookTimeBase extends Component {
           const bookedList = bookedObject;
           // convert booked list from snapshot
           this.setState({ time: bookedList, loading: false });
-          console.log(Object.keys(this.state.time));
         } else {
           this.setState({ time: returnFalseTimes() });
         }
       });
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.groupRoom !== prevProps.groupRoom) {
+      this.setState({ loading: true });
+      this.props.firebase
+        .bookedEventDateTimes()
+        .child(this.props.groupRoom)
+        .child(this.props.bookDate)
+        .child("time")
+        .on("value", snapshot => {
+          const bookedObject = snapshot.val();
+          if (bookedObject) {
+            const bookedList = bookedObject;
+            // convert booked list from snapshot
+            this.setState({ time: bookedList, loading: false });
+            this.setState({ reservedTime: returnFalseTimes });
+          } else {
+            this.setState({ time: returnFalseTimes() });
+          }
+        });
+    } else {
+      console.log("nothing");
+    }
+  }
+
   componentWillUnmount() {
     this.props.firebase
       .bookedEventDateTimes()
@@ -65,24 +93,32 @@ class BookTimeBase extends Component {
 
   componentWillReceiveProps() {
     this.setState({
-      time: returnFalseTimes()
+      time: {}
     });
   }
   onChangeCheckbox = name => {
     this.setState(prevState => ({
-      time: {
-        ...prevState.time,
-        [name]: !prevState.time[name]
+      reservedTime: {
+        ...prevState.reservedTime,
+        [name]: !prevState.reservedTime[name]
       }
     }));
   };
 
   sendToDB = (event, authUser) => {
+    const newObj = Object.assign(
+      {},
+      { ...this.state.time },
+      { ...this.state.reservedTime }
+    );
+
+    /*     this.setState({ time: newObj }); */
+
     this.props.firebase
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
       .child(this.props.bookDate)
-      .set({ time: { ...this.state.time } });
+      .set({ time: { ...newObj } });
     event.preventDefault();
 
     this.props.firebase
@@ -91,32 +127,37 @@ class BookTimeBase extends Component {
       .push({
         date: this.props.bookDate,
         user: authUser.uid,
-        time: { ...this.state.time }
+        time: { ...newObj }
       });
     event.preventDefault();
   };
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
+    const { loading } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
           <React.Fragment>
-            <div>
-              <button onClick={close}>Close</button>
-              <p>{bookDate}</p>
-              <p>{groupRoom}</p>
-              {times
-                .filter(time => !this.state.time[time])
-                .map(time => (
-                  <MyInput
-                    key={time}
-                    name={time}
-                    time={this.state.time}
-                    onChangeCheckbox={this.onChangeCheckbox}
-                  />
-                ))}
-            </div>
+            {loading ? (
+              <div>Loading ...</div>
+            ) : (
+              <div>
+                <button onClick={close}>Close</button>
+                <p>{bookDate}</p>
+                <p>{groupRoom}</p>
+                {times
+                  .filter(time => !this.state.time[time])
+                  .map(time => (
+                    <MyInput
+                      key={time}
+                      name={time}
+                      time={this.state.time}
+                      onChangeCheckbox={this.onChangeCheckbox}
+                    />
+                  ))}
+              </div>
+            )}
 
             <br />
 
