@@ -78,8 +78,6 @@ class BookTimeBase extends Component {
             this.setState({ time: returnFalseTimes() });
           }
         });
-    } else {
-      console.log("nothing");
     }
   }
 
