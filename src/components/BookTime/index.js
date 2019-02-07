@@ -26,8 +26,8 @@ const times = [
 const returnFalseTimes = () =>
   Object.assign({}, ...times.map(item => ({ [item]: false })));
 
-const returnTrueTimes = () =>
-  Object.assign({}, ...times.map(item => ({ [item]: true })));
+/* const returnTrueTimes = () =>
+  Object.assign({}, ...times.map(item => ({ [item]: true }))); */
 
 class BookTimeBase extends Component {
   constructor(props) {
@@ -73,7 +73,7 @@ class BookTimeBase extends Component {
             const bookedList = bookedObject;
             // convert booked list from snapshot
             this.setState({ time: bookedList, loading: false });
-            this.setState({ reservedTime: returnFalseTimes });
+            this.setState({ reservedTime: returnFalseTimes() });
           } else {
             this.setState({ time: returnFalseTimes() });
           }
@@ -134,30 +134,30 @@ class BookTimeBase extends Component {
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
-    const { loading } = this.state;
+    /*     const { loading } = this.state; */
     return (
       <AuthUserContext.Consumer>
         {authUser => (
           <React.Fragment>
-            {loading ? (
+            {/*             {loading ? (
               <div>Loading ...</div>
-            ) : (
-              <div>
-                <button onClick={close}>Close</button>
-                <p>{bookDate}</p>
-                <p>{groupRoom}</p>
-                {times
-                  .filter(time => !this.state.time[time])
-                  .map(time => (
-                    <MyInput
-                      key={time}
-                      name={time}
-                      time={this.state.time}
-                      onChangeCheckbox={this.onChangeCheckbox}
-                    />
-                  ))}
-              </div>
-            )}
+            ) : ( */}
+            <div>
+              <button onClick={close}>Close</button>
+              <p>{bookDate}</p>
+              <p>{groupRoom}</p>
+              {times
+                .filter(time => !this.state.time[time])
+                .map(time => (
+                  <MyInput
+                    key={time}
+                    name={time}
+                    time={this.state.time}
+                    onChangeCheckbox={this.onChangeCheckbox}
+                  />
+                ))}
+            </div>
+            {/*             )} */}
 
             <br />
 
