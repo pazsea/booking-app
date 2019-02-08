@@ -60,7 +60,10 @@ class BookTimeBase extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.groupRoom !== prevProps.groupRoom) {
+    if (
+      this.props.groupRoom !== prevProps.groupRoom ||
+      this.props.bookDate !== prevProps.bookDate
+    ) {
       this.setState({ loading: true });
       this.props.firebase
         .bookedEventDateTimes()
@@ -90,9 +93,22 @@ class BookTimeBase extends Component {
   }
 
   componentWillReceiveProps() {
-    this.setState({
-      time: {}
-    });
+    this.setState({ loading: true });
+    this.props.firebase
+      .bookedEventDateTimes()
+      .child(this.props.groupRoom)
+      .child(this.props.bookDate)
+      .child("time")
+      .on("value", snapshot => {
+        const bookedObject = snapshot.val();
+        if (bookedObject) {
+          const bookedList = bookedObject;
+          // convert booked list from snapshot
+          this.setState({ time: bookedList, loading: false });
+        } else {
+          this.setState({ time: returnFalseTimes() });
+        }
+      });
   }
   onChangeCheckbox = name => {
     this.setState(prevState => ({
