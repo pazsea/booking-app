@@ -76,7 +76,7 @@ class BookTimeBase extends Component {
             const bookedList = bookedObject;
             // convert booked list from snapshot
             this.setState({ time: bookedList, loading: false });
-            this.setState({ reservedTime: returnFalseTimes() });
+            this.setState({ reservedTime: {} });
           } else {
             this.setState({ time: returnFalseTimes() });
           }
