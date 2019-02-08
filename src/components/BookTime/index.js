@@ -40,7 +40,7 @@ class BookTimeBase extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(authUser) {
     this.setState({ loading: true });
     this.props.firebase
       .bookedEventDateTimes()
@@ -120,6 +120,13 @@ class BookTimeBase extends Component {
     }));
   };
 
+  test = (event, authUser) => {
+    this.props.firebase.users().on("value", snapshot => {
+      const userObj = Object.values(snapshot.val());
+      console.log(userObj);
+    });
+  };
+
   sendToDB = (event, authUser) => {
     const newObj = Object.assign(
       {},
@@ -157,7 +164,7 @@ class BookTimeBase extends Component {
             {loading ? (
               <div>Loading ...</div>
             ) : (
-              <div>
+              <form>
                 <button onClick={close}>Close</button>
                 <p>{bookDate}</p>
                 <p>{groupRoom}</p>
@@ -171,13 +178,24 @@ class BookTimeBase extends Component {
                       onChangeCheckbox={this.onChangeCheckbox}
                     />
                   ))}
-              </div>
+
+                <label>
+                  Invite?
+                  <br />
+                  <input type="text" name="name" />
+                  <br />
+                  <input type="text" name="description" />
+                </label>
+                <br />
+                <input
+                  type="submit"
+                  value="Submit"
+                  onClick={event => this.sendToDB(event, authUser)}
+                />
+              </form>
             )}
-
-            <br />
-
-            <button onClick={event => this.sendToDB(event, authUser)}>
-              Send to DB
+            <button onClick={event => this.test(event, authUser)}>
+              TESSSST
             </button>
           </React.Fragment>
         )}
