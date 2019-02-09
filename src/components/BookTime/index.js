@@ -42,6 +42,14 @@ class BookTimeBase extends Component {
 
   componentDidMount(authUser) {
     this.setState({ loading: true });
+    this.props.firebase.users().on("value", snapshot => {
+      const userObj = Object.values(snapshot.val());
+      const map1 = userObj.map(function(userO) {
+        return userO.username;
+      });
+      this.setState({ mapeusernames: map1 });
+    });
+
     this.props.firebase
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
@@ -91,6 +99,11 @@ class BookTimeBase extends Component {
       .child(this.props.groupRoom)
       .child(this.props.bookDate)
       .off();
+
+    this.props.firebase
+      .bookedEventDateTimes()
+      .users()
+      .off();
   }
 
   componentWillReceiveProps() {
@@ -120,18 +133,6 @@ class BookTimeBase extends Component {
     }));
   };
 
-  test = (event, authUser) => {
-    this.props.firebase.users().on("value", snapshot => {
-      const userObj = Object.values(snapshot.val());
-
-      const map1 = userObj.map(function(userO) {
-        return userO.username;
-      });
-
-      this.setState({ peoples: map1 });
-    });
-  };
-
   getValueInput(evt) {
     const inputValue = evt.target.value;
     this.setState({ input: inputValue });
@@ -139,43 +140,46 @@ class BookTimeBase extends Component {
   }
 
   filterNames(inputValue) {
-    const { peoples } = this.state;
+    const { mapeusernames } = this.state;
     this.setState({
-      filtered: peoples.filter(item => item.includes(inputValue)),
-      currentPage: 0
+      username: mapeusernames.filter(usernames =>
+        usernames.includes(inputValue)
+      )
     });
   }
 
   sendToDB = (event, authUser) => {
-    const newObj = Object.assign(
-      {},
-      { ...this.state.time },
-      { ...this.state.reservedTime }
-    );
+    if (Object.keys(this.state.reservedTime).length) {
+      const newObj = Object.assign(
+        {},
+        { ...this.state.time },
+        { ...this.state.reservedTime }
+      );
+      this.props.firebase
+        .bookedEventDateTimes()
+        .child(this.props.groupRoom)
+        .child(this.props.bookDate)
+        .set({ time: { ...newObj } });
+      event.preventDefault();
 
-    /*     this.setState({ time: newObj }); */
-
-    this.props.firebase
-      .bookedEventDateTimes()
-      .child(this.props.groupRoom)
-      .child(this.props.bookDate)
-      .set({ time: { ...newObj } });
-    event.preventDefault();
-
-    this.props.firebase
-      .events()
-      .child(this.props.groupRoom)
-      .push({
-        date: this.props.bookDate,
-        user: authUser.uid,
-        time: { ...newObj }
-      });
-    event.preventDefault();
+      this.props.firebase
+        .events()
+        .child(this.props.groupRoom)
+        .push({
+          date: this.props.bookDate,
+          user: authUser.uid,
+          time: { ...newObj }
+        });
+      event.preventDefault();
+    } else {
+      alert("You haven't booked any time slots for you event");
+      event.preventDefault();
+    }
   };
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
-    const { loading, filtered } = this.state;
+    const { loading, username } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -206,7 +210,7 @@ class BookTimeBase extends Component {
                     name="name"
                     onChange={evt => this.getValueInput(evt)}
                   />
-                  <p>{this.state.filtered}</p>
+                  <p>{username}</p>
                   <br />
                   <input type="text" name="description" />
                 </label>
@@ -218,9 +222,6 @@ class BookTimeBase extends Component {
                 />
               </form>
             )}
-            <button onClick={event => this.test(event, authUser)}>
-              TESSSST
-            </button>
           </React.Fragment>
         )}
       </AuthUserContext.Consumer>
