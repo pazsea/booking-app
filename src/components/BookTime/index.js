@@ -123,9 +123,28 @@ class BookTimeBase extends Component {
   test = (event, authUser) => {
     this.props.firebase.users().on("value", snapshot => {
       const userObj = Object.values(snapshot.val());
-      console.log(userObj);
+
+      const map1 = userObj.map(function(userO) {
+        return userO.username;
+      });
+
+      this.setState({ peoples: map1 });
     });
   };
+
+  getValueInput(evt) {
+    const inputValue = evt.target.value;
+    this.setState({ input: inputValue });
+    this.filterNames(inputValue);
+  }
+
+  filterNames(inputValue) {
+    const { peoples } = this.state;
+    this.setState({
+      filtered: peoples.filter(item => item.includes(inputValue)),
+      currentPage: 0
+    });
+  }
 
   sendToDB = (event, authUser) => {
     const newObj = Object.assign(
@@ -156,7 +175,7 @@ class BookTimeBase extends Component {
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
-    const { loading } = this.state;
+    const { loading, filtered } = this.state;
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -182,7 +201,12 @@ class BookTimeBase extends Component {
                 <label>
                   Invite?
                   <br />
-                  <input type="text" name="name" />
+                  <input
+                    type="text"
+                    name="name"
+                    onChange={evt => this.getValueInput(evt)}
+                  />
+                  <p>{this.state.filtered}</p>
                   <br />
                   <input type="text" name="description" />
                 </label>
