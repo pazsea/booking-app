@@ -100,11 +100,7 @@ class BookTimeBase extends Component {
       .child(this.props.groupRoom)
       .child(this.props.bookDate)
       .off();
-
-    this.props.firebase
-      .bookedEventDateTimes()
-      .users()
-      .off();
+    this.props.firebase.users().off();
   }
 
   componentWillReceiveProps() {
@@ -214,6 +210,7 @@ class BookTimeBase extends Component {
                   <input
                     type="text"
                     name="name"
+                    placeholder="Search for users."
                     onChange={evt => this.getValueInput(evt)}
                   />
                   <ul>
