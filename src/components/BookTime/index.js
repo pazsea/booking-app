@@ -36,7 +36,8 @@ class BookTimeBase extends Component {
       bookDate: this.props.bookDate,
       time: returnFalseTimes(),
       reservedTime: returnFalseTimes(),
-      loading: false
+      loading: false,
+      username: []
     };
   }
 
@@ -135,8 +136,12 @@ class BookTimeBase extends Component {
 
   getValueInput(evt) {
     const inputValue = evt.target.value;
-    this.setState({ input: inputValue });
-    this.filterNames(inputValue);
+    if (inputValue === "") {
+      console.log("Tom");
+    } else {
+      this.setState({ input: inputValue });
+      this.filterNames(inputValue);
+    }
   }
 
   filterNames(inputValue) {
@@ -180,6 +185,7 @@ class BookTimeBase extends Component {
   render() {
     const { close, bookDate, groupRoom } = this.props;
     const { loading, username } = this.state;
+    /*     const listUsernames = username.map(d => <li key={d.name}>{d.name}</li>); */
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -210,7 +216,15 @@ class BookTimeBase extends Component {
                     name="name"
                     onChange={evt => this.getValueInput(evt)}
                   />
-                  <p>{username}</p>
+                  <ul>
+                    {username
+                      .filter(user => user.length > 0)
+                      .map(user => (
+                        <li name={user} key={user}>
+                          {user}
+                        </li>
+                      ))}
+                  </ul>
                   <br />
                   <input type="text" name="description" />
                 </label>
