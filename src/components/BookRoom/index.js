@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { Div } from "./styles";
 import { AuthUserContext } from "../Session";
 import DayPickerInput from "react-day-picker/DayPickerInput";
-import "react-day-picker/lib/style.css";
+import "../../daypick.css";
 
 import BookTime from "../BookTime";
 
@@ -70,26 +70,23 @@ class BookRoomBase extends Component {
   render() {
     return (
       <React.Fragment>
-        <p>Please type a day:</p>
+        <p>Please pick a date (press the current date):</p>
         <DayPickerInput
           placeholder="Select Date"
           value={this.state.bookDate}
           onDayChange={day => this.handleChange(day)}
         />
-        <ul>
-          <li>
-            <button name="Group Room 1" onClick={this.onChange}>
-              Grouproom 1
-            </button>
 
-            <button name="Group Room 2" onClick={this.onChange}>
-              Grouproom 2
-            </button>
-            {this.state.showComponent ? (
-              <BookTime {...this.state} close={this.closeTime} />
-            ) : null}
-          </li>
-        </ul>
+        <button name="Group Room 1" onClick={this.onChange}>
+          Grouproom 1
+        </button>
+
+        <button name="Group Room 2" onClick={this.onChange}>
+          Grouproom 2
+        </button>
+        {this.state.showComponent ? (
+          <BookTime {...this.state} close={this.closeTime} />
+        ) : null}
       </React.Fragment>
     );
   }

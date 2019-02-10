@@ -3,11 +3,12 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
+import { BookTimeDiv } from "./styles";
 
 const BookTime = props => (
-  <div>
+  <BookTimeDiv>
     <BookTimeComplete {...props} />
-  </div>
+  </BookTimeDiv>
 );
 
 const times = [
