@@ -37,7 +37,8 @@ class BookTimeBase extends Component {
       time: returnFalseTimes(),
       reservedTime: returnFalseTimes(),
       loading: false,
-      username: []
+      username: [],
+      isInvited: {}
     };
   }
 
@@ -149,6 +150,23 @@ class BookTimeBase extends Component {
     }
   }
 
+  pushToInvited = user => {
+    var { isInvited } = this.state;
+    const invitees = Object.keys(isInvited);
+    if (invitees.length === 0 || !invitees.includes(user)) {
+      isInvited[user] = true;
+      this.setState({ isInvited });
+    } else {
+      console.log("User already booked");
+    }
+  };
+
+  deleteInvited = key => {
+    const { isInvited } = this.state;
+    delete isInvited[key];
+    this.setState({ isInvited });
+  };
+
   sendToDB = (event, authUser) => {
     if (Object.keys(this.state.reservedTime).length) {
       const newObj = Object.assign(
@@ -181,6 +199,7 @@ class BookTimeBase extends Component {
   render() {
     const { close, bookDate, groupRoom } = this.props;
     const { loading, username } = this.state;
+    const isInvitedKeys = Object.keys(this.state.isInvited);
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -212,18 +231,36 @@ class BookTimeBase extends Component {
                     placeholder="Search for users."
                     onChange={evt => this.getValueInput(evt)}
                   />
-                  <ul>
-                    {username
-                      .filter(user => user.length > 0)
-                      .map(user => (
-                        <li name={user} key={user}>
-                          {user}
-                        </li>
-                      ))}
-                  </ul>
-                  <br />
-                  <input type="text" name="description" />
                 </label>
+                <ul>
+                  {isInvitedKeys.map(key => (
+                    <li
+                      name={key}
+                      key={key}
+                      onClick={() => this.deleteInvited(key)}
+                    >
+                      {key}
+                    </li>
+                  ))}
+                </ul>
+
+                <ul>
+                  {username
+                    .filter(user => user.length > 0)
+                    .map(user => (
+                      <li
+                        name={user}
+                        key={user}
+                        onClick={() => this.pushToInvited(user)}
+                      >
+                        {user}
+                      </li>
+                    ))}
+                </ul>
+
+                <br />
+                <input type="text" name="description" />
+
                 <br />
                 <input
                   type="submit"
