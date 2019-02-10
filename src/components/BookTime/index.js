@@ -132,21 +132,21 @@ class BookTimeBase extends Component {
 
   getValueInput(evt) {
     const inputValue = evt.target.value;
-    if (inputValue === "") {
-      console.log("Tom");
-    } else {
-      this.setState({ input: inputValue });
-      this.filterNames(inputValue);
-    }
+    this.setState({ input: inputValue });
+    this.filterNames(inputValue);
   }
 
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
-    this.setState({
-      username: mapeusernames.filter(usernames =>
-        usernames.includes(inputValue)
-      )
-    });
+    if (inputValue.length === 0) {
+      this.setState({ username: [] });
+    } else {
+      this.setState({
+        username: mapeusernames.filter(usernames =>
+          usernames.includes(inputValue)
+        )
+      });
+    }
   }
 
   sendToDB = (event, authUser) => {
@@ -181,7 +181,6 @@ class BookTimeBase extends Component {
   render() {
     const { close, bookDate, groupRoom } = this.props;
     const { loading, username } = this.state;
-    /*     const listUsernames = username.map(d => <li key={d.name}>{d.name}</li>); */
     return (
       <AuthUserContext.Consumer>
         {authUser => (
