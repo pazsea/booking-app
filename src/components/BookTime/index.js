@@ -26,9 +26,6 @@ const times = [
 const returnFalseTimes = () =>
   Object.assign({}, ...times.map(item => ({ [item]: false })));
 
-/* const returnTrueTimes = () =>
-  Object.assign({}, ...times.map(item => ({ [item]: true }))); */
-
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +35,8 @@ class BookTimeBase extends Component {
       reservedTime: returnFalseTimes(),
       loading: false,
       username: [],
-      isInvited: {}
+      isInvited: {},
+      desc: ""
     };
   }
 
@@ -137,6 +135,11 @@ class BookTimeBase extends Component {
     this.filterNames(inputValue);
   }
 
+  writeDesc(event) {
+    const inputValue = event.target.value;
+    this.setState({ desc: inputValue });
+  }
+
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
     if (inputValue.length === 0) {
@@ -186,9 +189,12 @@ class BookTimeBase extends Component {
         .child(this.props.groupRoom)
         .push({
           date: this.props.bookDate,
-          user: authUser.uid,
-          time: { ...newObj }
+          host: authUser.uid,
+          time: { ...newObj },
+          isInvited: { ...this.state.isInvited },
+          description: this.state.desc
         });
+      this.setState({ isInvited: {}, desc: "", username: [] });
       event.preventDefault();
     } else {
       alert("You haven't booked any time slots for you event");
@@ -259,7 +265,12 @@ class BookTimeBase extends Component {
                 </ul>
 
                 <br />
-                <input type="text" name="description" />
+                <input
+                  type="text"
+                  name="description"
+                  value={this.state.desc}
+                  onChange={event => this.writeDesc(event)}
+                />
 
                 <br />
                 <input
