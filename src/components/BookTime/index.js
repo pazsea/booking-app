@@ -3,12 +3,12 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { BookTimeDiv } from "./styles";
+import { Form, CustomButton, CustomButton2, StyledLabel } from "./styles";
 
 const BookTime = props => (
-  <BookTimeDiv>
+  <div>
     <BookTimeComplete {...props} />
-  </BookTimeDiv>
+  </div>
 );
 
 const times = [
@@ -154,12 +154,13 @@ class BookTimeBase extends Component {
     }
   }
 
-  pushToInvited = user => {
+  pushToInvited = (event, user) => {
     var { isInvited } = this.state;
     const invitees = Object.keys(isInvited);
     if (invitees.length === 0 || !invitees.includes(user)) {
       isInvited[user] = true;
       this.setState({ isInvited });
+      event.preventDefault();
     } else {
       console.log("User already booked");
     }
@@ -214,10 +215,16 @@ class BookTimeBase extends Component {
             {loading ? (
               <div>Loading ...</div>
             ) : (
-              <form>
+              <Form>
                 <button onClick={close}>Close</button>
-                <p>{bookDate}</p>
-                <p>{groupRoom}</p>
+                <br />
+                <h2>
+                  Date: <p>{bookDate}</p>
+                </h2>
+                <h2>
+                  Room: <p>{groupRoom}</p>
+                </h2>
+                <br />
                 {times
                   .filter(time => !this.state.time[time])
                   .map(time => (
@@ -228,58 +235,56 @@ class BookTimeBase extends Component {
                       onChangeCheckbox={this.onChangeCheckbox}
                     />
                   ))}
-
                 <label>
-                  Invite?
                   <br />
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Search for users."
-                    onChange={evt => this.getValueInput(evt)}
-                  />
-                </label>
-                <ul>
-                  {isInvitedKeys.map(key => (
-                    <li
-                      name={key}
-                      key={key}
-                      onClick={() => this.deleteInvited(key)}
-                    >
-                      {key}
-                    </li>
-                  ))}
-                </ul>
+                  <h3>Invite user to your event:</h3>
 
-                <ul>
                   {username
                     .filter(user => user.length > 0)
                     .map(user => (
-                      <li
+                      <CustomButton2
                         name={user}
                         key={user}
-                        onClick={() => this.pushToInvited(user)}
+                        onClick={event => this.pushToInvited(event, user)}
                       >
                         {user}
-                      </li>
+                      </CustomButton2>
                     ))}
-                </ul>
 
+                  <input
+                    id="searchUser"
+                    type="text"
+                    name="name"
+                    placeholder="Search for users to invite."
+                    onChange={evt => this.getValueInput(evt)}
+                  />
+                </label>
+                <h4>Press to uninvite:</h4>
+                {isInvitedKeys.map(key => (
+                  <CustomButton
+                    name={key}
+                    key={key}
+                    onClick={() => this.deleteInvited(key)}
+                  >
+                    {key}
+                  </CustomButton>
+                ))}
                 <br />
-                <input
-                  type="text"
+                <br />
+                <textarea
+                  id="descriptionInput"
+                  type="textarea"
                   name="description"
                   value={this.state.desc}
                   onChange={event => this.writeDesc(event)}
                 />
-
                 <br />
                 <input
                   type="submit"
                   value="Submit"
                   onClick={event => this.sendToDB(event, authUser)}
                 />
-              </form>
+              </Form>
             )}
           </React.Fragment>
         )}
@@ -290,7 +295,7 @@ class BookTimeBase extends Component {
 
 export const MyInput = ({ name, time, onChangeCheckbox }) => (
   <React.Fragment>
-    <label>
+    <StyledLabel>
       <input
         type="checkbox"
         name={name}
@@ -298,8 +303,7 @@ export const MyInput = ({ name, time, onChangeCheckbox }) => (
         checked={time[{ name }]}
       />
       {name}
-    </label>
-    <br />
+    </StyledLabel>
   </React.Fragment>
 );
 

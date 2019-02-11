@@ -77,11 +77,19 @@ class BookRoomBase extends Component {
           onDayChange={day => this.handleChange(day)}
         />
 
-        <button name="Group Room 1" onClick={this.onChange}>
+        <button
+          className="roomButton"
+          name="Group Room 1"
+          onClick={this.onChange}
+        >
           Grouproom 1
         </button>
 
-        <button name="Group Room 2" onClick={this.onChange}>
+        <button
+          className="roomButton"
+          name="Group Room 2"
+          onClick={this.onChange}
+        >
           Grouproom 2
         </button>
         {this.state.showComponent ? (
