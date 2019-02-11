@@ -28,7 +28,6 @@ export const StyledLabel = styled.label`
   flex-direction: column-reverse;
   color: white;
   border: 2px solid black;
-
   background-color: #17a2b8;
 `;
 

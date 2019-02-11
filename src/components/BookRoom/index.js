@@ -12,7 +12,7 @@ import { withFirebase } from "../Firebase";
 
 const BookRoom = () => (
   <Div>
-    <h1>Book A Room</h1>
+    <h1>Book a room</h1>
     <AuthUserContext.Consumer>
       {authUser => <BookRoomForm authUser={authUser} />}
     </AuthUserContext.Consumer>
@@ -71,6 +71,7 @@ class BookRoomBase extends Component {
     return (
       <React.Fragment>
         <p>Please pick a date (press the current date):</p>
+        <br />
         <DayPickerInput
           placeholder="Select Date"
           value={this.state.bookDate}
@@ -82,7 +83,7 @@ class BookRoomBase extends Component {
           name="Group Room 1"
           onClick={this.onChange}
         >
-          Grouproom 1
+          Group Room 1
         </button>
 
         <button
@@ -90,7 +91,7 @@ class BookRoomBase extends Component {
           name="Group Room 2"
           onClick={this.onChange}
         >
-          Grouproom 2
+          Group Room 2
         </button>
         {this.state.showComponent ? (
           <BookTime {...this.state} close={this.closeTime} />
