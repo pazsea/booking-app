@@ -42,7 +42,7 @@ export const Div = styled.div`
     width: 100%;
     padding: 10px;
     text-align: center;
-    :focus {
+    input:first-child:focus {
       box-shadow: 0 0 10px white;
       border: 5px solid white;
     }

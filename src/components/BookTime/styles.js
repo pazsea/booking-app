@@ -4,7 +4,9 @@ export const Form = styled.form`
   margin-top: 5%;
   h2 {
     color: white;
+    font-size: 3em;
     p {
+      font-size: 0.5em;
       color: red;
     }
   }
@@ -12,23 +14,34 @@ export const Form = styled.form`
     width: 100%;
     font-size: 1.2em;
     margin: 5% 0;
+    :focus {
+      box-shadow: 0 0 10px white;
+      border: 5px solid white;
+    }
   }
 
   #descriptionInput {
     width: 100%;
     height: 150px;
+    overflow-y: auto;
+    :focus {
+      box-shadow: 0 0 10px white;
+      border: 5px solid white;
+    }
   }
 `;
 
 export const StyledLabel = styled.label`
   display: inline-block;
-  font-size: 1.3em;
+
+  width: 10em;
+  padding: 0.5em;
+  font-size: 1.2em;
   margin: 3%;
-  padding: 10px;
   flex-direction: column-reverse;
   color: white;
-  border: 2px solid black;
-  background-color: #17a2b8;
+  border: solid white 2px;
+  background: #db7f5c;
 `;
 
 export const CustomButton2 = styled.button`
@@ -38,12 +51,10 @@ export const CustomButton2 = styled.button`
   background-color: #28a745;
 `;
 
-/* export const MyInput = styled.form`
-  width: 100%;
+export const LoadingDiv = styled.div`
   font-size: 1.2em;
-  padding: 10px;
-  background-color: #28a745;
-`; */
+  color: white;
+`;
 
 export const CustomButton = styled.button`
   width: 100%;

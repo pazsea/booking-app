@@ -1,9 +1,18 @@
 import React, { Component } from "react";
-
+import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { Form, CustomButton, CustomButton2, StyledLabel } from "./styles";
+import {
+  Form,
+  CustomButton,
+  CustomButton2,
+  StyledLabel,
+  LoadingDiv
+} from "./styles";
+
+import "react-mdl/extra/material.css";
+import "react-mdl/extra/material.js";
 
 const BookTime = props => (
   <div>
@@ -213,7 +222,10 @@ class BookTimeBase extends Component {
         {authUser => (
           <React.Fragment>
             {loading ? (
-              <div>Loading ...</div>
+              <LoadingDiv>
+                Loading ...
+                <Spinner singleColor />
+              </LoadingDiv>
             ) : (
               <Form>
                 <button onClick={close}>Close</button>
