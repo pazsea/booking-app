@@ -13,6 +13,7 @@ import {
 
 import "react-mdl/extra/material.css";
 import "react-mdl/extra/material.js";
+import { DataSnapshot } from "@firebase/database";
 
 const BookTime = props => (
   <div>
@@ -70,7 +71,7 @@ class BookTimeBase extends Component {
         if (bookedObject) {
           const bookedList = bookedObject;
           // convert booked list from snapshot
-          this.setState({ time: bookedList, loading: false });
+          this.setState({ time: bookedList });
           this.setState({ reservedTime: {} });
         } else {
           this.setState({ time: {}, loading: false });
@@ -78,12 +79,19 @@ class BookTimeBase extends Component {
       });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (
       this.props.groupRoom !== prevProps.groupRoom ||
       this.props.bookDate !== prevProps.bookDate
     ) {
       this.setState({ loading: true });
+      /*       this.props.firebase
+        .events()
+        .child(this.props.groupRoom)
+        .child(this.state.eventUid)
+        .set({
+          eventUid: this.state.eventUid
+        }); */
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
@@ -205,6 +213,19 @@ class BookTimeBase extends Component {
           isInvited: { ...this.state.isInvited },
           description: this.state.desc
         });
+      /*       console.log(newKey); */
+      /*       var eventUidRef = this.props.firebase
+        .events()
+        .child(this.props.groupRoom)
+        .push({
+          date: this.props.bookDate,
+          host: authUser.uid,
+          time: { ...newObj },
+          isInvited: { ...this.state.isInvited },
+          description: this.state.desc
+        });
+      var eventUid = ref.eventUidRef.key; */
+      /*       console.log(eventUid); */
       this.setState({ isInvited: {}, desc: "", username: [] });
       event.preventDefault();
     } else {
@@ -249,7 +270,7 @@ class BookTimeBase extends Component {
                   ))}
                 <label>
                   <br />
-                  <h3>Invite user to your event:</h3>
+                  <h4>Invite user:</h4>
 
                   {username
                     .filter(user => user.length > 0)
@@ -271,7 +292,7 @@ class BookTimeBase extends Component {
                     onChange={evt => this.getValueInput(evt)}
                   />
                 </label>
-                <h4>Press to uninvite:</h4>
+                <h4>Uninvite user:</h4>
                 {isInvitedKeys.map(key => (
                   <CustomButton
                     name={key}

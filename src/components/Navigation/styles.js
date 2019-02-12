@@ -8,7 +8,7 @@ export const Nav = styled.nav`
   max-height: ${props => (props.stateNav ? "0px" : "500px")};
   overflow: auto;
   transition: max-height 0.5s ease-out;
-  background: lightseagreen;
+  background: rgb(47, 76, 110);
   justify-content: center;
   overflow-y: hidden;
 
@@ -28,7 +28,7 @@ export const Nav = styled.nav`
   }
   li {
     margin: 5px 5px;
-    background: #28d;
+    background: #e9b522;
     border-color: transparent;
     color: #fff;
     cursor: pointer;
@@ -37,18 +37,21 @@ export const Nav = styled.nav`
     text-transform: uppercase;
     height: fit-content;
     :active {
-      background-color: #4caf50;
+      background-color: #e9b52282;
       color: white;
     }
     :hover {
-      background: #17c;
+      background: #e9b52282;
     }
     :focus {
-      border-color: #05a;
+      border-color: #e9b52282;
     }
     @media screen and (max-width: 1024px) {
       width: 40%;
       text-align: center;
     }
+  }
+  ul li a {
+    color: white;
   }
 `;

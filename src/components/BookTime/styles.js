@@ -10,30 +10,24 @@ export const Form = styled.form`
       color: red;
     }
   }
+  h4 {
+    color: white;
+  }
   #searchUser {
     width: 100%;
     font-size: 1.2em;
     margin: 5% 0;
-    :focus {
-      box-shadow: 0 0 10px white;
-      border: 5px solid white;
-    }
   }
 
   #descriptionInput {
     width: 100%;
     height: 150px;
     overflow-y: auto;
-    :focus {
-      box-shadow: 0 0 10px white;
-      border: 5px solid white;
-    }
   }
 `;
 
 export const StyledLabel = styled.label`
   display: inline-block;
-
   width: 10em;
   padding: 0.5em;
   font-size: 1.2em;
