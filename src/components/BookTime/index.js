@@ -203,7 +203,8 @@ class BookTimeBase extends Component {
         .set({ time: { ...newObj } });
       event.preventDefault();
 
-      this.props.firebase
+      //****** */TAAAA BOOOOORT??????********//
+      /*       this.props.firebase
         .events()
         .child(this.props.groupRoom)
         .push({
@@ -212,7 +213,28 @@ class BookTimeBase extends Component {
           time: { ...newObj },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc
+        }); */
+      const test = this.props.firebase
+        .events()
+        .child(this.props.groupRoom)
+        .push({
+          date: this.props.bookDate,
+          host: authUser.uid,
+          time: { ...newObj },
+          isInvited: { ...this.state.isInvited },
+          description: this.state.desc
+        }).key;
+      this.props.firebase
+        .events()
+        .child(this.props.groupRoom)
+        .child(test)
+        .update({
+          eventUid: test
         });
+
+      //****** */TAAAA BOOOOORT??????********//
+      /*    const test = ref.push().key;
+      console.log(test); */
       /*       console.log(newKey); */
       /*       var eventUidRef = this.props.firebase
         .events()
@@ -225,7 +247,7 @@ class BookTimeBase extends Component {
           description: this.state.desc
         });
       var eventUid = ref.eventUidRef.key; */
-      /*       console.log(eventUid); */
+
       this.setState({ isInvited: {}, desc: "", username: [] });
       event.preventDefault();
     } else {
