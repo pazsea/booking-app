@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
+
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
@@ -8,8 +9,11 @@ import {
   CustomButton,
   CustomButton2,
   StyledLabel,
-  LoadingDiv
+  LoadingDiv,
+  AnimationDivConfirmed,
+  CorrectionDiv
 } from "./styles";
+import "./module.css";
 
 import "react-mdl/extra/material.css";
 import "react-mdl/extra/material.js";
@@ -47,7 +51,8 @@ class BookTimeBase extends Component {
       username: [],
       isInvited: {},
       isInvitedUid: [],
-      desc: ""
+      desc: "",
+      showModal: false
     };
   }
 
@@ -198,6 +203,12 @@ class BookTimeBase extends Component {
     }
   };
 
+  closeModule = () => {
+    this.setState({
+      showModal: false
+    });
+  };
+
   deleteInvited = key => {
     const { isInvited } = this.state;
     delete isInvited[key];
@@ -253,16 +264,21 @@ class BookTimeBase extends Component {
         .update({ [eventKey]: true });
 
       this.setState({ isInvited: {}, desc: "", username: [] });
+      this.setState({
+        showModal: true
+      });
     } else {
       alert("You haven't booked any time slots for you event");
       event.preventDefault();
     }
+
     event.preventDefault();
   };
 
   render() {
     const { close, bookDate, groupRoom } = this.props;
-    const { loading, username } = this.state;
+    const { loading, username, showModal } = this.state;
+
     const isInvitedKeys = Object.keys(this.state.isInvited);
     return (
       <AuthUserContext.Consumer>
@@ -343,6 +359,25 @@ class BookTimeBase extends Component {
                   value="Submit"
                   onClick={event => this.sendToDB(event, authUser)}
                 />
+                {showModal ? (
+                  <div
+                    className="modal display-block"
+                    onClick={this.closeModule}
+                  >
+                    <section className="modal-main">
+                      <AnimationDivConfirmed>
+                        <CorrectionDiv>
+                          Event booked!<p>Thank you!</p>
+                          <i className="fas fa-check-circle fa-3x" />
+                        </CorrectionDiv>
+                      </AnimationDivConfirmed>
+                    </section>
+                  </div>
+                ) : (
+                  <div className="modal display-none">
+                    <section className="modal-main" />
+                  </div>
+                )}
               </Form>
             )}
           </React.Fragment>
