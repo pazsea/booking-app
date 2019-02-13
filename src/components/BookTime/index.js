@@ -66,7 +66,7 @@ class BookTimeBase extends Component {
       .child(this.props.groupRoom)
       .child(this.props.bookDate)
       .child("time")
-      .once("value", snapshot => {
+      .on("value", snapshot => {
         const bookedObject = snapshot.val();
         if (bookedObject) {
           const bookedList = bookedObject;
@@ -196,7 +196,6 @@ class BookTimeBase extends Component {
       alert("User already booked");
       event.preventDefault();
     }
-    console.log(this.state.isInvitedUid);
   };
 
   deleteInvited = key => {
@@ -213,19 +212,26 @@ class BookTimeBase extends Component {
         { ...this.state.reservedTime }
       );
 
-      /*    const { isInvitedUid } = this.state.isInvitedUid; */
-
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
         .child(this.props.bookDate)
         .set({ time: { ...newObj } });
-      event.preventDefault();
 
       const eventKey = this.props.firebase
         .events()
         .child(this.props.groupRoom)
         .push().key;
+
+      const mapInviteUid = this.state.isInvitedUid;
+
+      mapInviteUid.map(inviteUid =>
+        this.props.firebase
+          .users()
+          .child(inviteUid)
+          .child("invitedToEvents")
+          .update({ [eventKey]: true })
+      );
 
       this.props.firebase
         .events()
@@ -247,11 +253,11 @@ class BookTimeBase extends Component {
         .update({ [eventKey]: true });
 
       this.setState({ isInvited: {}, desc: "", username: [] });
-      event.preventDefault();
     } else {
       alert("You haven't booked any time slots for you event");
       event.preventDefault();
     }
+    event.preventDefault();
   };
 
   render() {
