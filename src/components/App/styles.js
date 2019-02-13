@@ -3,10 +3,11 @@ import styled from "styled-components";
 export const SpanArrow = styled.span`
   i {
     color: black;
-    position: absolute;
-    z-index: 2;
-    margin-left: 5px;
+    display: flex;
     margin-top: 5px;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
 
     :hover {
       color: gold;

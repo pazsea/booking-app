@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 
 import { withFirebase } from "../Firebase";
-import { Div } from "./styles";
 
 const INITIAL_STATE = {
   passwordOne: "",
