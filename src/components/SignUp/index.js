@@ -48,7 +48,8 @@ class SignUpFormBase extends Component {
           .set({
             username,
             email,
-            roles
+            roles,
+            hostedEvents: {}
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });

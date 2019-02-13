@@ -13,7 +13,6 @@ import {
 
 import "react-mdl/extra/material.css";
 import "react-mdl/extra/material.js";
-import { DataSnapshot } from "@firebase/database";
 
 const BookTime = props => (
   <div>
@@ -47,6 +46,7 @@ class BookTimeBase extends Component {
       loading: false,
       username: [],
       isInvited: {},
+      isInvitedUid: [],
       desc: ""
     };
   }
@@ -58,7 +58,7 @@ class BookTimeBase extends Component {
       const map1 = userObj.map(function(userO) {
         return userO.username;
       });
-      this.setState({ mapeusernames: map1 });
+      this.setState({ mapeusernames: map1, loading: false });
     });
 
     this.props.firebase
@@ -66,7 +66,7 @@ class BookTimeBase extends Component {
       .child(this.props.groupRoom)
       .child(this.props.bookDate)
       .child("time")
-      .on("value", snapshot => {
+      .once("value", snapshot => {
         const bookedObject = snapshot.val();
         if (bookedObject) {
           const bookedList = bookedObject;
@@ -79,7 +79,7 @@ class BookTimeBase extends Component {
       });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       this.props.groupRoom !== prevProps.groupRoom ||
       this.props.bookDate !== prevProps.bookDate
@@ -177,10 +177,26 @@ class BookTimeBase extends Component {
     if (invitees.length === 0 || !invitees.includes(user)) {
       isInvited[user] = true;
       this.setState({ isInvited });
+
+      this.props.firebase
+        .users()
+        .orderByChild("username")
+        .equalTo(user)
+        .on(
+          "child_added",
+          function(snapshot) {
+            const key = snapshot.key;
+            this.setState(prevState => ({
+              isInvitedUid: [...prevState.isInvitedUid, key]
+            }));
+          }.bind(this)
+        );
       event.preventDefault();
     } else {
-      console.log("User already booked");
+      alert("User already booked");
+      event.preventDefault();
     }
+    console.log(this.state.isInvitedUid);
   };
 
   deleteInvited = key => {
@@ -196,6 +212,9 @@ class BookTimeBase extends Component {
         { ...this.state.time },
         { ...this.state.reservedTime }
       );
+
+      /*    const { isInvitedUid } = this.state.isInvitedUid; */
+
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
@@ -203,50 +222,29 @@ class BookTimeBase extends Component {
         .set({ time: { ...newObj } });
       event.preventDefault();
 
-      //****** */TAAAA BOOOOORT??????********//
-      /*       this.props.firebase
+      const eventKey = this.props.firebase
         .events()
         .child(this.props.groupRoom)
-        .push({
-          date: this.props.bookDate,
-          host: authUser.uid,
-          time: { ...newObj },
-          isInvited: { ...this.state.isInvited },
-          description: this.state.desc
-        }); */
-      const test = this.props.firebase
-        .events()
-        .child(this.props.groupRoom)
-        .push({
-          date: this.props.bookDate,
-          host: authUser.uid,
-          time: { ...newObj },
-          isInvited: { ...this.state.isInvited },
-          description: this.state.desc
-        }).key;
+        .push().key;
+
       this.props.firebase
         .events()
         .child(this.props.groupRoom)
-        .child(test)
+        .child(eventKey)
         .update({
-          eventUid: test
-        });
-
-      //****** */TAAAA BOOOOORT??????********//
-      /*    const test = ref.push().key;
-      console.log(test); */
-      /*       console.log(newKey); */
-      /*       var eventUidRef = this.props.firebase
-        .events()
-        .child(this.props.groupRoom)
-        .push({
           date: this.props.bookDate,
           host: authUser.uid,
           time: { ...newObj },
           isInvited: { ...this.state.isInvited },
-          description: this.state.desc
+          description: this.state.desc,
+          eventUid: eventKey
         });
-      var eventUid = ref.eventUidRef.key; */
+
+      this.props.firebase
+        .users()
+        .child(authUser.uid)
+        .child("hostedEvents")
+        .update({ [eventKey]: true });
 
       this.setState({ isInvited: {}, desc: "", username: [] });
       event.preventDefault();
