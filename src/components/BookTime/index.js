@@ -102,7 +102,7 @@ class BookTimeBase extends Component {
         .child(this.props.groupRoom)
         .child(this.props.bookDate)
         .child("time")
-        .on("value", snapshot => {
+        .once("value", snapshot => {
           const bookedObject = snapshot.val();
           if (bookedObject) {
             const bookedList = bookedObject;
@@ -187,7 +187,7 @@ class BookTimeBase extends Component {
         .users()
         .orderByChild("username")
         .equalTo(user)
-        .on(
+        .once(
           "child_added",
           function(snapshot) {
             const key = snapshot.key;
@@ -210,9 +210,21 @@ class BookTimeBase extends Component {
   };
 
   deleteInvited = key => {
-    const { isInvited } = this.state;
+    const { isInvited, isInvitedUid } = this.state;
     delete isInvited[key];
     this.setState({ isInvited });
+
+    this.props.firebase
+      .users()
+      .orderByChild("username")
+      .equalTo(key)
+      .once("child_added", function(snapshot) {
+        const key = snapshot.key;
+        const indexKey = isInvitedUid.findIndex(x => x === key);
+        if (indexKey > -1) {
+          isInvitedUid.splice(indexKey, 1);
+        }
+      });
   };
 
   sendToDB = (event, authUser) => {
@@ -355,8 +367,9 @@ class BookTimeBase extends Component {
                 />
                 <br />
                 <input
+                  className="sendButton"
                   type="submit"
-                  value="Submit"
+                  value="Book room"
                   onClick={event => this.sendToDB(event, authUser)}
                 />
                 {showModal ? (
