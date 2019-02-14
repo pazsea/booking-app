@@ -46,12 +46,6 @@ export const StyledLabel = styled.label`
     display: none;
   }
 
-  input[type="checkbox"] label:before {
-    color: white;
-  }
-  input[type="checkbox"]:checked + label:after {
-    color: blue;
-  }
   /* :hover,
   :focus {
     border-color: springgreen;
