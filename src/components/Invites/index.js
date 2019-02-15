@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Spinner } from "react-mdl";
+/* import { Spinner } from "react-mdl"; */
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";

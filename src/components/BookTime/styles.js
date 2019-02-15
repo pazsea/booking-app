@@ -42,10 +42,19 @@ export const StyledLabel = styled.label`
     inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
   border-radius: 5px;
 
+<<<<<<< HEAD
   input:first-child {
     display: none;
   }
 
+=======
+  input[type="checkbox"] label:before {
+    color: white;
+  }
+  input[type="checkbox"]:checked + label:after {
+    color: blue;
+  }
+>>>>>>> origin/dev.paz
   /* :hover,
   :focus {
     border-color: springgreen;
