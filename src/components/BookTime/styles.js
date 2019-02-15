@@ -35,24 +35,9 @@ export const StyledLabel = styled.label`
   margin: 3%;
   flex-direction: column-reverse;
   color: white;
-  border: solid white 2px;
-  background: #db7f5c;
-  box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17),
-    inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15),
-    inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
   border-radius: 5px;
-
-  input[type="checkbox"] label:before {
-    color: white;
-  }
-  input[type="checkbox"]:checked + label:after {
-    color: blue;
-  }
-  /* :hover,
-  :focus {
-    border-color: springgreen;
-    color: springgreen;
-  } */
+  background: goldenrod;
+  border: solid 2px white;
 `;
 
 export const CustomButton2 = styled.button`

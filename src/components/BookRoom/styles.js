@@ -26,15 +26,16 @@ export const Div = styled.div`
     text-transform: uppercase;
     font-size: 1.5em;
     color: #ffffff;
-    background-color: #e9b522;
-    box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17),
+    background-color: #c72b2b;
+    border: none;
+    /* box-shadow: inset 0 -0.6em 1em -0.35em rgba(0, 0, 0, 0.17),
       inset 0 0.6em 2em -0.3em rgba(255, 255, 255, 0.15),
-      inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
+      inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12); */
     position: relative;
-    :active {
+    /* :active {
       box-shadow: inset 0 0.6em 2em -0.3em rgba(0, 0, 0, 0.15),
         inset 0 0 0em 0.05em rgba(255, 255, 255, 0.12);
-    }
+    } */
   }
 
   input:first-child {

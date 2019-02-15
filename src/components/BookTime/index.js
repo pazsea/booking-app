@@ -52,7 +52,8 @@ class BookTimeBase extends Component {
       isInvited: {},
       isInvitedUid: [],
       desc: "",
-      showModal: false
+      showModal: false,
+      cross: false
     };
   }
 
@@ -241,10 +242,7 @@ class BookTimeBase extends Component {
         .child(this.props.bookDate)
         .set({ time: { ...newObj } });
 
-      const eventKey = this.props.firebase
-        .events()
-        .child(this.props.groupRoom)
-        .push().key;
+      const eventKey = this.props.firebase.events().push().key;
 
       const mapInviteUid = this.state.isInvitedUid;
 
@@ -258,9 +256,9 @@ class BookTimeBase extends Component {
 
       this.props.firebase
         .events()
-        .child(this.props.groupRoom)
         .child(eventKey)
         .update({
+          grouproom: this.props.groupRoom,
           date: this.props.bookDate,
           host: authUser.uid,
           time: { ...newObj },
@@ -275,7 +273,12 @@ class BookTimeBase extends Component {
         .child("hostedEvents")
         .update({ [eventKey]: true });
 
-      this.setState({ isInvited: {}, desc: "", username: [] });
+      this.setState({
+        isInvited: {},
+        desc: "",
+        username: [],
+        isInvitedUid: []
+      });
       this.setState({
         showModal: true
       });
