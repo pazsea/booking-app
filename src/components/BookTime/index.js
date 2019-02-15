@@ -265,7 +265,9 @@ class BookTimeBase extends Component {
           time: { ...newObj },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc,
-          eventUid: eventKey
+          eventUid: eventKey,
+          hasAccepted: {},
+          hasDeclines: {}
         });
 
       this.props.firebase
