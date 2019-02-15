@@ -55,7 +55,7 @@ class InvitesBase extends Component {
       <section>
         {userEventObjects.map((evt, index) => (
           <InviteDiv>
-            <p key={index}>{evt.host} has invited you to this event:</p>
+            <p key={index}>{evt.username} has invited you to this event:</p>
             <p key={index}>{evt.grouproom}</p>
             <p key={index}>{evt.date}</p>
             <ul>

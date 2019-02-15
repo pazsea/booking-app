@@ -261,6 +261,7 @@ class BookTimeBase extends Component {
           grouproom: this.props.groupRoom,
           date: this.props.bookDate,
           host: authUser.uid,
+          username: authUser.username,
           time: { ...newObj },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc,
