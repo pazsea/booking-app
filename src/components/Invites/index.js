@@ -32,10 +32,10 @@ class InvitesBase extends Component {
       .child("invitedToEvents")
       .on("value", snapshot => {
         const snap = snapshot.val();
-        if (snap === null) {
-          this.setState(prevState => ({
-            noInvites: !prevState.noInvites
-          }));
+        if (snap == null) {
+          this.setState({
+            noInvites: true
+          });
         } else {
           const usersInvitedEventsList = Object.keys(
             this.props.authUser.invitedToEvents
@@ -57,6 +57,11 @@ class InvitesBase extends Component {
                     loading: false
                   });
                   /*                   console.log(this.state.userEventObjects); */
+                } else {
+                  this.setState({
+                    noInvites: true,
+                    loading: false
+                  });
                 }
               });
           });
@@ -138,80 +143,79 @@ class InvitesBase extends Component {
 
   render() {
     const { loading, userEventObjects, noInvites } = this.state;
-    {
-      if (noInvites) {
-        return <h3>You have no invites, looooser </h3>;
-      } else if (loading) {
-        return (
-          <div>
-            Loading....
-            <Spinner />
-          </div>
-        );
-      } else if (userEventObjects == null) {
-        console.log(userEventObjects);
-        return (
-          <div>
-            Fetching invites....
-            <Spinner />
-          </div>
-        );
-      } else {
-        return (
-          <section>
-            {userEventObjects.map((evt, index) => (
-              <InviteDiv>
-                <p key={Math.random()}>
-                  {evt.username} has invited you to this event:
-                </p>
-                <p key={Math.random()}>{evt.grouproom}</p>
-                <p key={Math.random()}>{evt.date}</p>
-                <ul>
-                  <li>Time:</li>
-                  <li>
-                    {Object.keys(evt.time).filter(function(key) {
-                      return evt.time[key];
-                    })}
-                  </li>
-                </ul>
-                <ul>
-                  <li>Is invited:</li>
-                  <li>{Object.keys(evt.isInvited)}</li>
-                </ul>
-                <ul>
-                  <li>Has accepted:</li>
-                </ul>
-                <ul>
-                  <li>Has declined:</li>
-                </ul>
 
-                <input
-                  type="textarea"
-                  placeholder="Description"
-                  key={index}
-                  value={evt.description}
-                  key={Math.random()}
-                  readOnly
-                />
-                <button
-                  value={evt.eventUid}
-                  key={Math.random()}
-                  onClick={event => this.acceptInvite(event)}
-                >
-                  Accept
-                </button>
-                <button
-                  key={Math.random()}
-                  value={evt.eventUid}
-                  onClick={event => this.declineInvite(event)}
-                >
-                  Decline
-                </button>
-              </InviteDiv>
-            ))}
-          </section>
-        );
-      }
+    if (noInvites) {
+      return <h3>You have no invites, looooser </h3>;
+    } else if (loading) {
+      return (
+        <div>
+          Loading....
+          <Spinner />
+        </div>
+      );
+    } else if (userEventObjects === null) {
+      console.log(userEventObjects);
+      return (
+        <div>
+          Fetching invites....
+          <Spinner />
+        </div>
+      );
+    } else {
+      return (
+        <section>
+          {userEventObjects.map((evt, index) => (
+            <InviteDiv key={Math.random()}>
+              <p key={Math.random()}>
+                {evt.username} has invited you to this event:
+              </p>
+              <p key={Math.random()}>{evt.grouproom}</p>
+              <p key={Math.random()}>{evt.date}</p>
+              <ul>
+                <li>Time:</li>
+                <li key={Math.random()}>
+                  {Object.keys(evt.time).filter(function(key) {
+                    return evt.time[key];
+                  })}
+                </li>
+              </ul>
+              <ul>
+                <li>Is invited:</li>
+                <li key={Math.random()}>{Object.keys(evt.isInvited)}</li>
+              </ul>
+              <ul>
+                <li>Has accepted:</li>
+              </ul>
+              <ul>
+                <li>Has declined:</li>
+              </ul>
+
+              <input
+                type="textarea"
+                placeholder="Description"
+                key={index}
+                value={evt.description}
+                key={Math.random()}
+                readOnly
+              />
+              <button
+                value={evt.eventUid}
+                key={Math.random()}
+                onClick={event => this.acceptInvite(event)}
+              >
+                Accept
+              </button>
+              <button
+                key={Math.random()}
+                value={evt.eventUid}
+                onClick={event => this.declineInvite(event)}
+              >
+                Decline
+              </button>
+            </InviteDiv>
+          ))}
+        </section>
+      );
     }
   }
 }
