@@ -23,7 +23,7 @@ class InvitesBase extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     console.log("componen did mount start");
 
     this.props.firebase
@@ -47,6 +47,7 @@ class InvitesBase extends Component {
               .child(key)
               .on("value", snapshot => {
                 const eventObject = snapshot.val();
+                const eventArray = [];
 
                 if (eventObject) {
                   this.setState({
@@ -143,6 +144,9 @@ class InvitesBase extends Component {
 
   render() {
     const { loading, userEventObjects, noInvites } = this.state;
+    const noAccepted = "No one has accepted yet.";
+    const noInvited = "No one is invited.";
+    const noDeclined = "No one has declined yet.";
 
     if (noInvites) {
       return <h3>You have no invites, looooser </h3>;
@@ -181,13 +185,21 @@ class InvitesBase extends Component {
               </ul>
               <ul>
                 <li>Is invited:</li>
-                <li key={Math.random()}>{Object.keys(evt.isInvited)}</li>
+                <li key={Math.random()}>
+                  {evt.isInvited ? Object.keys(evt.isInvited) : noInvited}
+                </li>
               </ul>
               <ul>
                 <li>Has accepted:</li>
+                <li key={Math.random()}>
+                  {evt.hasAccepted ? Object.keys(evt.hasAccepted) : noAccepted}
+                </li>
               </ul>
               <ul>
                 <li>Has declined:</li>
+                <li key={Math.random()}>
+                  {evt.hasDeclined ? Object.keys(evt.hasDeclined) : noDeclined}
+                </li>
               </ul>
 
               <input
