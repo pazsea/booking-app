@@ -56,7 +56,7 @@ class InvitesBase extends Component {
                     ],
                     loading: false
                   });
-                  console.log(this.state.userEventObjects);
+                  /*                   console.log(this.state.userEventObjects); */
                 }
               });
           });
@@ -65,53 +65,6 @@ class InvitesBase extends Component {
     console.log("component did mount ENDS");
   }
 
-  componentDidUpdate(prevProps) {
-    console.log("starting update");
-    if (
-      prevProps.authUser.invitedToEvents !== prevProps.authUser.invitedToEvents
-    ) {
-      console.log("starting update if");
-
-      this.props.firebase
-        .users()
-        .child(this.props.authUser.uid)
-        .child("invitedToEvents")
-        .on("value", snapshot => {
-          const snap = snapshot.val();
-          if (snap === null) {
-            this.setState(prevState => ({
-              noInvites: !prevState.noInvites
-            }));
-          } else {
-            console.log("heere");
-            const usersInvitedEventsList = Object.keys(
-              this.props.authUser.invitedToEvents
-            );
-
-            const test = usersInvitedEventsList.map(key => {
-              this.props.firebase
-                .events()
-                .child(key)
-                .on("value", snapshot => {
-                  const eventObject = snapshot.val();
-
-                  if (eventObject) {
-                    this.setState({
-                      userEventObjects: [
-                        ...this.state.userEventObjects,
-                        eventObject
-                      ],
-                      loading: false
-                    });
-                    console.log(this.state.userEventObjects);
-                  }
-                });
-            });
-          }
-        });
-      console.log("ending update");
-    }
-  }
   //TO DO:
   //the times must come in the right way. Right now its only Object Keys after Map..
   //ACCEPT FUNCTION:
@@ -190,25 +143,35 @@ class InvitesBase extends Component {
         return <h3>You have no invites, looooser </h3>;
       } else if (loading) {
         return (
-          <p>
+          <div>
             Loading....
             <Spinner />
-          </p>
+          </div>
+        );
+      } else if (userEventObjects == null) {
+        console.log(userEventObjects);
+        return (
+          <div>
+            Fetching invites....
+            <Spinner />
+          </div>
         );
       } else {
         return (
           <section>
             {userEventObjects.map((evt, index) => (
               <InviteDiv>
-                <p key={index}>{evt.username} has invited you to this event:</p>
-                <p key={index}>{evt.grouproom}</p>
-                <p key={index}>{evt.date}</p>
+                <p key={Math.random()}>
+                  {evt.username} has invited you to this event:
+                </p>
+                <p key={Math.random()}>{evt.grouproom}</p>
+                <p key={Math.random()}>{evt.date}</p>
                 <ul>
                   <li>Time:</li>
                   <li>
                     {Object.keys(evt.time).filter(function(key) {
                       return evt.time[key];
-                    })}{" "}
+                    })}
                   </li>
                 </ul>
                 <ul>
@@ -227,15 +190,18 @@ class InvitesBase extends Component {
                   placeholder="Description"
                   key={index}
                   value={evt.description}
+                  key={Math.random()}
                   readOnly
                 />
                 <button
                   value={evt.eventUid}
+                  key={Math.random()}
                   onClick={event => this.acceptInvite(event)}
                 >
                   Accept
                 </button>
                 <button
+                  key={Math.random()}
                   value={evt.eventUid}
                   onClick={event => this.declineInvite(event)}
                 >

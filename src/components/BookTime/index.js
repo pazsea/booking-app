@@ -37,23 +37,22 @@ const times = [
   "16:00-17:00"
 ];
 
-const returnFalseTimes = () =>
-  Object.assign({}, ...times.map(item => ({ [item]: false })));
+/* const returnFalseTimes = () =>
+  Object.assign({}, ...times.map(item => ({ [item]: false }))); */
 
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
       bookDate: this.props.bookDate,
-      time: returnFalseTimes(),
-      reservedTime: returnFalseTimes(),
+      time: {},
+      reservedTime: {},
       loading: false,
       username: [],
       isInvited: {},
       isInvitedUid: [],
       desc: "",
-      showModal: false,
-      cross: false
+      showModal: false
     };
   }
 
@@ -103,7 +102,7 @@ class BookTimeBase extends Component {
         .child(this.props.groupRoom)
         .child(this.props.bookDate)
         .child("time")
-        .once("value", snapshot => {
+        .on("value", snapshot => {
           const bookedObject = snapshot.val();
           if (bookedObject) {
             const bookedList = bookedObject;
@@ -127,7 +126,7 @@ class BookTimeBase extends Component {
   }
 
   componentWillReceiveProps() {
-    this.setState({ loading: true });
+    /*     this.setState({ loading: true });
     this.props.firebase
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
@@ -142,7 +141,7 @@ class BookTimeBase extends Component {
         } else {
           this.setState({ time: returnFalseTimes(), loading: false });
         }
-      });
+      }); */
   }
   onChangeCheckbox = name => {
     this.setState(prevState => ({
@@ -262,7 +261,7 @@ class BookTimeBase extends Component {
           date: this.props.bookDate,
           host: authUser.uid,
           username: authUser.username,
-          time: { ...newObj },
+          time: { ...this.state.reservedTime },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc,
           eventUid: eventKey,
