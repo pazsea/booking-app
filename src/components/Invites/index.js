@@ -23,31 +23,36 @@ class InvitesBase extends Component {
     };
   }
 
-  componentWillMount() {
-    console.log("componen did mount start");
-
+  componentDidMount() {
     this.props.firebase
       .users()
       .child(this.props.authUser.uid)
       .child("invitedToEvents")
       .on("value", snapshot => {
+        console.log(snapshot.val());
+      });
+  }
+
+  componentWillMount() {
+    console.log("component did mount start");
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .once("value", snapshot => {
         const snap = snapshot.val();
         if (snap == null) {
           this.setState({
             noInvites: true
           });
         } else {
-          const usersInvitedEventsList = Object.keys(
-            this.props.authUser.invitedToEvents
-          );
-
-          const test = usersInvitedEventsList.map(key => {
+          const snapKeys = Object.keys(snap);
+          const test = snapKeys.map(key => {
             this.props.firebase
               .events()
               .child(key)
-              .on("value", snapshot => {
+              .once("value", snapshot => {
                 const eventObject = snapshot.val();
-                const eventArray = [];
 
                 if (eventObject) {
                   this.setState({
@@ -57,7 +62,6 @@ class InvitesBase extends Component {
                     ],
                     loading: false
                   });
-                  /*                   console.log(this.state.userEventObjects); */
                 } else {
                   this.setState({
                     noInvites: true,
