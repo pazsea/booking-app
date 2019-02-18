@@ -36,30 +36,20 @@ export const StyledLabel = styled.label`
   flex-direction: column-reverse;
   color: white;
   border-radius: 5px;
-<<<<<<< HEAD
 
-<<<<<<< HEAD
   input:first-child {
     display: none;
   }
 
-=======
   input[type="checkbox"] label:before {
     color: white;
   }
   input[type="checkbox"]:checked + label:after {
     color: blue;
   }
->>>>>>> origin/dev.paz
-  /* :hover,
-  :focus {
-    border-color: springgreen;
-    color: springgreen;
-  } */
-=======
+
   background: goldenrod;
   border: solid 2px white;
->>>>>>> origin/dev.paz
 `;
 
 export const CustomButton2 = styled.button`

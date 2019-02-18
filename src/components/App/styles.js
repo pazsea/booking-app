@@ -8,6 +8,7 @@ export const SpanArrow = styled.span`
     justify-content: center;
     text-align: center;
     z-index: 2;
+    margin-bottom: 0.1em;
 
     :hover {
       color: gold;
