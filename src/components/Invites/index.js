@@ -208,6 +208,7 @@ class InvitesBase extends Component {
     const noAccepted = "No one has accepted yet.";
     const noInvited = "No one is invited.";
     const noDeclined = "No one has declined yet.";
+    const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
       return <h3>You have no invites, looooser </h3>;
@@ -238,13 +239,13 @@ class InvitesBase extends Component {
               <p key={"Date paragrah:" + evt.eventUid}>{evt.date}</p>
               <ul>
                 <li>Time:</li>
-                <li>Is invited:</li>
+
                 {evt.time ? (
                   Object.keys(evt.time).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
                   ))
                 ) : (
-                  <li>{noInvited}</li>
+                  <li>{noTimes}</li>
                 )}
               </ul>
 

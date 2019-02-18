@@ -60,6 +60,8 @@ class MyEventsBase extends Component {
     const noAccepted = "No one has accepted yet.";
     const noInvited = "No one is invited.";
     const noDeclined = "No one has declined yet.";
+    const noTimes = "You have no times? WTF?";
+
     if (loading) {
       return (
         <div>
@@ -72,20 +74,29 @@ class MyEventsBase extends Component {
       return (
         <section>
           {myEvents.map((evt, index) => (
-            <InviteDiv key={Math.random()}>
-              <p key={Math.random()}>Host for this event: {evt.username}</p>
-              <p key={Math.random()}>{evt.date}</p>
-              <p key={Math.random()}>{evt.grouproom}</p>
+            <InviteDiv key={"Div " + evt.eventUid}>
+              <p key={"Host paragraph: " + evt.eventUid}>
+                Host for this event: {evt.username}
+              </p>
+              <p key={"Date paragrah:" + evt.eventUid}>{evt.date}</p>
+              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
 
               <ul>
                 <li>Time:</li>
-                <li key={Math.random()} />
+
+                {evt.time ? (
+                  Object.keys(evt.time).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noTimes}</li>
+                )}
               </ul>
               <ul>
                 <li>Is invited:</li>
                 {evt.isInvited ? (
-                  Object.keys(evt.isInvited).map(key => (
-                    <li key={Math.random()}>{key}</li>
+                  Object.keys(evt.isInvited).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
                   ))
                 ) : (
                   <li>{noInvited}</li>
@@ -94,8 +105,8 @@ class MyEventsBase extends Component {
               <ul>
                 <li>Has accepted:</li>
                 {evt.hasAccepted ? (
-                  Object.keys(evt.hasAccepted).map(key => (
-                    <li key={Math.random()}>{key}</li>
+                  Object.keys(evt.hasAccepted).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
                   ))
                 ) : (
                   <li>{noAccepted}</li>
@@ -104,8 +115,8 @@ class MyEventsBase extends Component {
               <ul>
                 <li>Has declined:</li>
                 {evt.hasDeclined ? (
-                  Object.keys(evt.hasDeclined).map(key => (
-                    <li key={Math.random()}>{key}</li>
+                  Object.keys(evt.hasDeclined).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
                   ))
                 ) : (
                   <li>{noDeclined}</li>
@@ -116,7 +127,7 @@ class MyEventsBase extends Component {
                 type="textarea"
                 placeholder="Description"
                 value={evt.description}
-                key={Math.random()}
+                key={"Description event: " + evt.eventUid}
                 readOnly
               />
               <button key={Math.random()}>placeholder</button>
