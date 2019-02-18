@@ -44,7 +44,6 @@ class App extends Component {
             />
           </SpanArrow>
           <Navigation stateNav={this.state.isOpen} />
-          {/*           <Route exact path={ROUTES.BOOK_TIME_SLOT} component={BookTime} /> */}
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />

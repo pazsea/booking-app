@@ -10,7 +10,6 @@ import * as ROLES from "../../constants/roles";
 
 const Navigation = props => (
   <Nav stateNav={props.stateNav}>
-    {/* stateNav={props.stateNav} */}
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? (
@@ -26,9 +25,6 @@ const Navigation = props => (
 const NavigationAuth = ({ authUser }) => (
   <React.Fragment>
     <ul>
-      {/*       <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
-      </li> TA BORT?!?!*/}
       <li>
         <Link to={ROUTES.HOME}>Home</Link>
       </li>

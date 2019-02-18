@@ -27,9 +27,6 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  createGrouproomWithDateAndTime = (groupRoom, date, time) =>
-    this.db.createGrouproomWithDateAndTime(groupRoom, date, time);
-
   doSignOut = () => this.auth.signOut();
 
   doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
