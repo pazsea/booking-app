@@ -83,9 +83,13 @@ class MyEventsBase extends Component {
               </ul>
               <ul>
                 <li>Is invited:</li>
-                <li key={Math.random()}>
-                  {evt.isInvited ? Object.keys(evt.isInvited) : noInvited}
-                </li>
+                {evt.isInvited ? (
+                  Object.keys(evt.isInvited).map(key => (
+                    <li key={Math.random()}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noInvited}</li>
+                )}
               </ul>
               <ul>
                 <li>Has accepted:</li>
@@ -96,23 +100,21 @@ class MyEventsBase extends Component {
                 ) : (
                   <li>{noAccepted}</li>
                 )}
-
-                {/* Object.keys(evt.hasAccepted).map(key => (
-                  <li key={Math.random()}>{key}</li>) : <li>noAccepted</li> 
-                 ) } */}
               </ul>
               <ul>
                 <li>Has declined:</li>
-                {evt.hasDeclined ? Object.keys(evt.hasDeclined) : noDeclined}
-                <li key={Math.random()}>
-                  {evt.hasDeclined ? Object.keys(evt.hasDeclined) : noDeclined}
-                </li>
+                {evt.hasDeclined ? (
+                  Object.keys(evt.hasDeclined).map(key => (
+                    <li key={Math.random()}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noDeclined}</li>
+                )}
               </ul>
 
               <input
                 type="textarea"
                 placeholder="Description"
-                key={index}
                 value={evt.description}
                 key={Math.random()}
                 readOnly
