@@ -50,9 +50,11 @@ class InvitesBase extends Component {
             noInvites: true
           });
         } else {
+          console.log("Direkt efter else");
           this.setState({
             userEventObjects: []
           });
+          console.log("UsereventsObject är toom");
           const snapKeys = Object.keys(snap);
           const test = snapKeys.map(key => {
             this.props.firebase
@@ -60,8 +62,11 @@ class InvitesBase extends Component {
               .child(key)
               .on("value", snapshot => {
                 const eventObject = snapshot.val();
+                console.log("Kollar i snapshot ");
 
                 if (eventObject) {
+                  console.log("Kollar i snapshot och SKA HA HITTAT NÅGOT ");
+
                   this.setState({
                     userEventObjects: [
                       ...this.state.userEventObjects,
@@ -76,7 +81,6 @@ class InvitesBase extends Component {
                   });
                 }
               });
-            this.setState({});
           });
         }
       });
