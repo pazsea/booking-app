@@ -16,7 +16,7 @@ export const Div = styled.div`
   margin: 10% auto;
   font-size: 16px;
   border: 2px solid white;
-
+  text-align: center;
   button {
     background: white;
     border-radius: 3px;
