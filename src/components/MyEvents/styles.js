@@ -1,10 +1,15 @@
 import styled from "styled-components";
 
 export const InviteDiv = styled.div`
+  padding: 0.2em;
+  color: black;
+  background: white;
   margin: 0 10%;
-  border: 2px solid red;
+
   height: fit-content;
   ul {
+    display: flex;
+    justify-content: center;
     list-style: none;
   }
   input {

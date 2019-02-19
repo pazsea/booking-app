@@ -22,26 +22,11 @@ class InvitesBase extends Component {
       noInvites: false
     };
   }
-  componentWillMount() {
-    this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .once("value", snapshot => {
-        const snap = snapshot.val();
-        if (snap == null) {
-          this.setState({
-            noInvites: true
-          });
-        }
-      });
-  }
 
   componentDidMount() {
-    console.log("component did mount start");
+    console.log("Component did Mount");
     this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
+      .user(this.props.authUser.uid)
       .child("invitedToEvents")
       .on("value", snapshot => {
         const snap = snapshot.val();
@@ -49,42 +34,38 @@ class InvitesBase extends Component {
           this.setState({
             noInvites: true
           });
+          console.log("Hittade ingen snapshot i userns InvitedEvents");
         } else {
           console.log("Direkt efter else");
           this.setState({
-            userEventObjects: []
+            userEventObjects: [],
+            noInvites: false
           });
-          console.log("UsereventsObject är toom");
+
           const snapKeys = Object.keys(snap);
           const test = snapKeys.map(key => {
-            this.props.firebase
-              .events()
-              .child(key)
-              .on("value", snapshot => {
-                const eventObject = snapshot.val();
-                console.log("Kollar i snapshot ");
-
-                if (eventObject) {
-                  console.log("Kollar i snapshot och SKA HA HITTAT NÅGOT ");
-
-                  this.setState({
-                    userEventObjects: [
-                      ...this.state.userEventObjects,
-                      eventObject
-                    ],
-                    loading: false
-                  });
-                } else {
-                  this.setState({
-                    noInvites: true,
-                    loading: false
-                  });
-                }
+            this.props.firebase.event(key).on("value", snapshot => {
+              const eventObject = snapshot.val();
+              this.setState({
+                userEventObjects: [
+                  ...this.state.userEventObjects,
+                  { ...eventObject, uid: key }
+                ]
               });
+              console.log("User Event object ska ha fått rätt events ");
+            });
           });
         }
+        this.setState({
+          loading: false
+        });
       });
     console.log("component did mount ENDS");
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.users().off();
+    this.props.firebase.events().off();
   }
 
   //TO DO:
@@ -94,8 +75,9 @@ class InvitesBase extends Component {
   //events/eventUID/hasAccepted => currentUsername true
   //users/authuserUid/acceptedToEvent/ => currenteventID = true
 
-  acceptInvite = event => {
+  acceptInvite = (event, index) => {
     const currentEvent = event.target.value;
+    const { userEventObjects } = this.state;
     this.props.firebase
       .events()
       .child(currentEvent)
@@ -126,9 +108,36 @@ class InvitesBase extends Component {
         [currentEvent]: true
       });
 
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .equalTo(currentEvent)
+      .once("value", snapshot => {
+        console.log(snapshot.val());
+        if (snapshot.val() === null) {
+          delete userEventObjects[currentEvent];
+          this.setState({ userEventObjects });
+        } else {
+          console.log(snapshot.val());
+          this.setState({
+            loading: true
+          });
+        }
+      });
+
+    delete userEventObjects[index];
+    this.setState({ userEventObjects });
+
+    /*     const acceptArray = this.state.userEventObjects.findIndex(
+      x => x === currentEvent
+    );
+    if (acceptArray > -1) {
+      this.state.userEventObjects.splice(acceptArray, 1);
+    }
     this.setState({
-      userEventObjects: []
-    });
+      userEventObjects: acceptArray
+    }); */
   };
 
   //TO DO:
@@ -137,7 +146,8 @@ class InvitesBase extends Component {
   //events/eventUID/hasDeclined
   //*REMOVE* users/authuser.uid/invitedToEvents => currentEvent = null
 
-  declineInvite = event => {
+  declineInvite = (event, index) => {
+    console.log("decline reached" + event.target);
     const currentEvent = event.target.value;
     this.props.firebase
       .events()
@@ -160,17 +170,42 @@ class InvitesBase extends Component {
       .update({
         [currentEvent]: null
       });
+    const { userEventObjects } = this.state;
+    delete userEventObjects[index];
+    this.setState({ userEventObjects });
 
-    this.setState({
-      userEventObjects: []
-    });
+    /*     const declineArray = this.state.userEventObjects.findIndex(
+      x => x === index
+    );
+    if (declineArray > -1) {
+      this.state.userEventObjects.splice(declineArray, 1);
+    } */
+
+    /*     deleteInvited = key => {
+      const { isInvited, isInvitedUid } = this.state;
+      delete isInvited[key];
+      this.setState({ isInvited });
+      this.props.firebase
+        .users()
+        .orderByChild("username")
+        .equalTo(key)
+        .once("child_added", function (snapshot) {
+          const key = snapshot.key;
+          const indexKey = isInvitedUid.findIndex(x => x === key);
+          if (indexKey > -1) {
+            isInvitedUid.splice(indexKey, 1);
+          }
+        });
+    }; */
   };
 
   render() {
+    console.log("RENDER");
     const { loading, userEventObjects, noInvites } = this.state;
     const noAccepted = "No one has accepted yet.";
     const noInvited = "No one is invited.";
     const noDeclined = "No one has declined yet.";
+    const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
       return <h3>You have no invites, looooser </h3>;
@@ -192,64 +227,83 @@ class InvitesBase extends Component {
     } else {
       return (
         <section>
-          {userEventObjects.map((evt, index) => (
-            <InviteDiv key={Math.random()}>
-              <p key={Math.random()}>
-                {evt.username} has invited you to this event:
-              </p>
-              <p key={Math.random()}>{evt.grouproom}</p>
-              <p key={Math.random()}>{evt.date}</p>
-              <ul>
-                <li>Time:</li>
-                <li key={Math.random()}>
-                  {Object.keys(evt.time).filter(function(key) {
-                    return evt.time[key];
-                  })}
-                </li>
-              </ul>
-              <ul>
-                <li>Is invited:</li>
-                <li key={Math.random()}>
-                  {evt.isInvited ? Object.keys(evt.isInvited) : noInvited}
-                </li>
-              </ul>
-              <ul>
-                <li>Has accepted:</li>
-                <li key={Math.random()}>
-                  {evt.hasAccepted ? Object.keys(evt.hasAccepted) : noAccepted}
-                </li>
-              </ul>
-              <ul>
-                <li>Has declined:</li>
-                <li key={Math.random()}>
-                  {evt.hasDeclined ? Object.keys(evt.hasDeclined) : noDeclined}
-                </li>
-              </ul>
+          {userEventObjects.map(
+            ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
+              <InviteDiv key={"Div " + eventUid}>
+                <p key={"Host paragraph: " + eventUid}>
+                  {username} has invited you to this event:
+                </p>
+                <p key={"Event UID: " + eventUid}>{grouproom}</p>
+                <p key={"Date paragrah:" + eventUid}>{date}</p>
+                <ul>
+                  <li>Time:</li>
 
-              <input
-                type="textarea"
-                placeholder="Description"
-                key={index}
-                value={evt.description}
-                key={Math.random()}
-                readOnly
-              />
-              <button
-                value={evt.eventUid}
-                key={Math.random()}
-                onClick={event => this.acceptInvite(event)}
-              >
-                Accept
-              </button>
-              <button
-                key={Math.random()}
-                value={evt.eventUid}
-                onClick={event => this.declineInvite(event)}
-              >
-                Decline
-              </button>
-            </InviteDiv>
-          ))}
+                  {time ? (
+                    Object.keys(time).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noTimes}</li>
+                  )}
+                </ul>
+
+                <ul>
+                  <li>Is invited:</li>
+                  {evt.isInvited ? (
+                    Object.keys(evt.isInvited).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noInvited}</li>
+                  )}
+                </ul>
+                <ul>
+                  <li>Has accepted:</li>
+                  {evt.hasAccepted ? (
+                    Object.keys(evt.hasAccepted).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noAccepted}</li>
+                  )}
+                </ul>
+                <ul>
+                  <li>Has declined:</li>
+                  {evt.hasDeclined ? (
+                    Object.keys(evt.hasDeclined).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noDeclined}</li>
+                  )}
+                </ul>
+
+                <input
+                  type="textarea"
+                  placeholder="Description"
+                  value={evt.description}
+                  key={"Description event: " + eventUid}
+                  readOnly
+                />
+                <button
+                  value={eventUid}
+                  key={"Button accept: " + eventUid}
+                  index={evt.index}
+                  onClick={event => this.acceptInvite(event, index)}
+                >
+                  Accept
+                </button>
+                <button
+                  value={eventUid}
+                  key={"Button decline: " + eventUid}
+                  index={evt.index}
+                  onClick={event => this.declineInvite(event, index)}
+                >
+                  Decline
+                </button>
+              </InviteDiv>
+            )
+          )}
         </section>
       );
     }
