@@ -31,17 +31,17 @@ class InvitesBase extends Component {
       .child("invitedToEvents")
       .on("value", snapshot => {
         const snap = snapshot.val();
-        if (snap === null) {
+        if (snap == null) {
           this.setState({
             noInvites: true
           });
           console.log("Hittade ingen snapshot i userns InvitedEvents");
         } else {
           console.log("Direkt efter else");
-          /*           this.setState({
+          this.setState({
             userEventObjects: []
           });
-          console.log("Rensade State userEventObjects till en tom Array"); */
+
           const snapKeys = Object.keys(snap);
           const test = snapKeys.map(key => {
             this.props.firebase
