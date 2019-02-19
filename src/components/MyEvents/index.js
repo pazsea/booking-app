@@ -28,8 +28,8 @@ class MyEventsBase extends Component {
       .child(this.props.authUser.uid)
       .child("hostedEvents")
       .on("value", snapshot => {
-        const acceptedKeys = Object.keys(snapshot.val());
-        if (acceptedKeys == null) {
+        const acceptedVal = snapshot.val();
+        if (acceptedVal == null) {
           this.setState({
             noEvents: true
           });
@@ -37,6 +37,7 @@ class MyEventsBase extends Component {
           this.setState({
             myEvents: []
           });
+          const acceptedKeys = Object.keys(acceptedVal);
           const test = acceptedKeys.map(key => {
             this.props.firebase
               .events()
