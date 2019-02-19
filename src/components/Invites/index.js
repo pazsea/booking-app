@@ -26,8 +26,7 @@ class InvitesBase extends Component {
   componentDidMount() {
     console.log("Component did Mount");
     this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
+      .user(this.props.authUser.uid)
       .child("invitedToEvents")
       .on("value", snapshot => {
         const snap = snapshot.val();
@@ -39,24 +38,22 @@ class InvitesBase extends Component {
         } else {
           console.log("Direkt efter else");
           this.setState({
-            userEventObjects: []
+            userEventObjects: [],
+            noInvites: false
           });
 
           const snapKeys = Object.keys(snap);
           const test = snapKeys.map(key => {
-            this.props.firebase
-              .events()
-              .child(key)
-              .on("value", snapshot => {
-                const eventObject = snapshot.val();
-                this.setState({
-                  userEventObjects: [
-                    ...this.state.userEventObjects,
-                    eventObject
-                  ]
-                });
-                console.log("User Event object ska ha fått rätt events ");
+            this.props.firebase.event(key).on("value", snapshot => {
+              const eventObject = snapshot.val();
+              this.setState({
+                userEventObjects: [
+                  ...this.state.userEventObjects,
+                  { ...eventObject, uid: key }
+                ]
               });
+              console.log("User Event object ska ha fått rätt events ");
+            });
           });
         }
         this.setState({
@@ -150,6 +147,7 @@ class InvitesBase extends Component {
   //*REMOVE* users/authuser.uid/invitedToEvents => currentEvent = null
 
   declineInvite = (event, index) => {
+    console.log("decline reached" + event.target);
     const currentEvent = event.target.value;
     this.props.firebase
       .events()
@@ -187,7 +185,6 @@ class InvitesBase extends Component {
       const { isInvited, isInvitedUid } = this.state;
       delete isInvited[key];
       this.setState({ isInvited });
-
       this.props.firebase
         .users()
         .orderByChild("username")
@@ -230,81 +227,83 @@ class InvitesBase extends Component {
     } else {
       return (
         <section>
-          {userEventObjects.map((evt, index) => (
-            <InviteDiv key={"Div " + evt.eventUid}>
-              <p key={"Host paragraph: " + evt.eventUid}>
-                {evt.username} has invited you to this event:
-              </p>
-              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
-              <p key={"Date paragrah:" + evt.eventUid}>{evt.date}</p>
-              <ul>
-                <li>Time:</li>
+          {userEventObjects.map(
+            ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
+              <InviteDiv key={"Div " + eventUid}>
+                <p key={"Host paragraph: " + eventUid}>
+                  {username} has invited you to this event:
+                </p>
+                <p key={"Event UID: " + eventUid}>{grouproom}</p>
+                <p key={"Date paragrah:" + eventUid}>{date}</p>
+                <ul>
+                  <li>Time:</li>
 
-                {evt.time ? (
-                  Object.keys(evt.time).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
-                ) : (
-                  <li>{noTimes}</li>
-                )}
-              </ul>
+                  {time ? (
+                    Object.keys(time).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noTimes}</li>
+                  )}
+                </ul>
 
-              <ul>
-                <li>Is invited:</li>
-                {evt.isInvited ? (
-                  Object.keys(evt.isInvited).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
-                ) : (
-                  <li>{noInvited}</li>
-                )}
-              </ul>
-              <ul>
-                <li>Has accepted:</li>
-                {evt.hasAccepted ? (
-                  Object.keys(evt.hasAccepted).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
-                ) : (
-                  <li>{noAccepted}</li>
-                )}
-              </ul>
-              <ul>
-                <li>Has declined:</li>
-                {evt.hasDeclined ? (
-                  Object.keys(evt.hasDeclined).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
-                ) : (
-                  <li>{noDeclined}</li>
-                )}
-              </ul>
+                <ul>
+                  <li>Is invited:</li>
+                  {evt.isInvited ? (
+                    Object.keys(evt.isInvited).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noInvited}</li>
+                  )}
+                </ul>
+                <ul>
+                  <li>Has accepted:</li>
+                  {evt.hasAccepted ? (
+                    Object.keys(evt.hasAccepted).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noAccepted}</li>
+                  )}
+                </ul>
+                <ul>
+                  <li>Has declined:</li>
+                  {evt.hasDeclined ? (
+                    Object.keys(evt.hasDeclined).map((key, index) => (
+                      <li key={index + eventUid}>{key}</li>
+                    ))
+                  ) : (
+                    <li>{noDeclined}</li>
+                  )}
+                </ul>
 
-              <input
-                type="textarea"
-                placeholder="Description"
-                value={evt.description}
-                key={"Description event: " + evt.eventUid}
-                readOnly
-              />
-              <button
-                value={evt.eventUid}
-                key={"Button accept: " + evt.eventUid}
-                index={evt.index}
-                onClick={event => this.acceptInvite(event, index)}
-              >
-                Accept
-              </button>
-              <button
-                value={evt.eventUid}
-                key={"Button decline: " + evt.eventUid}
-                index={evt.index}
-                onClick={event => this.declineInvite(event, index)}
-              >
-                Decline
-              </button>
-            </InviteDiv>
-          ))}
+                <input
+                  type="textarea"
+                  placeholder="Description"
+                  value={evt.description}
+                  key={"Description event: " + eventUid}
+                  readOnly
+                />
+                <button
+                  value={eventUid}
+                  key={"Button accept: " + eventUid}
+                  index={evt.index}
+                  onClick={event => this.acceptInvite(event, index)}
+                >
+                  Accept
+                </button>
+                <button
+                  value={eventUid}
+                  key={"Button decline: " + eventUid}
+                  index={evt.index}
+                  onClick={event => this.declineInvite(event, index)}
+                >
+                  Decline
+                </button>
+              </InviteDiv>
+            )
+          )}
         </section>
       );
     }
