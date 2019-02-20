@@ -42,9 +42,9 @@ class BookRoomBase extends Component {
     super(props);
 
     this.state = {
+      showTimeComponent: false,
       showClassroomComponent: false,
-      showGroupRoomComponent: false,
-      showComponent: false,
+      showClassroomComponent: false,
       bookDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
@@ -72,15 +72,32 @@ class BookRoomBase extends Component {
     });
   }
 
-  onChangeDisplayRoom(evt) {
+  onChangeDisplayClassroom(evt) {
+    const { showGroupRoomComponent } = this.state;
     const showKey = evt.target.value;
-    const hideKey = evt.target.hideRoom;
-    /*     console.log("showKey:" + showKey + " hideKey: " + hideKey);
-    console.log({ evt} ); */
-    this.setState({
-      [showKey]: true,
-      [hideKey]: false
-    });
+    this.setState(prevState => ({
+      [showKey]: !prevState[showKey]
+    }));
+
+    if (showGroupRoomComponent) {
+      this.setState(prevState => ({
+        showClassroomComponent: !prevState.showClassroomComponent
+      }));
+    }
+  }
+
+  onChangeDisplayGroupRoom(evt) {
+    const { showClassroomComponent } = this.state;
+    const showKey = evt.target.value;
+    this.setState(prevState => ({
+      [showKey]: !prevState[showKey]
+    }));
+
+    if (showClassroomComponent) {
+      this.setState(prevState => ({
+        showGroupRoomComponent: !prevState.showGroupRoomComponent
+      }));
+    }
   }
 
   // onChangeDisplayRoom = () => {
@@ -94,7 +111,7 @@ class BookRoomBase extends Component {
 
   closeTime = () => {
     this.setState(prevState => ({
-      showComponent: !prevState.showComponent
+      showTimeComponent: !prevState.showTimeComponent
     }));
   };
 
@@ -103,7 +120,7 @@ class BookRoomBase extends Component {
       groupRoom: event.target.name
     });
     this.setState({
-      showComponent: true
+      showTimeComponent: true
     });
   };
 
@@ -115,7 +132,7 @@ class BookRoomBase extends Component {
 
   render() {
     const { authUser } = this.props;
-    const { showClassroomComponent, showGroupRoomComponent } = this.state;
+    const { showGroupRoomComponent, showClassroomComponent } = this.state;
     return (
       <React.Fragment>
         <p>Please pick a date (press the current date):</p>
@@ -128,25 +145,23 @@ class BookRoomBase extends Component {
         {authUser.roles.includes(ROLES.TEACHER) ||
         authUser.roles.includes(ROLES.ADMIN) ? (
           <Div>
-            <button
+            <GroupRoomButton
               className="classRoom"
               name="classroom"
               value="showClassroomComponent"
-              hideRoom="showGroupRoomComponent"
-              onClick={evt => this.onChangeDisplayRoom(evt)}
+              onClick={evt => this.onChangeDisplayClassroom(evt)}
             >
               Classrooms
-            </button>
+            </GroupRoomButton>
 
-            <button
+            <GroupRoomButton
               className="classRoom"
               name="classroom"
               value="showGroupRoomComponent"
-              hideRoom="showClassroomComponent"
-              onClick={evt => this.onChangeDisplayRoom(evt)}
+              onClick={evt => this.onChangeDisplayGroupRoom(evt)}
             >
               Group Rooms
-            </button>
+            </GroupRoomButton>
 
             {showGroupRoomComponent
               ? bookableRooms.map((room, index) => (
@@ -182,7 +197,7 @@ class BookRoomBase extends Component {
           </Div>
         )}
 
-        {this.state.showComponent ? (
+        {this.state.showTimeComponent ? (
           <BookTime {...this.state} close={this.closeTime} />
         ) : null}
       </React.Fragment>
