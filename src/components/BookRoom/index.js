@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { Link, Element } from "react-scroll";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
-import { Div, GroupRoomButton } from "./styles";
+import { Div, GroupRoomButton, ClassroomButton } from "./styles";
 import { AuthUserContext } from "../Session";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import * as ROLES from "../../constants/roles";
@@ -44,7 +45,7 @@ class BookRoomBase extends Component {
     this.state = {
       showTimeComponent: false,
       showClassroomComponent: false,
-      showClassroomComponent: false,
+      showGroupRoomComponent: false,
       bookDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
@@ -81,7 +82,7 @@ class BookRoomBase extends Component {
 
     if (showGroupRoomComponent) {
       this.setState(prevState => ({
-        showClassroomComponent: !prevState.showClassroomComponent
+        showGroupRoomComponent: !prevState.showGroupRoomComponent
       }));
     }
   }
@@ -95,7 +96,7 @@ class BookRoomBase extends Component {
 
     if (showClassroomComponent) {
       this.setState(prevState => ({
-        showGroupRoomComponent: !prevState.showGroupRoomComponent
+        showClassroomComponent: !prevState.showClassroomComponent
       }));
     }
   }
@@ -117,10 +118,12 @@ class BookRoomBase extends Component {
 
   onChange = event => {
     this.setState({
-      groupRoom: event.target.name
+      groupRoom: event.target.name,
+      showTimeComponent: true
     });
     this.setState({
-      showTimeComponent: true
+      showClassroomComponent: false,
+      showGroupRoomComponent: false
     });
   };
 
@@ -145,54 +148,80 @@ class BookRoomBase extends Component {
         {authUser.roles.includes(ROLES.TEACHER) ||
         authUser.roles.includes(ROLES.ADMIN) ? (
           <Div>
-            <GroupRoomButton
-              className="classRoom"
-              name="classroom"
-              value="showClassroomComponent"
-              onClick={evt => this.onChangeDisplayClassroom(evt)}
+            <Link
+              activeClass="active"
+              className="test1"
+              to="classrooms"
+              spy={true}
+              smooth={true}
+              duration={500}
             >
-              Classrooms
-            </GroupRoomButton>
-
-            <GroupRoomButton
-              className="classRoom"
-              name="classroom"
-              value="showGroupRoomComponent"
-              onClick={evt => this.onChangeDisplayGroupRoom(evt)}
+              <ClassroomButton
+                className="classRoom"
+                name="classroom"
+                value="showClassroomComponent"
+                onClick={evt => this.onChangeDisplayClassroom(evt)}
+              >
+                Classrooms
+              </ClassroomButton>
+            </Link>
+            <Link
+              activeClass="active"
+              to="groupRooms"
+              spy={true}
+              smooth={true}
+              duration={500}
             >
-              Group Rooms
-            </GroupRoomButton>
+              <GroupRoomButton
+                className="classRoom"
+                name="classroom"
+                value="showGroupRoomComponent"
+                onClick={evt => this.onChangeDisplayGroupRoom(evt)}
+              >
+                Group Rooms
+              </GroupRoomButton>
+            </Link>
 
-            {showGroupRoomComponent
-              ? bookableRooms.map((room, index) => (
-                  <GroupRoomButton
-                    name={room}
-                    key={index}
-                    onClick={this.onChange}
-                  >
-                    {room}
-                  </GroupRoomButton>
-                ))
-              : null}
-
-            {showClassroomComponent
-              ? bookableClassRooms.map((room, index) => (
-                  <GroupRoomButton
-                    name={room}
-                    key={index}
-                    onClick={this.onChange}
-                  >
-                    {room}
-                  </GroupRoomButton>
-                ))
-              : null}
+            {/* ----  Mapping starts here ----*/}
+            <Element name="groupRooms" className="element">
+              {showGroupRoomComponent
+                ? bookableRooms.map((room, index) => (
+                    <GroupRoomButton
+                      name={room}
+                      key={index}
+                      onClick={this.onChange}
+                    >
+                      {room}
+                    </GroupRoomButton>
+                  ))
+                : null}
+            </Element>
+            <Element name="classrooms" className="element">
+              {showClassroomComponent
+                ? bookableClassRooms.map((room, index) => (
+                    <ClassroomButton
+                      name={room}
+                      key={index}
+                      onClick={this.onChange}
+                    >
+                      {room}
+                    </ClassroomButton>
+                  ))
+                : null}
+            </Element>
           </Div>
         ) : (
           <Div>
             {bookableRooms.map((room, index) => (
-              <GroupRoomButton name={room} key={index} onClick={this.onChange}>
-                {room}
-              </GroupRoomButton>
+              <Element name="timeslots" className="element">
+                <GroupRoomButton
+                  name={room}
+                  key={index}
+                  onClick={this.onChange}
+                >
+                  {room}
+                </GroupRoomButton>
+              </Element>
             ))}
           </Div>
         )}
