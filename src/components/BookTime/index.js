@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
+import { animateScroll as scroll } from "react-scroll";
 
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
@@ -158,11 +159,6 @@ class BookTimeBase extends Component {
     this.filterNames(inputValue);
   }
 
-  writeDesc(event) {
-    const inputValue = event.target.value;
-    this.setState({ desc: inputValue });
-  }
-
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
     if (inputValue.length === 0) {
@@ -203,6 +199,11 @@ class BookTimeBase extends Component {
     }
   };
 
+  writeDesc(event) {
+    const inputValue = event.target.value;
+    this.setState({ desc: inputValue });
+  }
+
   closeModule = () => {
     this.setState({
       showModal: false
@@ -226,7 +227,9 @@ class BookTimeBase extends Component {
         }
       });
   };
-
+  scrollToTop() {
+    scroll.scrollToTop();
+  }
   sendToDB = (event, authUser) => {
     if (Object.keys(this.state.reservedTime).length) {
       const newObj = Object.assign(
@@ -398,6 +401,7 @@ class BookTimeBase extends Component {
                 )}
               </Form>
             )}
+            <a onClick={this.scrollToTop}>To the top!</a>
           </React.Fragment>
         )}
       </AuthUserContext.Consumer>

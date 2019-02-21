@@ -68,6 +68,7 @@ class Firebase {
 
   events = () => this.db.ref("events");
 
+  event = uid => this.db.ref(`events/${uid}`);
   // *** EVENT DATE AND TIME API ***
 
   bookedEventDateTimes = () => this.db.ref("bookedEventDateTimes");
