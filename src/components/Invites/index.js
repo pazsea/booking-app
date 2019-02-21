@@ -128,16 +128,6 @@ class InvitesBase extends Component {
 
     delete userEventObjects[index];
     this.setState({ userEventObjects });
-
-    /*     const acceptArray = this.state.userEventObjects.findIndex(
-      x => x === currentEvent
-    );
-    if (acceptArray > -1) {
-      this.state.userEventObjects.splice(acceptArray, 1);
-    }
-    this.setState({
-      userEventObjects: acceptArray
-    }); */
   };
 
   //TO DO:
@@ -173,30 +163,6 @@ class InvitesBase extends Component {
     const { userEventObjects } = this.state;
     delete userEventObjects[index];
     this.setState({ userEventObjects });
-
-    /*     const declineArray = this.state.userEventObjects.findIndex(
-      x => x === index
-    );
-    if (declineArray > -1) {
-      this.state.userEventObjects.splice(declineArray, 1);
-    } */
-
-    /*     deleteInvited = key => {
-      const { isInvited, isInvitedUid } = this.state;
-      delete isInvited[key];
-      this.setState({ isInvited });
-      this.props.firebase
-        .users()
-        .orderByChild("username")
-        .equalTo(key)
-        .once("child_added", function (snapshot) {
-          const key = snapshot.key;
-          const indexKey = isInvitedUid.findIndex(x => x === key);
-          if (indexKey > -1) {
-            isInvitedUid.splice(indexKey, 1);
-          }
-        });
-    }; */
   };
 
   render() {

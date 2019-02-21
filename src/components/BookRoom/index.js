@@ -101,15 +101,6 @@ class BookRoomBase extends Component {
     }
   }
 
-  // onChangeDisplayRoom = () => {
-  //   this.setState(prevState => ({
-  //     showClassroomComponent: !prevState.showClassroomComponent
-  //   }));
-  //   this.setState(prevState => ({
-  //     showGroupRoomComponent: !prevState.showGroupRoomComponent
-  //   }));
-  // };
-
   closeTime = () => {
     this.setState(prevState => ({
       showTimeComponent: !prevState.showTimeComponent
