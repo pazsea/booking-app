@@ -155,18 +155,18 @@ class BookTimeBase extends Component {
 
   getValueInput(evt) {
     const inputValue = evt.target.value;
-    this.setState({ input: inputValue });
     this.filterNames(inputValue);
   }
 
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
+    const inputeValueUpper = inputValue.toUpperCase();
     if (inputValue.length === 0) {
       this.setState({ username: [] });
     } else {
       this.setState({
         username: mapeusernames.filter(usernames =>
-          usernames.includes(inputValue)
+          usernames.includes(inputeValueUpper)
         )
       });
     }
