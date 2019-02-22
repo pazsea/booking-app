@@ -174,7 +174,7 @@ class InvitesBase extends Component {
     const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
-      return <h3>You have no invites, looooser </h3>;
+      return <h3>You have no invites. </h3>;
     } else if (loading) {
       return (
         <div>
