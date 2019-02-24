@@ -57,7 +57,7 @@ class BookTimeBase extends Component {
     };
   }
 
-  componentDidMount(authUser) {
+  componentDidMount() {
     this.setState({ loading: true });
     this.props.firebase.users().on("value", snapshot => {
       const userObj = Object.values(snapshot.val());
@@ -91,13 +91,6 @@ class BookTimeBase extends Component {
       this.props.bookDate !== prevProps.bookDate
     ) {
       this.setState({ loading: true });
-      /*       this.props.firebase
-        .events()
-        .child(this.props.groupRoom)
-        .child(this.state.eventUid)
-        .set({
-          eventUid: this.state.eventUid
-        }); */
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
@@ -107,7 +100,6 @@ class BookTimeBase extends Component {
           const bookedObject = snapshot.val();
           if (bookedObject) {
             const bookedList = bookedObject;
-            // convert booked list from snapshot
             this.setState({ time: bookedList, loading: false });
             this.setState({ reservedTime: {} });
           } else {
@@ -155,18 +147,18 @@ class BookTimeBase extends Component {
 
   getValueInput(evt) {
     const inputValue = evt.target.value;
-    this.setState({ input: inputValue });
     this.filterNames(inputValue);
   }
 
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
+    const inputeValueUpper = inputValue.toUpperCase();
     if (inputValue.length === 0) {
       this.setState({ username: [] });
     } else {
       this.setState({
         username: mapeusernames.filter(usernames =>
-          usernames.includes(inputValue)
+          usernames.includes(inputeValueUpper)
         )
       });
     }

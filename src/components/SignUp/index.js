@@ -42,6 +42,8 @@ class SignUpFormBase extends Component {
       isTeacher
     } = this.state;
 
+    const usernameUpper = username.toUpperCase();
+
     const roles = [];
 
     if (isAdmin) {
@@ -62,7 +64,7 @@ class SignUpFormBase extends Component {
         this.props.firebase
           .user(authUser.user.uid)
           .set({
-            username,
+            username: usernameUpper,
             email,
             roles,
             hostedEvents: {}
