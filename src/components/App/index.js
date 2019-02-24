@@ -25,7 +25,6 @@ class App extends Component {
   };
 
   navToggle = () => {
-    console.log("togglar Navbaren");
     this.setState(prevState => {
       return {
         isOpen: !prevState.isOpen

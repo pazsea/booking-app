@@ -20,6 +20,8 @@ const INITIAL_STATE = {
   passwordOne: "",
   passwordTwo: "",
   isAdmin: false,
+  isTeacher: false,
+  isStudent: false,
   error: null
 };
 
@@ -31,12 +33,28 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne, isAdmin } = this.state;
+    const {
+      username,
+      email,
+      passwordOne,
+      isAdmin,
+      isStudent,
+      isTeacher
+    } = this.state;
+
+    const usernameUpper = username.toUpperCase();
 
     const roles = [];
 
     if (isAdmin) {
       roles.push(ROLES.ADMIN);
+    }
+
+    if (isStudent) {
+      roles.push(ROLES.STUDENT);
+    }
+    if (isTeacher) {
+      roles.push(ROLES.TEACHER);
     }
 
     this.props.firebase
@@ -46,7 +64,7 @@ class SignUpFormBase extends Component {
         this.props.firebase
           .user(authUser.user.uid)
           .set({
-            username,
+            username: usernameUpper,
             email,
             roles,
             hostedEvents: {}
@@ -80,6 +98,8 @@ class SignUpFormBase extends Component {
       passwordOne,
       passwordTwo,
       isAdmin,
+      isTeacher,
+      isStudent,
       error
     } = this.state;
 
@@ -119,6 +139,7 @@ class SignUpFormBase extends Component {
           type="password"
           placeholder="Confirm Password"
         />
+
         <label>
           Admin:
           <input
@@ -128,6 +149,25 @@ class SignUpFormBase extends Component {
             onChange={this.onChangeCheckbox}
           />
         </label>
+        <label>
+          Student:
+          <input
+            name="isStudent"
+            type="checkbox"
+            checked={isStudent}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+        <label>
+          Teacher:
+          <input
+            name="isTeacher"
+            type="checkbox"
+            checked={isTeacher}
+            onChange={this.onChangeCheckbox}
+          />
+        </label>
+
         <button disabled={isInvalid} type="submit">
           Sign Up
         </button>

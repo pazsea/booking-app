@@ -8,7 +8,7 @@ export const Form = styled.form`
     font-size: 3em;
     p {
       font-size: 0.5em;
-      color: red;
+      color: goldenrod;
     }
   }
   h4 {

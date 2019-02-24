@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { Link, Element } from "react-scroll";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
-import { Div } from "./styles";
+import { Div, GroupRoomButton, ClassroomButton } from "./styles";
 import { AuthUserContext } from "../Session";
 import DayPickerInput from "react-day-picker/DayPickerInput";
+import * as ROLES from "../../constants/roles";
 import "../../daypick.css";
 
 import BookTime from "../BookTime";
@@ -18,13 +20,32 @@ const BookRoom = () => (
     </AuthUserContext.Consumer>
   </Div>
 );
-
+const bookableClassRooms = [
+  "Classroom 510",
+  "Classroom 511",
+  "Classroom 604",
+  "Classroom 609",
+  "Classroom 610",
+  "Classroom 611",
+  "Classroom 612",
+  "Classroom 613",
+  "Classroom 614"
+];
+const bookableRooms = [
+  "Group Room 605",
+  "Group Room 606",
+  "Group Room 607",
+  "Group Room 608",
+  "Corner Room"
+];
 class BookRoomBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showComponent: false,
+      showTimeComponent: false,
+      showClassroomComponent: false,
+      showGroupRoomComponent: false,
       bookDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
@@ -52,22 +73,60 @@ class BookRoomBase extends Component {
     });
   }
 
+  onChangeDisplayClassroom(evt) {
+    const { showGroupRoomComponent } = this.state;
+    const showKey = evt.target.value;
+    this.setState(prevState => ({
+      [showKey]: !prevState[showKey]
+    }));
+
+    if (showGroupRoomComponent) {
+      this.setState(prevState => ({
+        showGroupRoomComponent: !prevState.showGroupRoomComponent
+      }));
+    }
+  }
+
+  onChangeDisplayGroupRoom(evt) {
+    const { showClassroomComponent } = this.state;
+    const showKey = evt.target.value;
+    this.setState(prevState => ({
+      [showKey]: !prevState[showKey]
+    }));
+
+    if (showClassroomComponent) {
+      this.setState(prevState => ({
+        showClassroomComponent: !prevState.showClassroomComponent
+      }));
+    }
+  }
+
   closeTime = () => {
     this.setState(prevState => ({
-      showComponent: !prevState.showComponent
+      showTimeComponent: !prevState.showTimeComponent
     }));
   };
 
   onChange = event => {
     this.setState({
-      groupRoom: event.target.name
+      groupRoom: event.target.name,
+      showTimeComponent: true
     });
     this.setState({
-      showComponent: true
+      showClassroomComponent: false,
+      showGroupRoomComponent: false
     });
   };
 
+  // TO DO:
+  // Gör om de två knapparna till "Group Room" och "Classroom" med en onClick function som ändrar state .tex.
+  // Classroom: true om man trycker på det samt Group Room: true  om man trycker på det.
+  // Två knappar som är två komponenter.
+  // Sedan passera props till komponenten.
+
   render() {
+    const { authUser } = this.props;
+    const { showGroupRoomComponent, showClassroomComponent } = this.state;
     return (
       <React.Fragment>
         <p>Please pick a date (press the current date):</p>
@@ -77,23 +136,88 @@ class BookRoomBase extends Component {
           value={this.state.bookDate}
           onDayChange={day => this.handleChange(day)}
         />
+        {authUser.roles.includes(ROLES.TEACHER) ||
+        authUser.roles.includes(ROLES.ADMIN) ? (
+          <Div>
+            <Link
+              activeClass="active"
+              className="test1"
+              to="classrooms"
+              spy={true}
+              smooth={true}
+              duration={500}
+            >
+              <ClassroomButton
+                className="classRoom"
+                name="classroom"
+                value="showClassroomComponent"
+                onClick={evt => this.onChangeDisplayClassroom(evt)}
+              >
+                Classrooms
+              </ClassroomButton>
+            </Link>
+            <Link
+              activeClass="active"
+              to="groupRooms"
+              spy={true}
+              smooth={true}
+              duration={500}
+            >
+              <GroupRoomButton
+                className="classRoom"
+                name="classroom"
+                value="showGroupRoomComponent"
+                onClick={evt => this.onChangeDisplayGroupRoom(evt)}
+              >
+                Group Rooms
+              </GroupRoomButton>
+            </Link>
 
-        <button
-          className="roomButton"
-          name="Group Room 1"
-          onClick={this.onChange}
-        >
-          Group Room 1
-        </button>
+            {/* ----  Mapping starts here ----*/}
+            <Element name="groupRooms" className="element">
+              {showGroupRoomComponent
+                ? bookableRooms.map((room, index) => (
+                    <GroupRoomButton
+                      name={room}
+                      key={index}
+                      onClick={this.onChange}
+                    >
+                      {room}
+                    </GroupRoomButton>
+                  ))
+                : null}
+            </Element>
+            <Element name="classrooms" className="element">
+              {showClassroomComponent
+                ? bookableClassRooms.map((room, index) => (
+                    <ClassroomButton
+                      name={room}
+                      key={index}
+                      onClick={this.onChange}
+                    >
+                      {room}
+                    </ClassroomButton>
+                  ))
+                : null}
+            </Element>
+          </Div>
+        ) : (
+          <Div>
+            {bookableRooms.map((room, index) => (
+              <Element name="timeslots" className="element">
+                <GroupRoomButton
+                  name={room}
+                  key={index}
+                  onClick={this.onChange}
+                >
+                  {room}
+                </GroupRoomButton>
+              </Element>
+            ))}
+          </Div>
+        )}
 
-        <button
-          className="roomButton"
-          name="Group Room 2"
-          onClick={this.onChange}
-        >
-          Group Room 2
-        </button>
-        {this.state.showComponent ? (
+        {this.state.showTimeComponent ? (
           <BookTime {...this.state} close={this.closeTime} />
         ) : null}
       </React.Fragment>
@@ -101,9 +225,18 @@ class BookRoomBase extends Component {
   }
 }
 
+export const GroupRoomComponent = ({}) => (
+  <Div>
+    {bookableRooms.map((room, index) => (
+      <GroupRoomButton name={room} key={index} onClick={this.onChange}>
+        {room}
+      </GroupRoomButton>
+    ))}
+  </Div>
+);
+
 const BookRoomForm = compose(
   withRouter,
   withFirebase
 )(BookRoomBase);
-
 export default BookRoom;
