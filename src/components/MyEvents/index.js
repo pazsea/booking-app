@@ -29,11 +29,7 @@ class MyEventsBase extends Component {
       .child("hostedEvents")
       .on("value", snapshot => {
         const acceptedVal = snapshot.val();
-<<<<<<< HEAD
-        if (acceptedVal == null) {
-=======
         if (acceptedVal === null) {
->>>>>>> master
           this.setState({
             noEvents: true
           });
