@@ -14,6 +14,10 @@ export const Div = styled.div`
     color: white;
   }
 
+  li {
+    width: 100%;
+  }
+
   input:first-child {
     font-size: 20px;
     width: 100%;
@@ -27,6 +31,7 @@ export const Div = styled.div`
 `;
 
 export const GroupRoomButton = styled.button`
+  width: 100%;
   color: white;
   padding: 0.7em 1.7em;
   margin-top: 5%;
@@ -40,4 +45,26 @@ export const GroupRoomButton = styled.button`
   font-size: 1.5em;
   background-color: #c72b2b;
   position: relative;
+  :focus {
+    outline: 0;
+  }
+`;
+export const ClassroomButton = styled.button`
+  width: 100%;
+  color: white;
+  padding: 0.7em 1.7em;
+  margin-top: 5%;
+  border: none;
+  border-radius: 0.4em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  background-color: yellowgreen;
+  position: relative;
+  :focus {
+    outline: 0;
+  }
 `;
