@@ -248,6 +248,14 @@ class BookTimeBase extends Component {
           .update({ [eventKey]: true })
       );
 
+      /*       mapInviteUid.map(inviteUid =>
+        this.props.firebase
+          .events()
+          .child(eventKey)
+          .child("isInvitedUid")
+          .update({ [inviteUid]: true })
+      ); */
+
       this.props.firebase
         .events()
         .child(eventKey)

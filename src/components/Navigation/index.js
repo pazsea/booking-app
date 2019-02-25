@@ -35,10 +35,16 @@ class NavigationAuthBase extends Component {
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
       .on("value", snapshot => {
-        const total = Object.keys(snapshot.val()).length;
-        this.setState({
-          totalInvites: total
-        });
+        if (snapshot.val() !== null) {
+          const total = Object.keys(snapshot.val()).length;
+          this.setState({
+            totalInvites: total
+          });
+        } else {
+          this.setState({
+            totalInvites: 0
+          });
+        }
       });
   }
 
