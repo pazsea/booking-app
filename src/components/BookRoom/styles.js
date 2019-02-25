@@ -8,10 +8,10 @@ export const Div = styled.div`
   font-family: "Montserrat", sans-serif;
 
   h1 {
-    color: white;
+    color: black;
   }
   p {
-    color: white;
+    color: black;
   }
 
   li {
@@ -43,7 +43,7 @@ export const GroupRoomButton = styled.button`
   font-weight: 400;
   text-transform: uppercase;
   font-size: 1.5em;
-  background-color: #c72b2b;
+  background-color: #fdc8c8;
   position: relative;
   :focus {
     outline: 0;
@@ -62,7 +62,7 @@ export const ClassroomButton = styled.button`
   font-weight: 400;
   text-transform: uppercase;
   font-size: 1.5em;
-  background-color: yellowgreen;
+  background-color: #fdc8c8;
   position: relative;
   :focus {
     outline: 0;

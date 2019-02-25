@@ -28,7 +28,7 @@ export const Nav = styled.nav`
   }
   li {
     margin: 5px 5px;
-    background: #e9b522;
+    background: #8dd7d7;
     border-color: transparent;
     color: #fff;
     cursor: pointer;

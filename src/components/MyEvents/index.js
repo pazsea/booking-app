@@ -83,7 +83,7 @@ class MyEventsBase extends Component {
               <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
 
               <ul>
-                <li>Time:</li>
+                <li>Time: </li>
 
                 {evt.time ? (
                   Object.keys(evt.time).map((key, index) => (
@@ -94,7 +94,7 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Is invited:</li>
+                <li>Is invited: </li>
                 {evt.isInvited ? (
                   Object.keys(evt.isInvited).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -104,7 +104,7 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has accepted:</li>
+                <li>Has accepted: </li>
                 {evt.hasAccepted ? (
                   Object.keys(evt.hasAccepted).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -114,7 +114,7 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has declined:</li>
+                <li>Has declined: </li>
                 {evt.hasDeclined ? (
                   Object.keys(evt.hasDeclined).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
