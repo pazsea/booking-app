@@ -5,10 +5,10 @@ export const Nav = styled.nav`
   margin: 0;
   padding: 0;
   width: 100%;
-  max-height: ${props => ( props.stateNav ? "0px" : "500px" ) };
+  max-height: ${props => (props.stateNav ? "0px" : "500px")};
   overflow: auto;
   transition: max-height 0.5s ease-out;
-  background: #2f4c6e;
+  background: rgb(255, 255, 255);
   justify-content: center;
   overflow-y: hidden;
 
@@ -28,7 +28,7 @@ export const Nav = styled.nav`
   }
   li {
     margin: 5px 5px;
-    background: #e9b522;
+    background: #8dd7d7;
     border-color: transparent;
     color: #fff;
     cursor: pointer;
@@ -37,7 +37,7 @@ export const Nav = styled.nav`
     text-transform: uppercase;
     height: fit-content;
     .active {
-      background-color: #8E8147;
+      background-color: #8e8147;
       color: white;
     }
     :hover {
@@ -53,5 +53,7 @@ export const Nav = styled.nav`
   }
   ul li a {
     color: white;
+    text-decoration: none;
+    display: block;
   }
 `;
