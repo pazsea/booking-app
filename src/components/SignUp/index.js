@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { compose } from "recompose";
-
+import Select from "react-select";
 import { withFirebase } from "../Firebase";
 import * as ROUTES from "../../constants/routes";
-import * as ROLES from "../../constants/roles";
+/* import * as ROLES from "../../constants/roles"; */
 import { Div } from "./styles";
+
+//TO DO
 
 const SignUpPage = () => (
   <Div>
@@ -19,11 +21,25 @@ const INITIAL_STATE = {
   email: "",
   passwordOne: "",
   passwordTwo: "",
-  isAdmin: false,
-  isTeacher: false,
-  isStudent: false,
-  error: null
+  error: null,
+  selectedClassOption: null,
+  selectedRoleOption: null,
+  role: null,
+  classes: null
 };
+
+const roleOptions = [
+  { value: "none", label: "None" },
+  { value: "ADMIN", label: "ADMIN" },
+  { value: "STUDENT", label: "STUDENT" },
+  { value: "TEACHER", label: "TEACHER" }
+];
+
+const classOptions = [
+  { value: "none", label: "None" },
+  { value: "FE18", label: "FE18" },
+  { value: "FE17", label: "FE17" }
+];
 
 class SignUpFormBase extends Component {
   constructor(props) {
@@ -32,30 +48,29 @@ class SignUpFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
+  handleChangeRole = selectedRoleOption => {
+    this.setState({ selectedRoleOption });
+    const selectRole = Object.values(selectedRoleOption).slice(1);
+    this.setState({
+      role: selectRole
+    });
+    console.log(this.state.role);
+  };
+
+  handleChangeClass = selectedClassOption => {
+    this.setState({ selectedClassOption });
+    const selectClass = Object.values(selectedClassOption).slice(1);
+    this.setState({
+      classes: selectClass
+    });
+
+    console.log(selectClass);
+  };
+
   onSubmit = event => {
-    const {
-      username,
-      email,
-      passwordOne,
-      isAdmin,
-      isStudent,
-      isTeacher
-    } = this.state;
+    const { username, email, passwordOne, classes, role } = this.state;
 
     const usernameUpper = username.toUpperCase();
-
-    const roles = [];
-
-    if (isAdmin) {
-      roles.push(ROLES.ADMIN);
-    }
-
-    if (isStudent) {
-      roles.push(ROLES.STUDENT);
-    }
-    if (isTeacher) {
-      roles.push(ROLES.TEACHER);
-    }
 
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -66,8 +81,9 @@ class SignUpFormBase extends Component {
           .set({
             username: usernameUpper,
             email,
-            roles,
-            hostedEvents: {}
+            hostedEvents: {},
+            classes,
+            role
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
@@ -92,22 +108,15 @@ class SignUpFormBase extends Component {
   };
 
   render() {
-    const {
-      username,
-      email,
-      passwordOne,
-      passwordTwo,
-      isAdmin,
-      isTeacher,
-      isStudent,
-      error
-    } = this.state;
+    const { username, email, passwordOne, passwordTwo, error } = this.state;
 
     const isInvalid =
       passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
       username === "";
+
+    const { selectedRoleOption, selectedClassOption } = this.state;
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -140,33 +149,19 @@ class SignUpFormBase extends Component {
           placeholder="Confirm Password"
         />
 
-        <label>
-          Admin:
-          <input
-            name="isAdmin"
-            type="checkbox"
-            checked={isAdmin}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-        <label>
-          Student:
-          <input
-            name="isStudent"
-            type="checkbox"
-            checked={isStudent}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
-        <label>
-          Teacher:
-          <input
-            name="isTeacher"
-            type="checkbox"
-            checked={isTeacher}
-            onChange={this.onChangeCheckbox}
-          />
-        </label>
+        <Select
+          value={selectedRoleOption}
+          onChange={this.handleChangeRole}
+          options={roleOptions}
+          placeholder="Select Role..."
+        />
+
+        <Select
+          value={selectedClassOption}
+          onChange={this.handleChangeClass}
+          options={classOptions}
+          placeholder="Select Class..."
+        />
 
         <button disabled={isInvalid} type="submit">
           Sign Up
