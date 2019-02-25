@@ -326,7 +326,7 @@ class BookTimeBase extends Component {
                 {times
                   .filter(time => !this.state.time[time])
                   .map(time => (
-                    <TimeSlots
+                    <TimeSlot
                       key={time}
                       name={time}
                       time={this.state.time}
@@ -415,7 +415,7 @@ class BookTimeBase extends Component {
   }
 }
 
-export const TimeSlots = ({ name, onClickTimeSlot, time, chosenTimeSlots }) => {
+export const TimeSlot = ({ name, onClickTimeSlot, time, chosenTimeSlots }) => {
   console.log(chosenTimeSlots, name, chosenTimeSlots[name]);
 
   return (
