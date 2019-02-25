@@ -3,7 +3,7 @@ import { Link, Element } from "react-scroll";
 import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import { Div, GroupRoomButton, ClassroomButton } from "./styles";
-import { AuthUserContext } from "../Session";
+import { AuthUserContext, withAuthorization } from "../Session";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import * as ROLES from "../../constants/roles";
 import "../../daypick.css";
@@ -235,8 +235,11 @@ export const GroupRoomComponent = ({}) => (
   </Div>
 );
 
+const condition = authUser => authUser;
+
 const BookRoomForm = compose(
   withRouter,
+  withAuthorization(condition),
   withFirebase
 )(BookRoomBase);
 export default BookRoom;

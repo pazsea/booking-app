@@ -24,7 +24,6 @@ class InvitesBase extends Component {
   }
 
   componentDidMount() {
-    console.log("Component did Mount");
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
@@ -34,9 +33,7 @@ class InvitesBase extends Component {
           this.setState({
             noInvites: true
           });
-          console.log("Hittade ingen snapshot i userns InvitedEvents");
         } else {
-          console.log("Direkt efter else");
           this.setState({
             userEventObjects: [],
             noInvites: false
@@ -45,6 +42,11 @@ class InvitesBase extends Component {
           const snapKeys = Object.keys(snap);
           const test = snapKeys.map(key => {
             this.props.firebase.event(key).on("value", snapshot => {
+              /*               if (snapshot.val() === null) {
+                this.props.firebase
+                  .user(this.props.authUser.uid)
+                  .child("invitedToEvents")
+              } */
               const eventObject = snapshot.val();
               this.setState({
                 userEventObjects: [
@@ -52,7 +54,6 @@ class InvitesBase extends Component {
                   { ...eventObject, uid: key }
                 ]
               });
-              console.log("User Event object ska ha fått rätt events ");
             });
           });
         }
@@ -60,7 +61,6 @@ class InvitesBase extends Component {
           loading: false
         });
       });
-    console.log("component did mount ENDS");
   }
 
   componentWillUnmount() {
