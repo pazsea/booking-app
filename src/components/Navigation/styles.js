@@ -36,8 +36,8 @@ export const Nav = styled.nav`
     padding: 12px;
     text-transform: uppercase;
     height: fit-content;
-    :active {
-      background-color: #e9b52282;
+    .active {
+      background-color: #8e8147;
       color: white;
     }
     :hover {
