@@ -136,6 +136,7 @@ class BookTimeBase extends Component {
         }
       }); */
   }
+
   onChangeCheckbox = name => {
     this.setState(prevState => ({
       reservedTime: {
@@ -219,10 +220,12 @@ class BookTimeBase extends Component {
         }
       });
   };
-  scrollToTop() {
+  
+  scrollToTop () {
     scroll.scrollToTop();
   }
-  sendToDB = (event, authUser) => {
+  
+  sendToDB = ( event, authUser ) => {
     if (Object.keys(this.state.reservedTime).length) {
       const newObj = Object.assign(
         {},
@@ -422,6 +425,57 @@ export const MyInput = ({ name, time, onChangeCheckbox }) => (
     </StyledLabel>
   </React.Fragment>
 );
+
+
+// ===========================================================================================
+onClickTimeSlotBtn( time) {
+  
+}
+
+export const timeSlotBtn = ( { time, } ) => (
+  
+  <button className="" chosen={ false }
+    onClick={ () => onClickTimeSlotBtn( time ) }>
+    { time }
+  </button>
+);
+
+// ===========================================================================
+// https://react-bootstrap.netlify.com/components/buttons/#buttons
+
+class ToggleButtonGroupControlled extends Component {
+  constructor( props, context ) {
+    super( props, context );
+
+    this.handleChange = this.handleChange.bind( this );
+
+    this.state = {
+      value: [],
+    };
+  }
+
+  handleChange ( value, event ) {
+    this.setState( { value } );
+  }
+
+  render () {
+    return (
+      <ToggleButtonGroup
+        type="checkbox"
+        value={ this.state.value }
+        onChange={ this.onClickTimeSlotBtn }
+      >
+        <ToggleButton value={ times[ i ] }>
+          { time[ i ] }
+        </ToggleButton>
+      </ToggleButtonGroup>
+    );
+  }
+}
+
+render( <ToggleButtonGroupControlled /> );
+
+// ===================================================================================
 
 const condition = authUser => !!authUser;
 

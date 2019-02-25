@@ -242,4 +242,5 @@ const BookRoomForm = compose(
   withAuthorization(condition),
   withFirebase
 )(BookRoomBase);
+
 export default BookRoom;
