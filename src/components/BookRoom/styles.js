@@ -8,10 +8,10 @@ export const Div = styled.div`
   font-family: "Montserrat", sans-serif;
 
   h1 {
-    color: black;
+    color: #f1f1f1;
   }
   p {
-    color: black;
+    color: #f1f1f1;
   }
 
   li {

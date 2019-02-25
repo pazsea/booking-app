@@ -1,9 +1,11 @@
 import React from "react";
 
+import { Div } from "./styles";
+
 const UpcomingEvents = () => (
-  <div>
+  <Div>
     <h1>UpcomingEvents</h1>
-  </div>
+  </Div>
 );
 
 export default UpcomingEvents;
