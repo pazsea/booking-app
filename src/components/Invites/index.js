@@ -103,7 +103,7 @@ class InvitesBase extends Component {
     this.props.firebase
       .users()
       .child(this.props.authUser.uid)
-      .child("acceptedToEvent")
+      .child("acceptedToEvents")
       .update({
         [currentEvent]: true
       });
@@ -137,7 +137,6 @@ class InvitesBase extends Component {
   //*REMOVE* users/authuser.uid/invitedToEvents => currentEvent = null
 
   declineInvite = (event, index) => {
-    console.log("decline reached" + event.target);
     const currentEvent = event.target.value;
     this.props.firebase
       .events()
@@ -153,6 +152,15 @@ class InvitesBase extends Component {
       .update({
         [this.props.authUser.username]: null
       });
+
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("isInvitedUid")
+      .update({
+        [this.props.authUser.uid]: null
+      });
+
     this.props.firebase
       .users()
       .child(this.props.authUser.uid)
