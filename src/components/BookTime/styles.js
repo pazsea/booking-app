@@ -35,7 +35,7 @@ export const Form = styled.form`
   }
 `;
 
-export const StyledLabel = styled.label`
+export const TimeSlotBtn = styled.div`
   display: inline-block;
   width: 10em;
   padding: 0.5em;
@@ -45,19 +45,17 @@ export const StyledLabel = styled.label`
   color: white;
   border-radius: 5px;
 
-  input:first-child {
-    display: none;
-  }
-
-  input[type="checkbox"] label:before {
-    color: white;
-  }
-  input[type="checkbox"]:checked + label:after {
-    color: blue;
-  }
-
   background: #c8c8fd;
   border: solid 2px white;
+
+  :hover {
+    background: #a5a5f8;
+    cursor: pointer;
+  }
+
+  &.chosenTimeSlot {
+    background: #8787ff;
+  }
 `;
 
 export const CustomButton2 = styled.button`
