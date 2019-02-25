@@ -1,23 +1,19 @@
 import styled from "styled-components";
 
 export const Nav = styled.nav`
-  position: relative;
   margin: 0;
   padding: 0;
   width: 100%;
-  max-height: ${props => (props.stateNav ? "0px" : "500px")};
-  overflow: auto;
-  transition: max-height 0.5s ease-out;
-  background: rgb(47, 76, 110);
-  justify-content: center;
+  max-height: ${props =>
+    props.stateNav ? "0px" : { height: "calc(100vh - 76px)" }};
+  background-color: #121c24;
   overflow-y: hidden;
+  z-index: 100;
+  position: absolute;
 
   ul {
-    min-width: 100%;
     width: fit-content;
-    justify-content: center;
     padding: 5px;
-    display: flex;
     list-style: none;
 
     @media screen and (max-width: 1024px) {
