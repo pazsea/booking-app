@@ -54,5 +54,6 @@ export const Nav = styled.nav`
   ul li a {
     color: white;
     text-decoration: none;
+    display: block;
   }
 `;
