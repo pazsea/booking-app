@@ -5,10 +5,10 @@ export const Nav = styled.nav`
   margin: 0;
   padding: 0;
   width: 100%;
-  max-height: ${props => (props.stateNav ? "0px" : "500px")};
+  max-height: ${props => ( props.stateNav ? "0px" : "500px" ) };
   overflow: auto;
   transition: max-height 0.5s ease-out;
-  background: rgb(47, 76, 110);
+  background: #2f4c6e;
   justify-content: center;
   overflow-y: hidden;
 
@@ -36,8 +36,8 @@ export const Nav = styled.nav`
     padding: 12px;
     text-transform: uppercase;
     height: fit-content;
-    :active {
-      background-color: #e9b52282;
+    .active {
+      background-color: #8E8147;
       color: white;
     }
     :hover {
