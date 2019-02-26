@@ -4,8 +4,6 @@ import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 
-import { Div } from "./styles";
-
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
     {authUser => <UpcomingComplete authUser={authUser} />}
