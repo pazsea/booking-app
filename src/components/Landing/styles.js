@@ -11,9 +11,9 @@ export const Div = styled.div`
   height: 100vh;
   h1 {
     text-align: center;
-    border: 2px solid gold;
-    background: rgb(47, 76, 110);
-    color: gold;
+    border: 2px solid #cfecef;
+    background: rgba(30, 128, 121, 0.6);
+    color: #cfecef;
     margin: 10% auto;
     width: 50%;
     height: fit-content;
