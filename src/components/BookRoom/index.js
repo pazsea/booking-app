@@ -179,7 +179,7 @@ class BookRoomBase extends Component {
                 ? bookableRooms.map((room, index) => (
                     <GroupRoomButton
                       name={room}
-                      key={index}
+                      key={room + index}
                       onClick={this.onChange}
                     >
                       {room}
