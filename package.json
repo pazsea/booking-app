@@ -5,6 +5,7 @@
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.4.5",
     "firebase": "^5.8.0",
+    "leaflet": "^1.4.0",
     "prop-types": "^15.7.2",
     "react": "^16.7.0",
     "react-alert": "^5.1.0",
