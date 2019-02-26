@@ -52,7 +52,7 @@ class SignUpFormBase extends Component {
     this.setState({ selectedRoleOption });
     const selectRole = Object.values(selectedRoleOption).slice(1);
     this.setState({
-      role: selectRole
+      roles: selectRole
     });
     console.log(this.state.role);
   };
@@ -68,7 +68,7 @@ class SignUpFormBase extends Component {
   };
 
   onSubmit = event => {
-    const { username, email, passwordOne, classes, role } = this.state;
+    const { username, email, passwordOne, classes, roles } = this.state;
     const classesValue = Object.values(classes);
 
     const usernameUpper = username.toUpperCase();
@@ -84,7 +84,7 @@ class SignUpFormBase extends Component {
             email,
             hostedEvents: {},
             [classesValue]: true,
-            role
+            roles
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
