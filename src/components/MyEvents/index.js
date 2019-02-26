@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { InviteDiv } from "./styles";
+import { InviteDiv, MyEventsButton, MyEventsDeleteButton } from "./styles";
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -239,15 +239,15 @@ class MyEventsBase extends Component {
                 key={"Description event: " + evt.eventUid}
                 readOnly
               />
-              <button key={Math.random()}>Chatt?</button>
-              <button
+              <MyEventsButton key={Math.random()}>Chatt?</MyEventsButton>
+              <MyEventsDeleteButton
                 key={"Delete event" + evt.eventUid}
                 value={evt.eventUid}
                 index={evt.index}
                 onClick={event => this.deleteEvent(event, index)}
               >
                 Delete event
-              </button>
+              </MyEventsDeleteButton>
             </InviteDiv>
           ))}
         </section>

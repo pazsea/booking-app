@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
+import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
 
 const Invites = () => (
   <AuthUserContext.Consumer>
@@ -259,22 +260,22 @@ class InvitesBase extends Component {
                   key={"Description event: " + eventUid}
                   readOnly
                 />
-                <button
+                <MyEventsButton
                   value={eventUid}
                   key={"Button accept: " + eventUid}
                   index={evt.index}
                   onClick={event => this.acceptInvite(event, index)}
                 >
                   Accept
-                </button>
-                <button
+                </MyEventsButton>
+                <MyEventsDeleteButton
                   value={eventUid}
                   key={"Button decline: " + eventUid}
                   index={evt.index}
                   onClick={event => this.declineInvite(event, index)}
                 >
                   Decline
-                </button>
+                </MyEventsDeleteButton>
               </InviteDiv>
             )
           )}
