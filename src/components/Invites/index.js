@@ -64,8 +64,8 @@ class InvitesBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
-    this.props.firebase.events().off();
+    this.props.firebase.user().off();
+    this.props.firebase.event().off();
   }
 
   //TO DO:

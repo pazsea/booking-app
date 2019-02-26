@@ -60,11 +60,19 @@ class BookTimeBase extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     this.props.firebase.users().on("value", snapshot => {
+      console.log(Object.keys(snapshot.val()));
+
+      /*       const map1 = userObj.map(function (userO) {
+        return userO.username;
+      }); */
+      /*       this.setState({ mapUsernames: map1, loading: false }); */
+      /*     this.setState({ loading: true });
+    this.props.firebase.users().on("value", snapshot => {
       const userObj = Object.values(snapshot.val());
       const map1 = userObj.map(function(userO) {
         return userO.username;
       });
-      this.setState({ mapeusernames: map1, loading: false });
+      this.setState({ mapUsernames: map1, loading: false }); */
     });
 
     this.props.firebase
@@ -152,13 +160,13 @@ class BookTimeBase extends Component {
   }
 
   filterNames(inputValue) {
-    const { mapeusernames } = this.state;
+    const { mapUsernames } = this.state;
     const inputeValueUpper = inputValue.toUpperCase();
     if (inputValue.length === 0) {
       this.setState({ username: [] });
     } else {
       this.setState({
-        username: mapeusernames.filter(usernames =>
+        username: mapUsernames.filter(usernames =>
           usernames.includes(inputeValueUpper)
         )
       });
@@ -379,6 +387,7 @@ class BookTimeBase extends Component {
                   onChange={event => this.writeDesc(event)}
                 />
                 <br />
+
                 <input
                   className="sendButton"
                   type="submit"
@@ -415,8 +424,6 @@ class BookTimeBase extends Component {
 }
 
 export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
-  console.log(chosenTimeSlots, name, chosenTimeSlots[name]);
-
   return (
     <React.Fragment>
       <TimeSlotBtn

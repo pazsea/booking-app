@@ -42,14 +42,15 @@ class MyEventsBase extends Component {
           });
         } else {
           this.setState({
-            myEvents: []
+            myEvents: [],
+            noEvents: false
           });
           const acceptedKeys = Object.keys(acceptedVal);
           const test = acceptedKeys.map(key => {
             this.props.firebase
               .events()
               .child(key)
-              .on("value", snapshot => {
+              .once("value", snapshot => {
                 const snap = snapshot.val();
                 this.setState({
                   myEvents: [...this.state.myEvents, snap]
