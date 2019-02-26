@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Nav } from "./styles";
 import SignOutButton from "../SignOut";
@@ -9,79 +9,79 @@ import { AuthUserContext } from "../Session";
 import * as ROLES from "../../constants/roles";
 
 const Navigation = props => (
-  <Nav stateNav={ props.stateNav }>
+  <Nav stateNav={props.stateNav}>
     <AuthUserContext.Consumer>
-      { authUser =>
+      {authUser =>
         authUser ? (
-          <NavigationAuthComplete authUser={ authUser } />
+          <NavigationAuthComplete authUser={authUser} />
         ) : (
-            <NavigationNonAuth navToggle={ props.navToggle } />
-          )
+          <NavigationNonAuth navToggle={props.navToggle} />
+        )
       }
     </AuthUserContext.Consumer>
   </Nav>
 );
 
 class NavigationAuthBase extends Component {
-  constructor( props ) {
-    super( props );
+  constructor(props) {
+    super(props);
     this.state = {
       totalInvites: 0
     };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.firebase
-      .user( this.props.authUser.uid )
-      .child( "invitedToEvents" )
-      .on( "value", snapshot => {
-        if ( snapshot.val() !== null ) {
-          const total = Object.keys( snapshot.val() ).length;
-          this.setState( {
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .on("value", snapshot => {
+        if (snapshot.val() !== null) {
+          const total = Object.keys(snapshot.val()).length;
+          this.setState({
             totalInvites: total
-          } );
+          });
         } else {
-          this.setState( {
+          this.setState({
             totalInvites: 0
-          } );
+          });
         }
-      } );
+      });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.firebase
-      .user( this.props.authUser.uid )
-      .child( "invitedToEvents" )
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
       .off();
   }
 
-  render () {
+  render() {
     return (
       <React.Fragment>
-        <ul className="main-nav">
+        <ul>
           <li>
-            <NavLink to={ ROUTES.HOME }>Home</NavLink>
+            <Link to={ROUTES.HOME}>Home</Link>
           </li>
           <li>
-            <NavLink to={ ROUTES.UPCOMING_EVENTS }>Upcoming Events</NavLink>
+            <Link to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</Link>
           </li>
           <li>
-            <NavLink to={ ROUTES.INVITES }>Invites { this.state.totalInvites }</NavLink>
+            <Link to={ROUTES.INVITES}>Invites {this.state.totalInvites}</Link>
           </li>
           <li>
-            <NavLink to={ ROUTES.MY_EVENTS }>My Events</NavLink>
+            <Link to={ROUTES.MY_EVENTS}>My Events</Link>
           </li>
           <li>
-            <NavLink to={ ROUTES.BOOK_ROOM }>Book a room</NavLink>
+            <Link to={ROUTES.BOOK_ROOM}>Book a room</Link>
           </li>
           <li>
-            <NavLink to={ ROUTES.ACCOUNT }>Account</NavLink>
+            <Link to={ROUTES.ACCOUNT}>Account</Link>
           </li>
-          { this.props.authUser.roles.includes( ROLES.ADMIN ) && (
+          {this.props.authUser.roles.includes(ROLES.ADMIN) && (
             <li>
-              <NavLink to={ ROUTES.ADMIN }>Admin</NavLink>
+              <Link to={ROUTES.ADMIN}>Admin</Link>
             </li>
-          ) }
+          )}
           <li>
             <SignOutButton />
           </li>
@@ -93,17 +93,17 @@ class NavigationAuthBase extends Component {
 
 const NavigationNonAuth = props => (
   <React.Fragment>
-    <ul className="main-nav">
+    <ul>
       <li>
-        <NavLink exact to={ ROUTES.LANDING }>Landing</NavLink>
+        <Link to={ROUTES.LANDING}>Landing</Link>
       </li>
       <li>
-        <NavLink to={ ROUTES.SIGN_IN }>Sign In</NavLink>
+        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
       </li>
     </ul>
   </React.Fragment>
 );
 
-const NavigationAuthComplete = withFirebase( NavigationAuthBase );
+const NavigationAuthComplete = withFirebase(NavigationAuthBase);
 
 export default Navigation;

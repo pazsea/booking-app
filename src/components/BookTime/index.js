@@ -393,7 +393,7 @@ class BookTimeBase extends Component {
                     <section className="modal-main">
                       <AnimationDivConfirmed>
                         <CorrectionDiv>
-                          Event booked!<p>Thank you!</p>
+                          Event booked!
                           <i className="fas fa-check-circle fa-3x" />
                         </CorrectionDiv>
                       </AnimationDivConfirmed>
@@ -415,8 +415,6 @@ class BookTimeBase extends Component {
 }
 
 export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
-  console.log(chosenTimeSlots, name, chosenTimeSlots[name]);
-
   return (
     <React.Fragment>
       <TimeSlotBtn
