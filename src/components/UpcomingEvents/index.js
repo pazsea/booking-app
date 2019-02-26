@@ -102,7 +102,6 @@ class UpcomingBase extends Component {
                   value={eventUid}
                   key={"Button accept: " + eventUid}
                   index={evt.index}
-                  onClick={event => this.acceptInvite(event, index)}
                 >
                   Attend
                 </button>
