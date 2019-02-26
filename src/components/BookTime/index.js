@@ -1,4 +1,4 @@
-import React, { Component, ToggleButtonGroup, ToggleButton } from "react";
+import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
 
@@ -335,7 +335,6 @@ class BookTimeBase extends Component {
                     />
                   ))}
 
-                {/* <TimeSlotSelection time={this.state.time} /> */}
                 <label>
                   <br />
                   <h4>Invite user:</h4>
@@ -415,7 +414,7 @@ class BookTimeBase extends Component {
   }
 }
 
-export const TimeSlot = ({ name, onClickTimeSlot, time, chosenTimeSlots }) => {
+export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
   console.log(chosenTimeSlots, name, chosenTimeSlots[name]);
 
   return (
