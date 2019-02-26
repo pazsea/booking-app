@@ -415,8 +415,6 @@ class BookTimeBase extends Component {
 }
 
 export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
-  console.log(chosenTimeSlots, name, chosenTimeSlots[name]);
-
   return (
     <React.Fragment>
       <TimeSlotBtn
