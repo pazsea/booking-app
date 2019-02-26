@@ -69,6 +69,7 @@ class SignUpFormBase extends Component {
 
   onSubmit = event => {
     const { username, email, passwordOne, classes, role } = this.state;
+    const classesValue = Object.values(classes);
 
     const usernameUpper = username.toUpperCase();
 
@@ -82,7 +83,7 @@ class SignUpFormBase extends Component {
             username: usernameUpper,
             email,
             hostedEvents: {},
-            classes,
+            [classesValue]: true,
             role
           })
           .then(() => {
