@@ -14,12 +14,11 @@ export const Menu = styled.div`
   border-bottom: 2px solid #192530;
 `;
 
-export const MenuButton = styled.div`
+export const MenuItems = styled.div`
   position: relative;
-  display: flex;
-  width: 25%;
   height: 76px;
   margin: auto 0;
+  display: flex;
   padding-left: 10px;
   border-bottom: 2px solid #192530;
   transition: 0.2s;
@@ -34,5 +33,15 @@ export const MenuButton = styled.div`
       color: #3b95bc;
       cursor: pointer;
     }
+  }
+
+  h1 {
+    font-family: "Lobster", cursive;
+    font-size: 3.5rem;
+    margin: auto 0;
+    padding-left: 30px;
+    color: #f1f1f1;
+    text-shadow: 1px 1px 5px #111921;
+    border-bottom: none;
   }
 `;

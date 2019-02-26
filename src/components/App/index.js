@@ -17,7 +17,7 @@ import AdminPage from "../Admin";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
-import { Application, Menu, MenuButton } from "./styles";
+import { Application, Menu, MenuItems } from "./styles";
 
 class App extends Component {
   state = {
@@ -37,9 +37,10 @@ class App extends Component {
       <Application>
         <Router>
           <Menu>
-            <MenuButton>
+            <MenuItems>
               <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
-            </MenuButton>
+              <h1>Project Grex</h1>
+            </MenuItems>
             <Navigation stateNav={this.state.isOpen} />
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
