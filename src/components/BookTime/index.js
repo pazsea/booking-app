@@ -9,7 +9,7 @@ import {
   Form,
   CustomButton,
   CustomButton2,
-  StyledLabel,
+  TimeSlotBtn,
   LoadingDiv,
   AnimationDivConfirmed,
   CorrectionDiv
@@ -47,7 +47,7 @@ class BookTimeBase extends Component {
     this.state = {
       bookDate: this.props.bookDate,
       time: {},
-      reservedTime: {},
+      chosenTimeSlots: {},
       loading: false,
       username: [],
       isInvited: {},
@@ -78,7 +78,7 @@ class BookTimeBase extends Component {
           const bookedList = bookedObject;
           // convert booked list from snapshot
           this.setState({ time: bookedList });
-          this.setState({ reservedTime: {} });
+          this.setState({ chosenTimeSlots: {} });
         } else {
           this.setState({ time: {}, loading: false });
         }
@@ -101,7 +101,7 @@ class BookTimeBase extends Component {
           if (bookedObject) {
             const bookedList = bookedObject;
             this.setState({ time: bookedList, loading: false });
-            this.setState({ reservedTime: {} });
+            this.setState({ chosenTimeSlots: {} });
           } else {
             this.setState({ time: {}, loading: false });
           }
@@ -136,11 +136,12 @@ class BookTimeBase extends Component {
         }
       }); */
   }
-  onChangeCheckbox = name => {
+
+  onClickTimeSlot = name => {
     this.setState(prevState => ({
-      reservedTime: {
-        ...prevState.reservedTime,
-        [name]: !prevState.reservedTime[name]
+      chosenTimeSlots: {
+        ...prevState.chosenTimeSlots,
+        [name]: !prevState.chosenTimeSlots[name]
       }
     }));
   };
@@ -219,15 +220,17 @@ class BookTimeBase extends Component {
         }
       });
   };
+
   scrollToTop() {
     scroll.scrollToTop();
   }
+
   sendToDB = (event, authUser) => {
-    if (Object.keys(this.state.reservedTime).length) {
+    if (Object.keys(this.state.chosenTimeSlots).length) {
       const newObj = Object.assign(
         {},
         { ...this.state.time },
-        { ...this.state.reservedTime }
+        { ...this.state.chosenTimeSlots }
       );
 
       this.props.firebase
@@ -248,13 +251,13 @@ class BookTimeBase extends Component {
           .update({ [eventKey]: true })
       );
 
-      /*       mapInviteUid.map(inviteUid =>
+      mapInviteUid.map(inviteUid =>
         this.props.firebase
           .events()
           .child(eventKey)
           .child("isInvitedUid")
           .update({ [inviteUid]: true })
-      ); */
+      );
 
       this.props.firebase
         .events()
@@ -264,7 +267,7 @@ class BookTimeBase extends Component {
           date: this.props.bookDate,
           host: authUser.uid,
           username: authUser.username,
-          time: { ...this.state.reservedTime },
+          time: { ...this.state.chosenTimeSlots },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc,
           eventUid: eventKey,
@@ -323,13 +326,15 @@ class BookTimeBase extends Component {
                 {times
                   .filter(time => !this.state.time[time])
                   .map(time => (
-                    <MyInput
+                    <TimeSlot
                       key={time}
                       name={time}
                       time={this.state.time}
-                      onChangeCheckbox={this.onChangeCheckbox}
+                      chosenTimeSlots={this.state.chosenTimeSlots}
+                      onClickTimeSlot={this.onClickTimeSlot}
                     />
                   ))}
+
                 <label>
                   <br />
                   <h4>Invite user:</h4>
@@ -388,7 +393,7 @@ class BookTimeBase extends Component {
                     <section className="modal-main">
                       <AnimationDivConfirmed>
                         <CorrectionDiv>
-                          Event booked!<p>Thank you!</p>
+                          Event booked!
                           <i className="fas fa-check-circle fa-3x" />
                         </CorrectionDiv>
                       </AnimationDivConfirmed>
@@ -409,19 +414,21 @@ class BookTimeBase extends Component {
   }
 }
 
-export const MyInput = ({ name, time, onChangeCheckbox }) => (
-  <React.Fragment>
-    <StyledLabel>
-      <input
-        type="checkbox"
-        name={name}
-        onChange={() => onChangeCheckbox(name)}
-        checked={time[{ name }]}
-      />
-      {name}
-    </StyledLabel>
-  </React.Fragment>
-);
+export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
+  return (
+    <React.Fragment>
+      <TimeSlotBtn
+        className={chosenTimeSlots[name] ? "chosenTimeSlot" : ""}
+        onClick={e => {
+          onClickTimeSlot(name);
+          e.preventDefault();
+        }}
+      >
+        {name}
+      </TimeSlotBtn>
+    </React.Fragment>
+  );
+};
 
 const condition = authUser => !!authUser;
 

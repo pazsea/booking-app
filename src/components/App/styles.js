@@ -31,7 +31,7 @@ export const MenuButton = styled.div`
     margin: auto 0;
 
     :hover {
-      color: gold;
+      color: #3b95bc;
       cursor: pointer;
     }
   }

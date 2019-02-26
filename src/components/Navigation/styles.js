@@ -4,12 +4,12 @@ export const Nav = styled.nav`
   margin: 0;
   padding: 0;
   width: 100%;
-  max-height: ${props =>
-    props.stateNav ? "0px" : { height: "calc(100vh - 76px)" }};
-  background-color: #121c24;
+  max-height: ${props => (props.stateNav ? "0px" : "500px")};
+  overflow: auto;
+  transition: max-height 0.5s ease-out;
+  justify-content: center;
   overflow-y: hidden;
-  z-index: 100;
-  position: absolute;
+  color: white;
 
   ul {
     width: fit-content;
@@ -24,7 +24,7 @@ export const Nav = styled.nav`
   }
   li {
     margin: 5px 5px;
-    background: #e9b522;
+    background: #8dd7d7;
     border-color: transparent;
     color: #fff;
     cursor: pointer;
@@ -32,8 +32,8 @@ export const Nav = styled.nav`
     padding: 12px;
     text-transform: uppercase;
     height: fit-content;
-    :active {
-      background-color: #e9b52282;
+    &.active {
+      background-color: #8e8147;
       color: white;
     }
     :hover {
@@ -49,5 +49,7 @@ export const Nav = styled.nav`
   }
   ul li a {
     color: white;
+    text-decoration: none;
+    display: block;
   }
 `;

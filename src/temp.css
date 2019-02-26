@@ -1,0 +1,25 @@
+/* sc-component-id: sc-ifAKCX */
+.bhAEnK {
+  display: inline-block;
+  width: 10em;
+  padding: 0.5em;
+  font-size: 1.2em;
+  margin: 3%;
+  -webkit-flex-direction: column-reverse;
+  -ms-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+  color: white;
+  border-radius: 5px;
+  background: #c8c8fd;
+  border: solid 2px white;
+}
+.bhAEnK .chosenTimeSlot {
+  background: #a5a5f8 !important;
+  cursor: pointer;
+  color: black;
+}
+.bhAEnK:hover {
+  background: #a5a5f8;
+  cursor: pointer;
+  color: black;
+}

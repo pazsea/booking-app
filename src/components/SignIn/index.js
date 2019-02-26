@@ -10,7 +10,7 @@ import { Div } from "./styles";
 
 const SignInPage = () => (
   <Div>
-    <h2>Log in</h2>
+    <h2>Sign in</h2>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />
@@ -91,7 +91,7 @@ class SignInFormBase extends Component {
 
 const SignInLink = () => (
   <form>
-    Go back to <Link to={ROUTES.SIGN_IN}>Log In</Link>
+    Go back to <Link to={ROUTES.SIGN_IN}>Sign In</Link>
   </form>
 );
 

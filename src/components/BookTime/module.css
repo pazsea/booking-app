@@ -36,5 +36,8 @@ i {
   width: 100%;
   font-size: 1.2em;
   padding: 10px;
-  background-color: #28a745;
+  background-color: #c6f4c3;
+  text-decoration: none;
+  border: none;
+  border-radius: 8px;
 }
