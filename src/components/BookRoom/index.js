@@ -177,10 +177,10 @@ class BookRoomBase extends Component {
             {/* ----  Mapping starts here ----*/}
             <Element name="groupRooms" className="element">
               {showGroupRoomComponent
-                ? bookableRooms.map((room, index) => (
+                ? bookableRooms.map(room => (
                     <GroupRoomButton
                       name={room}
-                      key={index}
+                      key={room}
                       onClick={this.onChange}
                     >
                       {room}
@@ -190,10 +190,10 @@ class BookRoomBase extends Component {
             </Element>
             <Element name="classrooms" className="element">
               {showClassroomComponent
-                ? bookableClassRooms.map((room, index) => (
+                ? bookableClassRooms.map(room => (
                     <ClassroomButton
                       name={room}
-                      key={index}
+                      key={room}
                       onClick={this.onChange}
                     >
                       {room}
@@ -204,16 +204,10 @@ class BookRoomBase extends Component {
           </Div>
         ) : (
           <Div>
-            {bookableRooms.map((room, index) => (
-              <Element name="timeslots" className="element">
-                <GroupRoomButton
-                  name={room}
-                  key={index}
-                  onClick={this.onChange}
-                >
-                  {room}
-                </GroupRoomButton>
-              </Element>
+            {bookableRooms.map(room => (
+              <GroupRoomButton name={room} key={room} onClick={this.onChange}>
+                {room}
+              </GroupRoomButton>
             ))}
           </Div>
         )}
@@ -228,8 +222,8 @@ class BookRoomBase extends Component {
 
 export const GroupRoomComponent = () => (
   <Div>
-    {bookableRooms.map((room, index) => (
-      <GroupRoomButton name={room} key={index} onClick={this.onChange}>
+    {bookableRooms.map(room => (
+      <GroupRoomButton name={room} key={room} onClick={this.onChange}>
         {room}
       </GroupRoomButton>
     ))}
