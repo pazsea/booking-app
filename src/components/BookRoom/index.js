@@ -172,6 +172,7 @@ class BookRoomBase extends Component {
                 Group Rooms
               </GroupRoomButton>
             </Link>
+            <hr />
 
             {/* ----  Mapping starts here ----*/}
             <Element name="groupRooms" className="element">

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Nav = styled.nav`
-  position: relative;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -13,11 +12,8 @@ export const Nav = styled.nav`
   color: white;
 
   ul {
-    min-width: 100%;
     width: fit-content;
-    justify-content: center;
     padding: 5px;
-    display: flex;
     list-style: none;
 
     @media screen and (max-width: 1024px) {
@@ -36,7 +32,7 @@ export const Nav = styled.nav`
     padding: 12px;
     text-transform: uppercase;
     height: fit-content;
-    .active {
+    &.active {
       background-color: #8e8147;
       color: white;
     }

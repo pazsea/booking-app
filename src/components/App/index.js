@@ -17,7 +17,7 @@ import AdminPage from "../Admin";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
-import { SpanArrow } from "./styles";
+import { Application, Menu, MenuButton } from "./styles";
 
 class App extends Component {
   state = {
@@ -34,37 +34,36 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <div>
-          <SpanArrow>
-            <i
-              className="fas fa-arrow-circle-down fa-3x"
-              onClick={this.navToggle}
+      <Application>
+        <Router>
+          <Menu>
+            <MenuButton>
+              <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
+            </MenuButton>
+            <Navigation stateNav={this.state.isOpen} />
+            <Route exact path={ROUTES.LANDING} component={LandingPage} />
+            <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+            <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+            <Route
+              exact
+              path={ROUTES.PASSWORD_FORGET}
+              component={PasswordForgetPage}
             />
-          </SpanArrow>
-          <Navigation stateNav={this.state.isOpen} />
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-          <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route
-            exact
-            path={ROUTES.PASSWORD_FORGET}
-            component={PasswordForgetPage}
-          />
-          <Route exact path={ROUTES.HOME} component={HomePage} />
-          <Route
-            exact
-            path={ROUTES.UPCOMING_EVENTS}
-            component={UpcomingEvents}
-          />
-          <Route exact path={ROUTES.BOOK_ROOM} component={BookRoom} />
-          <Route exact path={ROUTES.INVITES} component={Invites} />
-          <Route exact path={ROUTES.MY_EVENTS} component={MyEvents} />
+            <Route exact path={ROUTES.HOME} component={HomePage} />
+            <Route
+              exact
+              path={ROUTES.UPCOMING_EVENTS}
+              component={UpcomingEvents}
+            />
+            <Route exact path={ROUTES.BOOK_ROOM} component={BookRoom} />
+            <Route exact path={ROUTES.INVITES} component={Invites} />
+            <Route exact path={ROUTES.MY_EVENTS} component={MyEvents} />
 
-          <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-          <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-        </div>
-      </Router>
+            <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+            <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+          </Menu>
+        </Router>
+      </Application>
     );
   }
 }
