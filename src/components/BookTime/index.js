@@ -394,7 +394,7 @@ class BookTimeBase extends Component {
                     <section className="modal-main">
                       <AnimationDivConfirmed>
                         <CorrectionDiv>
-                          Event booked!<p>Thank you!</p>
+                          Event booked!
                           <i className="fas fa-check-circle fa-3x" />
                         </CorrectionDiv>
                       </AnimationDivConfirmed>
