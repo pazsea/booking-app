@@ -225,7 +225,7 @@ class BookRoomBase extends Component {
   }
 }
 
-export const GroupRoomComponent = ({}) => (
+export const GroupRoomComponent = () => (
   <Div>
     {bookableRooms.map((room, index) => (
       <GroupRoomButton name={room} key={index} onClick={this.onChange}>
@@ -242,4 +242,5 @@ const BookRoomForm = compose(
   withAuthorization(condition),
   withFirebase
 )(BookRoomBase);
+
 export default BookRoom;

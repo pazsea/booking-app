@@ -210,7 +210,7 @@ class InvitesBase extends Component {
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
                 <p key={"Date paragrah:" + eventUid}>{date}</p>
                 <ul>
-                  <li>Time:</li>
+                  <li>Time: </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
@@ -222,7 +222,7 @@ class InvitesBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Is invited:</li>
+                  <li>Is invited: </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
                       <li key={index + eventUid}>{key}</li>
@@ -232,7 +232,7 @@ class InvitesBase extends Component {
                   )}
                 </ul>
                 <ul>
-                  <li>Has accepted:</li>
+                  <li>Has accepted: </li>
                   {evt.hasAccepted ? (
                     Object.keys(evt.hasAccepted).map((key, index) => (
                       <li key={index + eventUid}>{key}</li>
@@ -242,7 +242,7 @@ class InvitesBase extends Component {
                   )}
                 </ul>
                 <ul>
-                  <li>Has declined:</li>
+                  <li>Has declined: </li>
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map((key, index) => (
                       <li key={index + eventUid}>{key}</li>

@@ -2,9 +2,13 @@ import styled, { keyframes } from "styled-components";
 import { tada } from "react-animations";
 
 export const Form = styled.form`
+  * {
+    font-family: "Montserrat", sans-serif;
+  }
   margin-top: 5%;
+
   h2 {
-    color: white;
+    color: black;
     font-size: 3em;
     p {
       font-size: 0.5em;
@@ -12,22 +16,26 @@ export const Form = styled.form`
     }
   }
   h4 {
-    color: white;
+    color: black;
   }
   #searchUser {
     width: 100%;
     font-size: 1.2em;
     margin: 5% 0;
+    padding: 0.5em;
+    border-radius: 8px;
   }
 
   #descriptionInput {
     width: 100%;
     height: 150px;
     overflow-y: auto;
+    padding: 1em;
+    border-radius: 8px;
   }
 `;
 
-export const StyledLabel = styled.label`
+export const TimeSlotBtn = styled.div`
   display: inline-block;
   width: 10em;
   padding: 0.5em;
@@ -36,8 +44,18 @@ export const StyledLabel = styled.label`
   flex-direction: column-reverse;
   color: white;
   border-radius: 5px;
-  background: goldenrod;
+
+  background: #c8c8fd;
   border: solid 2px white;
+
+  :hover {
+    background: #a5a5f8;
+    cursor: pointer;
+  }
+
+  &.chosenTimeSlot {
+    background: #8787ff;
+  }
 `;
 
 export const CustomButton2 = styled.button`
