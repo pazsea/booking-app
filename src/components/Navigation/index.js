@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { Nav } from "./styles";
 import SignOutButton from "../SignOut";
@@ -58,28 +58,30 @@ class NavigationAuthBase extends Component {
   render() {
     return (
       <React.Fragment>
-        <ul>
+        <ul className="main-nav">
           <li>
-            <Link to={ROUTES.HOME}>Home</Link>
+            <NavLink to={ROUTES.HOME}>Home</NavLink>
           </li>
           <li>
-            <Link to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</Link>
+            <NavLink to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</NavLink>
           </li>
           <li>
-            <Link to={ROUTES.INVITES}>Invites {this.state.totalInvites}</Link>
+            <NavLink to={ROUTES.INVITES}>
+              Invites {this.state.totalInvites}
+            </NavLink>
           </li>
           <li>
-            <Link to={ROUTES.MY_EVENTS}>My Events</Link>
+            <NavLink to={ROUTES.MY_EVENTS}>My Events</NavLink>
           </li>
           <li>
-            <Link to={ROUTES.BOOK_ROOM}>Book a room</Link>
+            <NavLink to={ROUTES.BOOK_ROOM}>Book a room</NavLink>
           </li>
           <li>
-            <Link to={ROUTES.ACCOUNT}>Account</Link>
+            <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
           </li>
           {this.props.authUser.roles.includes(ROLES.ADMIN) && (
             <li>
-              <Link to={ROUTES.ADMIN}>Admin</Link>
+              <NavLink to={ROUTES.ADMIN}>Admin</NavLink>
             </li>
           )}
           <li>
@@ -93,12 +95,14 @@ class NavigationAuthBase extends Component {
 
 const NavigationNonAuth = props => (
   <React.Fragment>
-    <ul>
+    <ul className="main-nav">
       <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
+        <NavLink exact to={ROUTES.LANDING}>
+          Landing
+        </NavLink>
       </li>
       <li>
-        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+        <NavLink to={ROUTES.SIGN_IN}>Sign In</NavLink>
       </li>
     </ul>
   </React.Fragment>
