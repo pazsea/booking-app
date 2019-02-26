@@ -8,9 +8,9 @@ export const Nav = styled.nav`
   max-height: ${props => (props.stateNav ? "0px" : "500px")};
   overflow: auto;
   transition: max-height 0.5s ease-out;
-  background: rgb(255, 255, 255);
   justify-content: center;
   overflow-y: hidden;
+  color: white;
 
   ul {
     min-width: 100%;
