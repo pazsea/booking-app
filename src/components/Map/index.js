@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import styled from "styled-components";
+import Geolocation from "./geolocation";
 
 const Wrapper = styled.div`
   width: ${props => props.width};
@@ -31,7 +32,12 @@ class Map extends Component {
   }
 
   render() {
-    return <Wrapper width="1280px" height="720px" id="map" />;
+    return (
+      <div>
+        <Wrapper width="1280px" height="720px" id="map" />
+        <Geolocation />
+      </div>
+    );
   }
 }
 
