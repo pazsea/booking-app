@@ -5,6 +5,7 @@ export const Menu = styled.div`
   height: 76px;
   background-color: #121c24;
   z-index: 100;
+  border-bottom: 1px solid #192530;
 `;
 
 export const MenuItems = styled.div`
