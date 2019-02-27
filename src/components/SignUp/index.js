@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   error: null,
   selectedClassOption: null,
   selectedRoleOption: null,
-  role: null,
+  roles: null,
   classes: null,
   positions: {}
 };
@@ -77,7 +77,6 @@ class SignUpFormBase extends Component {
       roles,
       positions
     } = this.state;
-    const classesValue = Object.values(classes);
 
     const usernameUpper = username.toUpperCase();
 
@@ -91,7 +90,7 @@ class SignUpFormBase extends Component {
             username: usernameUpper,
             email,
             hostedEvents: {},
-            [classesValue]: true,
+            class: classes,
             roles,
             positions
           })
