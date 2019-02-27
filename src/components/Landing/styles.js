@@ -9,7 +9,7 @@ export const Div = styled.div`
   display: flex;
   position: relative;
   justify-content: center;
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - 78px);
   h1 {
     text-align: center;
     border: 2px solid #cfecef;
