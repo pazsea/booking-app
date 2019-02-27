@@ -34,7 +34,7 @@ class Map extends Component {
   render() {
     return (
       <div>
-        <Wrapper width="1280px" height="720px" id="map" />
+        <Wrapper width="90vw" height="80vh" id="map" />
         <Geolocation />
       </div>
     );

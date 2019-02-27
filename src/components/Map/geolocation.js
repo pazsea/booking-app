@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
-import { withAuthorization } from "../Session";
+import { AuthUserContext, withAuthorization } from "../Session";
+import { withFirebase } from "../Firebase";
 
-class Geolocation extends Component {
+const Geolocation = () => (
+  <AuthUserContext.Consumer>
+    {authUser => <GeolocationComplete authUser={authUser} />}
+  </AuthUserContext.Consumer>
+);
+
+class GeolocationBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,21 +18,21 @@ class Geolocation extends Component {
     };
   }
 
-  //   calculateDistance = (lat1, lon1, lat2, lon2) => {
-  //     var R = 6371; // km (change this constant to get miles)
-  //     var dLat = ((lat2 - lat1) * Math.PI) / 180;
-  //     var dLon = ((lon2 - lon1) * Math.PI) / 180;
-  //     var a =
-  //       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-  //       Math.cos((lat1 * Math.PI) / 180) *
-  //         Math.cos((lat2 * Math.PI) / 180) *
-  //         Math.sin(dLon / 2) *
-  //         Math.sin(dLon / 2);
-  //     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  //     var d = R * c;
+  calculateDistance = (lat1, lon1, lat2, lon2) => {
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = ((lat2 - lat1) * Math.PI) / 180;
+    var dLon = ((lon2 - lon1) * Math.PI) / 180;
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
 
-  //     return Math.round(d * 1000);
-  //   };
+    return Math.round(d * 1000);
+  };
 
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
@@ -37,6 +44,7 @@ class Geolocation extends Component {
         this.writeUserPositionToDB(position.coords);
       }
     }
+    this.writeUserPositionToDB(position.coords);
   };
 
   //   getUserPositionFromDB = () => {
@@ -52,16 +60,24 @@ class Geolocation extends Component {
 
   writeUserPositionToDB = position => {
     const { latitude, longitude } = position;
-
+    // const positionKey = this.props.firebase
+    //   .users(this.props.authUser.uid)
+    //   .positions()
+    //   .push().key;
+    // console.log(this.props.authUser.uid);
     this.props.firebase
-      .user(this.props.authUser.uid)
-      .update({ position: { latitude: latitude, longitude: longitude } });
-    //this.setState({ dbCoords: position });
-    this.getUserPositionFromDB();
+      .users()
+      .child(this.props.authUser.uid)
+      .child("positions")
+      .child("initialPosition")
+      .update({ latitude: latitude, longitude: longitude });
+    this.setState({ dbCoords: position });
+    // this.getUserPositionFromDB();
   };
 
   componentDidMount() {
     //   this.getUserPositionFromDB();
+
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
       error => {
@@ -106,5 +122,7 @@ const Coords = props => (
 );
 
 const condition = authUser => !!authUser;
+
+const GeolocationComplete = withFirebase(GeolocationBase);
 
 export default compose(withAuthorization(condition))(Geolocation);
