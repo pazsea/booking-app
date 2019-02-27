@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
-import { compose } from "recompose";
-import { AuthUserContext, withAuthorization } from "../Session";
+import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
@@ -42,7 +41,7 @@ class UpcomingBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
-          const test = snapKeys.map(key => {
+          snapKeys.forEach(key => {
             this.props.firebase.event(key).once("value", snapshot => {
               const eventObject = snapshot.val();
               this.setState({

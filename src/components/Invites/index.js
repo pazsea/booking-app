@@ -41,13 +41,8 @@ class InvitesBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
-          const test = snapKeys.map(key => {
+          snapKeys.forEach(key => {
             this.props.firebase.event(key).on("value", snapshot => {
-              /*               if (snapshot.val() === null) {
-                this.props.firebase
-                  .user(this.props.authUser.uid)
-                  .child("invitedToEvents")
-              } */
               const eventObject = snapshot.val();
               this.setState({
                 userEventObjects: [
@@ -56,6 +51,7 @@ class InvitesBase extends Component {
                 ]
               });
             });
+            return snap;
           });
         }
         this.setState({
