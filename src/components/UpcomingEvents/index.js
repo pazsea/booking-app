@@ -100,10 +100,19 @@ class UpcomingBase extends Component {
 
                 <MyEventsButton
                   value={eventUid}
-                  key={"Button accept: " + eventUid}
+                  key={"Dont need help: " + eventUid}
+                  onClick={this.notNeeded}
                   index={evt.index}
                 >
-                  Attend
+                  Dont need help anymore.
+                </MyEventsButton>
+                <MyEventsButton
+                  value={eventUid}
+                  key={"Help wanted: " + eventUid}
+                  index={evt.index}
+                  onClick={this.helpMe}
+                >
+                  Oh God, Help me!!
                 </MyEventsButton>
               </InviteDiv>
             )

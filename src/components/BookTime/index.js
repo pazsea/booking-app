@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
+import TimeSlots from "../TimeSlots";
 
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
@@ -28,16 +29,16 @@ const BookTime = props => (
 );
 
 const times = [
-  "07:00-08:00",
-  "08:00-09:00",
-  "09:00-10:00",
-  "10:00-11:00",
-  "11:00-12:00",
-  "12:00-13:00",
-  "13:00-14:00",
-  "14:00-15:00",
-  "15:00-16:00",
-  "16:00-17:00"
+  "25200000",
+  "28800000",
+  "32400000",
+  "36000000",
+  "39600000",
+  "43200000",
+  "46800000",
+  "50400000",
+  "54000000",
+  "57600000"
 ];
 
 /* const returnFalseTimes = () =>
@@ -140,12 +141,18 @@ class BookTimeBase extends Component {
   }
 
   onClickTimeSlot = name => {
-    this.setState(prevState => ({
+    const shit = parseInt(this.props.bookDate);
+    const shit2 = parseInt(name);
+    const pickedTimeSlot = shit + shit2;
+
+    console.log(pickedTimeSlot);
+
+    /*     this.setState(prevState => ({
       chosenTimeSlots: {
         ...prevState.chosenTimeSlots,
         [name]: !prevState.chosenTimeSlots[name]
       }
-    }));
+    })); */
   };
 
   getValueInput(evt) {
@@ -312,14 +319,18 @@ class BookTimeBase extends Component {
                 <button onClick={close}>Close</button>
                 <br />
                 <h2>
-                  Date: <p>{bookDate}</p>
+                  Date: <p>{new Date(bookDate).toDateString()}</p>
                 </h2>
                 <h2>
                   Room: <p>{groupRoom}</p>
                 </h2>
                 <br />
                 {times
-                  .filter(time => !this.state.time[time])
+                  .filter(
+                    time =>
+                      parseInt(time) + parseInt(bookDate) &&
+                      !this.state.time[time]
+                  )
                   .map(time => (
                     <TimeSlot
                       key={time}
@@ -327,6 +338,7 @@ class BookTimeBase extends Component {
                       time={this.state.time}
                       chosenTimeSlots={this.state.chosenTimeSlots}
                       onClickTimeSlot={this.onClickTimeSlot}
+                      dayMilli={bookDate}
                     />
                   ))}
 
@@ -409,7 +421,19 @@ class BookTimeBase extends Component {
   }
 }
 
-export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
+export const TimeSlot = ({
+  name,
+  onClickTimeSlot,
+  chosenTimeSlots,
+  dayMilli
+}) => {
+  const timeSlotStart = new Date(
+    parseInt(dayMilli) + parseInt(name)
+  ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const timeSlotEnd = new Date(
+    parseInt(dayMilli) + parseInt(name) + parseInt(3600000)
+  ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
   return (
     <React.Fragment>
       <TimeSlotBtn
@@ -419,7 +443,7 @@ export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
           e.preventDefault();
         }}
       >
-        {name}
+        {timeSlotStart} - {timeSlotEnd}
       </TimeSlotBtn>
     </React.Fragment>
   );
