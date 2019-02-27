@@ -141,9 +141,12 @@ class BookTimeBase extends Component {
   }
 
   onClickTimeSlot = name => {
-    const pickedTimeSlot = this.props.bookDate + name;
+    const shit = parseInt(this.props.bookDate);
+    const shit2 = parseInt(name);
+    const pickedTimeSlot = shit + shit2;
 
     console.log(pickedTimeSlot);
+
     /*     this.setState(prevState => ({
       chosenTimeSlots: {
         ...prevState.chosenTimeSlots,
@@ -316,14 +319,18 @@ class BookTimeBase extends Component {
                 <button onClick={close}>Close</button>
                 <br />
                 <h2>
-                  Date: <p>{bookDate}</p>
+                  Date: <p>{new Date(bookDate).toDateString()}</p>
                 </h2>
                 <h2>
                   Room: <p>{groupRoom}</p>
                 </h2>
                 <br />
                 {times
-                  /* .filter(time => !this.state.time[time]) */
+                  .filter(
+                    time =>
+                      parseInt(time) + parseInt(bookDate) &&
+                      !this.state.time[time]
+                  )
                   .map(time => (
                     <TimeSlot
                       key={time}
@@ -331,6 +338,7 @@ class BookTimeBase extends Component {
                       time={this.state.time}
                       chosenTimeSlots={this.state.chosenTimeSlots}
                       onClickTimeSlot={this.onClickTimeSlot}
+                      dayMilli={bookDate}
                     />
                   ))}
 
@@ -413,7 +421,19 @@ class BookTimeBase extends Component {
   }
 }
 
-export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
+export const TimeSlot = ({
+  name,
+  onClickTimeSlot,
+  chosenTimeSlots,
+  dayMilli
+}) => {
+  const timeSlotStart = new Date(
+    parseInt(dayMilli) + parseInt(name)
+  ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const timeSlotEnd = new Date(
+    parseInt(dayMilli) + parseInt(name) + parseInt(3600000)
+  ).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
   return (
     <React.Fragment>
       <TimeSlotBtn
@@ -423,7 +443,7 @@ export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
           e.preventDefault();
         }}
       >
-        {name}
+        {timeSlotStart} - {timeSlotEnd}
       </TimeSlotBtn>
     </React.Fragment>
   );
