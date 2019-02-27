@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
+import TimeSlots from "../TimeSlots";
 
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
@@ -28,16 +29,16 @@ const BookTime = props => (
 );
 
 const times = [
-  "07:00-08:00",
-  "08:00-09:00",
-  "09:00-10:00",
-  "10:00-11:00",
-  "11:00-12:00",
-  "12:00-13:00",
-  "13:00-14:00",
-  "14:00-15:00",
-  "15:00-16:00",
-  "16:00-17:00"
+  "25200000",
+  "28800000",
+  "32400000",
+  "36000000",
+  "39600000",
+  "43200000",
+  "46800000",
+  "50400000",
+  "54000000",
+  "57600000"
 ];
 
 /* const returnFalseTimes = () =>
@@ -140,12 +141,15 @@ class BookTimeBase extends Component {
   }
 
   onClickTimeSlot = name => {
-    this.setState(prevState => ({
+    const pickedTimeSlot = this.props.bookDate + name;
+
+    console.log(pickedTimeSlot);
+    /*     this.setState(prevState => ({
       chosenTimeSlots: {
         ...prevState.chosenTimeSlots,
         [name]: !prevState.chosenTimeSlots[name]
       }
-    }));
+    })); */
   };
 
   getValueInput(evt) {
@@ -319,7 +323,7 @@ class BookTimeBase extends Component {
                 </h2>
                 <br />
                 {times
-                  .filter(time => !this.state.time[time])
+                  /* .filter(time => !this.state.time[time]) */
                   .map(time => (
                     <TimeSlot
                       key={time}
