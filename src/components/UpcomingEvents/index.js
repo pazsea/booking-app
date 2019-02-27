@@ -3,6 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
+import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -97,13 +98,13 @@ class UpcomingBase extends Component {
                   )}
                 </ul>
 
-                <button
+                <MyEventsButton
                   value={eventUid}
                   key={"Button accept: " + eventUid}
                   index={evt.index}
                 >
                   Attend
-                </button>
+                </MyEventsButton>
               </InviteDiv>
             )
           )}
