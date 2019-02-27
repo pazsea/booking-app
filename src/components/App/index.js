@@ -17,7 +17,7 @@ import AdminPage from "../Admin";
 
 import * as ROUTES from "../../constants/routes";
 import { withAuthentication } from "../Session";
-import { Application, Menu, MenuItems } from "./styles";
+import { Menu, MenuItems } from "./styles";
 
 class App extends Component {
   state = {
@@ -34,37 +34,37 @@ class App extends Component {
 
   render() {
     return (
-      <Application>
-        <Router>
+      <Router>
+        <React.Fragment>
           <Menu>
             <MenuItems>
               <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
               <h1>Project Grex</h1>
             </MenuItems>
-            <Navigation stateNav={this.state.isOpen} />
-            <Route exact path={ROUTES.LANDING} component={LandingPage} />
-            <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route
-              exact
-              path={ROUTES.PASSWORD_FORGET}
-              component={PasswordForgetPage}
-            />
-            <Route exact path={ROUTES.HOME} component={HomePage} />
-            <Route
-              exact
-              path={ROUTES.UPCOMING_EVENTS}
-              component={UpcomingEvents}
-            />
-            <Route exact path={ROUTES.BOOK_ROOM} component={BookRoom} />
-            <Route exact path={ROUTES.INVITES} component={Invites} />
-            <Route exact path={ROUTES.MY_EVENTS} component={MyEvents} />
-
-            <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route exact path={ROUTES.ADMIN} component={AdminPage} />
           </Menu>
-        </Router>
-      </Application>
+          <Navigation stateNav={this.state.isOpen} />
+          <Route exact path={ROUTES.LANDING} component={LandingPage} />
+          <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+          <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+          <Route
+            exact
+            path={ROUTES.PASSWORD_FORGET}
+            component={PasswordForgetPage}
+          />
+          <Route exact path={ROUTES.HOME} component={HomePage} />
+          <Route
+            exact
+            path={ROUTES.UPCOMING_EVENTS}
+            component={UpcomingEvents}
+          />
+          <Route exact path={ROUTES.BOOK_ROOM} component={BookRoom} />
+          <Route exact path={ROUTES.INVITES} component={Invites} />
+          <Route exact path={ROUTES.MY_EVENTS} component={MyEvents} />
+
+          <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+          <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+        </React.Fragment>
+      </Router>
     );
   }
 }
