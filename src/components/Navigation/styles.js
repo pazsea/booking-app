@@ -5,15 +5,16 @@ export const Nav = styled.nav`
   padding: 0;
   width: 100%;
   max-height: ${props => (props.stateNav ? "0px" : "500px")};
+  background-color: #192530;
   overflow: auto;
   transition: max-height 0.5s ease-out;
   justify-content: center;
   overflow-y: hidden;
   color: white;
+  border-bottom: 1px solid #192530;
 
   ul {
     width: fit-content;
-    padding: 5px;
     list-style: none;
 
     @media screen and (max-width: 1024px) {
@@ -23,27 +24,12 @@ export const Nav = styled.nav`
     }
   }
   li {
-    margin: 5px 5px;
-    background: #8dd7d7;
-    border-color: transparent;
     color: #fff;
     cursor: pointer;
-    border-radius: 10px;
-    padding: 12px;
     text-transform: uppercase;
     height: fit-content;
-    &.active {
-      background-color: #8e8147;
-      color: white;
-    }
-    :hover {
-      background: #e9b52282;
-    }
-    :focus {
-      border-color: #e9b52282;
-    }
+
     @media screen and (max-width: 1024px) {
-      width: 40%;
       text-align: center;
     }
   }
@@ -51,5 +37,55 @@ export const Nav = styled.nav`
     color: white;
     text-decoration: none;
     display: block;
+    border: #111921 1px solid;
+    box-shadow: #192530 1px 1px 10px;
+    padding: 15px;
+    margin: 1px 5px;
+    background: #e1c74e;
+    transition: 0.3s;
+    animation: fadein 0.3s;
+    text-decoration: none;
+    text-shadow: 1px 1px 1px #152029;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 750;
+    font-size: 2.5rem;
+    color: #f1f1f1;
+    &.active {
+      text-decoration: #f1f1f1 underline;
+      background-color: #6c5f24;
+    }
+    :hover {
+      text-decoration: #f1f1f1 underline;
+      background: #87772e;
+    }
+    :focus {
+      border-color: #e9b52282;
+    }
   }
 `;
+
+// a {
+//   width: 40 %;
+//   margin: 10px 10 %;
+//   border: #111921 1px solid;
+//   box - shadow: #192530 1px 1px 10px;
+//   background - color: #1f2f3c;
+//   transition: 0.3s;
+//   animation: fadein 0.3s;
+//   text - decoration: none;
+// }
+
+// a: hover {
+//   background: #213d54;
+//   border: 1px solid #192530;
+// }
+
+// h1 {
+//   font - family: "Oswald", sans - serif;
+//   font - weight: 300;
+//   font - size: 2rem;
+//   color: #f1f1f1;
+// }
+
+// h1: hover {
+// }

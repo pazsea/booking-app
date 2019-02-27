@@ -1,17 +1,10 @@
 import styled from "styled-components";
 
-export const Application = styled.div`
-  width: 100%;
-  background: #f1f1f1;
-  margin: 0;
-  padding: 0;
-`;
-
 export const Menu = styled.div`
   width: 100%;
   height: 76px;
   background-color: #121c24;
-  border-bottom: 2px solid #192530;
+  z-index: 100;
 `;
 
 export const MenuItems = styled.div`
@@ -28,9 +21,12 @@ export const MenuItems = styled.div`
     color: #f1f1f1;
     z-index: 2;
     margin: auto 0;
+    &.active {
+      color: #e1c74e;
+    }
 
     :hover {
-      color: #3b95bc;
+      color: #e1c74e;
       cursor: pointer;
     }
   }
