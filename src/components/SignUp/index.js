@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   selectedRoleOption: null,
   role: null,
   classes: null,
-  positions: { initialPosition: { latitude: "0", longitude: "0" } }
+  positions: {}
 };
 
 const roleOptions = [
@@ -80,7 +80,7 @@ class SignUpFormBase extends Component {
     const classesValue = Object.values(classes);
 
     const usernameUpper = username.toUpperCase();
-    console.log();
+
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
