@@ -51,11 +51,11 @@ export const Nav = styled.nav`
     font-size: 2.5rem;
     color: #f1f1f1;
     &.active {
-      text-decoration: #f1f1f1 underline;
+      text-decoration: #f1f1f1;
       background-color: #6c5f24;
     }
     :hover {
-      text-decoration: #f1f1f1 underline;
+      text-decoration: #f1f1f1;
       background: #87772e;
     }
     :focus {
