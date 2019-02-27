@@ -35,13 +35,13 @@ class GeolocationBase extends Component {
   };
 
   updatePosition = position => {
-    this.setState({ browserCoords: position.coords });
+    // this.setState({ browserCoords: position.coords });
     if (position.coords && this.state.dbCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
       const { latitude: lat2, longitude: lng2 } = this.state.dbCoords;
       const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
       if (dist > 1) {
-        this.writeUserPositionToDB(position.coords);
+        // this.writeUserPositionToDB(position.coords);
       }
     }
     this.writeUserPositionToDB(position.coords);
@@ -60,19 +60,14 @@ class GeolocationBase extends Component {
 
   writeUserPositionToDB = position => {
     const { latitude, longitude } = position;
-    // const positionKey = this.props.firebase
-    //   .users(this.props.authUser.uid)
-    //   .positions()
-    //   .push().key;
-    // console.log(this.props.authUser.uid);
+
     this.props.firebase
       .users()
       .child(this.props.authUser.uid)
       .child("positions")
-      .child("initialPosition")
-      .update({ latitude: latitude, longitude: longitude });
-    this.setState({ dbCoords: position });
-    // this.getUserPositionFromDB();
+      .push({ latitude: latitude, longitude: longitude });
+
+    // this.setState({ dbCoords: position });
   };
 
   componentDidMount() {
