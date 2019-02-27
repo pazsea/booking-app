@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
 export const Div = styled.div`
-  margin: 10% 10%;
+  margin: 10px 10%;
   display: flex;
   flex-direction: column;
   text-align: center;
   font-family: "Montserrat", sans-serif;
 
   h1 {
-    color: black;
+    color: #f1f1f1;
   }
   p {
-    color: black;
+    color: #f1f1f1;
   }
 
   li {

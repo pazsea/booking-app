@@ -208,6 +208,7 @@
 
 .DayPickerInput {
   display: inline-block;
+  border: 1px solid #192530;
   border-style: solid;
 }
 
@@ -222,5 +223,4 @@
   right: 0;
   border: black;
   background: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }

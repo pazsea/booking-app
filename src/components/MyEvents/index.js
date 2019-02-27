@@ -45,7 +45,7 @@ class MyEventsBase extends Component {
             myEvents: []
           });
           const acceptedKeys = Object.keys(acceptedVal);
-          const test = acceptedKeys.map(key => {
+          acceptedKeys.forEach(key => {
             this.props.firebase
               .events()
               .child(key)
@@ -96,7 +96,7 @@ class MyEventsBase extends Component {
       .child("time")
       .once("value", snapshot => {
         const currentEventTimes = Object.keys(snapshot.val());
-        currentEventTimes.map(slot => {
+        currentEventTimes.forEach(slot => {
           this.props.firebase
             .bookedEventDateTimes()
             .child(currentEventGroupRoom)

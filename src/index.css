@@ -8,9 +8,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(255, 255, 255); /* fallback for old browsers */
-
-  overflow-y: scroll;
+  background: #2c4457;
 }
 html {
   margin: 0;

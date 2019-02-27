@@ -5,10 +5,11 @@ export const Div = styled.div`
   background-image: url(${img});
   background-size: cover;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow-y: hidden;
   display: flex;
+  position: relative;
   justify-content: center;
-  height: 100vh;
+  min-height: calc(100vh - 76px);
   h1 {
     text-align: center;
     border: 2px solid #cfecef;
