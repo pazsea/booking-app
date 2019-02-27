@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   error: null,
   selectedClassOption: null,
   selectedRoleOption: null,
-  role: null,
+  roles: null,
   classes: null
 };
 
@@ -69,10 +69,9 @@ class SignUpFormBase extends Component {
 
   onSubmit = event => {
     const { username, email, passwordOne, classes, roles } = this.state;
-    const classesValue = Object.values(classes);
 
     const usernameUpper = username.toUpperCase();
-
+    console.log();
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
@@ -83,7 +82,7 @@ class SignUpFormBase extends Component {
             username: usernameUpper,
             email,
             hostedEvents: {},
-            [classesValue]: true,
+            class: classes,
             roles
           })
           .then(() => {
