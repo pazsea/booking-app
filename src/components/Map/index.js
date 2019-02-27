@@ -6,6 +6,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   width: ${props => props.width};
   height: ${props => props.height};
+  margin: auto;
 `;
 
 export default class Map extends React.Component {
