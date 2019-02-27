@@ -8,7 +8,7 @@ export const InviteDiv = styled.div`
   height: fit-content;
   padding: 1em;
   background: #edfffc;
-  box-shadow: 0px 0px 7px 3px #ccc;
+  border-radius: 8px;
   ul {
     list-style: none;
   }
