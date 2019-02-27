@@ -1,16 +1,18 @@
 import React, { Component } from "react";
+
+import { AuthUserContext } from "../Session";
 import Map from "../Map";
 
-import { Div } from "./styles";
-
-class Homepage extends Component {
+class HomePage extends Component {
   render() {
     return (
-      <Div>
-        <Map />
-      </Div>
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <Map userId={authUser.uid} firebase={this.props.firebase} />
+        )}
+      </AuthUserContext.Consumer>
     );
   }
 }
 
-export default Homepage;
+export default HomePage;

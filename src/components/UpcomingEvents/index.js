@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
+import { MyEventsButton } from "../MyEvents/styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
