@@ -19,6 +19,8 @@ import "./module.css";
 import "react-mdl/extra/material.css";
 import "react-mdl/extra/material.js";
 
+const scrollToTop = scroll.scrollToTop;
+
 const BookTime = props => (
   <div>
     <BookTimeComplete {...props} />
@@ -184,15 +186,12 @@ class BookTimeBase extends Component {
         .users()
         .orderByChild("username")
         .equalTo(user)
-        .once(
-          "child_added",
-          function(snapshot) {
-            const key = snapshot.key;
-            this.setState(prevState => ({
-              isInvitedUid: [...prevState.isInvitedUid, key]
-            }));
-          }.bind(this)
-        );
+        .once("child_added", snapshot => {
+          const key = snapshot.key;
+          this.setState(prevState => ({
+            isInvitedUid: [...prevState.isInvitedUid, key]
+          }));
+        });
       event.preventDefault();
     } else {
       alert("User already booked");
@@ -228,10 +227,6 @@ class BookTimeBase extends Component {
         }
       });
   };
-
-  scrollToTop() {
-    scroll.scrollToTop();
-  }
 
   sendToDB = (event, authUser) => {
     if (Object.keys(this.state.chosenTimeSlots).length) {
@@ -415,7 +410,7 @@ class BookTimeBase extends Component {
                 )}
               </Form>
             )}
-            <a onClick={this.scrollToTop}>To the top!</a>
+            <button onClick={scrollToTop}>To the top!</button>
           </React.Fragment>
         )}
       </AuthUserContext.Consumer>

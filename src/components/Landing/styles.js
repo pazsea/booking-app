@@ -5,15 +5,16 @@ export const Div = styled.div`
   background-image: url(${img});
   background-size: cover;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow-y: hidden;
   display: flex;
+  position: relative;
   justify-content: center;
-  height: 100vh;
+  min-height: calc(100vh - 76px);
   h1 {
     text-align: center;
-    border: 2px solid gold;
-    background: rgb(47, 76, 110);
-    color: gold;
+    border: 2px solid #cfecef;
+    background: rgba(30, 128, 121, 0.6);
+    color: #cfecef;
     margin: 10% auto;
     width: 50%;
     height: fit-content;
