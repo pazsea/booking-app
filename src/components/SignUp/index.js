@@ -25,7 +25,8 @@ const INITIAL_STATE = {
   selectedClassOption: null,
   selectedRoleOption: null,
   roles: null,
-  classes: null
+  classes: null,
+  positions: {}
 };
 
 const roleOptions = [
@@ -68,7 +69,14 @@ class SignUpFormBase extends Component {
   };
 
   onSubmit = event => {
-    const { username, email, passwordOne, classes, roles } = this.state;
+    const {
+      username,
+      email,
+      passwordOne,
+      classes,
+      roles,
+      positions
+    } = this.state;
 
     const usernameUpper = username.toUpperCase();
     console.log();
@@ -83,7 +91,8 @@ class SignUpFormBase extends Component {
             email,
             hostedEvents: {},
             class: classes,
-            roles
+            roles,
+            positions
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
