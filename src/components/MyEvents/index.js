@@ -16,7 +16,7 @@ class MyEventsBase extends Component {
     super(props);
 
     this.state = {
-      noEvents: true,
+      noEvents: false,
       myEvents: [],
       loading: true
     };
@@ -98,6 +98,7 @@ class MyEventsBase extends Component {
       .child("time")
       .once("value", snapshot => {
         const currentEventTimes = Object.keys(snapshot.val());
+
         currentEventTimes.forEach(slot => {
           this.props.firebase
             .bookedEventDateTimes()
@@ -105,7 +106,7 @@ class MyEventsBase extends Component {
             // .child(currentEventDate)
             // .child("time")
             .update({
-              [slot]: null
+              [Number(slot)]: null
             });
         });
       });
@@ -179,8 +180,8 @@ class MyEventsBase extends Component {
           Loading... <Spinner />
         </div>
       );
-    } else if (noEvents === false) {
-      return <div>You have no MyEvents</div>;
+    } else if (noEvents) {
+      return <p>You have no MyEvents</p>;
     } else {
       return (
         <section>
