@@ -38,11 +38,15 @@ class App extends Component {
         <React.Fragment>
           <Menu>
             <MenuItems>
-              <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
+              <i
+                className="fas fa-bars fa-3x"
+                stateNav={this.state.isOpen}
+                onClick={this.navToggle}
+              />
               <h1>Project Grex</h1>
             </MenuItems>
           </Menu>
-          <Navigation stateNav={this.state.isOpen} />
+          <Navigation stateNav={this.state.isOpen} showNav={this.navToggle} />
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
           <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />

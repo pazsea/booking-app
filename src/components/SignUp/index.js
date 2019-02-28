@@ -79,7 +79,7 @@ class SignUpFormBase extends Component {
     } = this.state;
 
     const usernameUpper = username.toUpperCase();
-
+    console.log();
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {

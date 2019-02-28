@@ -23,22 +23,22 @@ export const MenuItems = styled.div`
     z-index: 2;
     margin: auto 0;
     &.active {
-      color: #e1c74e;
+      color: #d1a200;
     }
 
     :hover {
-      color: #e1c74e;
+      color: #d1a200;
       cursor: pointer;
     }
   }
 
   h1 {
     font-family: "Lobster", cursive;
-    font-size: 3.5rem;
+    font-size: 3.5em;
     margin: auto 0;
     padding-left: 30px;
     color: #f1f1f1;
-    text-shadow: 1px 1px 5px #111921;
+    text-shadow: 0.03125em 0.03125em 0.15625em #111921;
     border-bottom: none;
   }
 `;

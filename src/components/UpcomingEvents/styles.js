@@ -2,15 +2,19 @@ import styled from "styled-components";
 
 export const InviteDiv = styled.div`
   margin: 10%;
-  border: 2px solid #89b6b6;
+  border: 2px solid #c49cce;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 1em;
-  background: #edfffc;
+  background: #feedff;
   border-radius: 8px;
+
   ul {
+    display: flex;
+    justify-content: center;
     list-style: none;
+    line-height: 2em;
   }
   input {
     width: 100%;
@@ -27,11 +31,48 @@ export const InviteDiv = styled.div`
     padding: 0.5em;
     margin-bottom: 1em;
   }
-  button {
+
+  /* button {
     width: 50%;
-  }
+  } */
 
   * {
     margin: 0;
+    font-family: "Montserrat", sans-serif;
+  }
+`;
+
+export const MyEventsButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+
+  padding: 10px;
+  background-color: white;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+`;
+
+export const MyEventsDeleteButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+
+  padding: 10px;
+  background-color: white;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+`;
+
+export const AttendEventButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+  padding: 10px;
+  background-color: grey;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+  &.activeButton {
+    background: green;
   }
 `;
