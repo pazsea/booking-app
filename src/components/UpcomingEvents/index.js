@@ -52,11 +52,23 @@ class UpcomingBase extends Component {
               .on("value", snapshot => {
                 const startTime = Number(Object.keys(snapshot.val()));
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
+                console.log(startTime);
+                console.log(endTime);
 
                 if (startTime < Date.now() && endTime > Date.now()) {
                   this.setState({
                     active: key,
                     buttonDisabled: false
+                  });
+
+                  // this.setState(prevState => ({
+                  //   active: [...prevState.active], key
+
+                  // }));
+                } else {
+                  this.setState({
+                    active: [],
+                    buttonDisabled: true
                   });
                 }
               });
@@ -154,8 +166,7 @@ class UpcomingBase extends Component {
                   key={"Attend: " + eventUid}
                   index={evt.index}
                   onClick={this.attendEvent}
-                  toggleButton={this.state.buttonDisabled}
-                  eventStatus={this.state.active}
+                  {...this.state}
                 >
                   ATTEND
                 </AttendEventButton>
