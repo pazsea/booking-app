@@ -51,9 +51,13 @@ class UpcomingBase extends Component {
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  this.setState({
+                  this.setState(prevState => ({
+                    active: [...prevState.active, key]
+                  }));
+
+                  /*                 this.setState({
                     active: key
-                  });
+                  }); */
 
                   // this.setState(prevState => ({
                   //   active: [...prevState.active], key
@@ -163,7 +167,14 @@ class UpcomingBase extends Component {
                   Oh God, Help me!!
                 </MyEventsButton>
                 <AttendEventButton
-                  className={eventUid === active ? "activeButton" : ""}
+                  className={
+                    Object.values(active).find(
+                      bookingId => bookingId === eventUid
+                    )
+                      ? "activeButton"
+                      : ""
+                    // active === eventUid ? "activeButton" : ""
+                  }
                   value={eventUid}
                   key={"Attend: " + eventUid}
                   index={evt.index}
