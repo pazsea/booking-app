@@ -11,20 +11,20 @@ export const Form = styled.form`
     p {
       font-family: "Montserrat", sans-serif;
       font-size: 0.5em;
-      color: goldenrod;
+      color: #535d69;
     }
   }
   h4 {
     font-family: "Montserrat", sans-serif;
-    color: black;
+    color: #535d69;
   }
   #searchUser {
     font-family: "Montserrat", sans-serif;
     width: 100%;
-    font-size: 1.2em;
     margin: 5% 0;
     padding: 0.5em;
     border-radius: 8px;
+    border: 1px solid wheat;
   }
 
   #descriptionInput {
@@ -34,6 +34,7 @@ export const Form = styled.form`
     overflow-y: auto;
     padding: 1em;
     border-radius: 8px;
+    border: 1px solid wheat;
   }
 `;
 
@@ -45,19 +46,19 @@ export const TimeSlotBtn = styled.div`
 
   margin: 1%;
   flex-direction: column-reverse;
-  color: white;
+  color: wheat;
   border-radius: 5px;
 
-  background: #c8c8fd;
-  border: solid 2px white;
+  background: #535d69;
+  border: solid 2px wheat;
 
   :hover {
-    background: #a5a5f8;
+    background: #5b5b7791;
     cursor: pointer;
   }
 
   &.chosenTimeSlot {
-    background: #8787ff;
+    background: #050506a8;
   }
 
   @media screen and (min-width: 1024px) {
@@ -76,12 +77,12 @@ export const TimeSlotBtn = styled.div`
     border: solid 2px white;
 
     :hover {
-      background: #a5a5f8;
+      background: #5b5b7791;
       cursor: pointer;
     }
 
     &.chosenTimeSlot {
-      background: #8787ff;
+      background: #050506a8;
     }
   }
 `;
@@ -91,7 +92,11 @@ export const CustomButton2 = styled.button`
   width: 100%;
   font-size: 1.2em;
   padding: 10px;
-  background-color: #28a745;
+  background-color: #535d69;
+  border: none;
+  color: wheat;
+  border-radius: 8px;
+  margin: 1%;
 `;
 
 export const LoadingDiv = styled.div`
@@ -105,7 +110,10 @@ export const CustomButton = styled.button`
   width: 100%;
   font-size: 1.2em;
   padding: 10px;
-  background-color: #dc3545;
+  background-color: #d2b9bf;
+  border: none;
+  border-radius: 8px;
+  margin: 1%;
 `;
 
 const tadaAnimation = keyframes`${tada}`;
