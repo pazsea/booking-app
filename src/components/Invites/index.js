@@ -219,6 +219,13 @@ class InvitesBase extends Component {
                           hour: "2-digit",
                           minute: "2-digit"
                         })}
+                        {new Date(Number(key) + 3600000).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }
+                        )}
                       </li>
                     ))
                   ) : (

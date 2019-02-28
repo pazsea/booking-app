@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
+import { MyEventsButton, AttendEventButton } from "./styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -19,12 +19,15 @@ class UpcomingBase extends Component {
       uid: [],
       loading: true,
       userEventObjects: [],
-      noUpcoming: false
+      noUpcoming: false,
+      buttonDisabled: true,
+      active: []
     };
   }
 
   componentDidMount() {
     console.log("Upcoming did mount");
+
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -41,6 +44,24 @@ class UpcomingBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
+          snapKeys.map(key => {
+            this.props.firebase
+              .events()
+              .child(key)
+              .child("time")
+              .on("value", snapshot => {
+                const startTime = Number(Object.keys(snapshot.val()));
+                const endTime = Number(Object.keys(snapshot.val())) + 3600000;
+
+                if (startTime < Date.now() && endTime > Date.now()) {
+                  this.setState({
+                    active: key,
+                    buttonDisabled: false
+                  });
+                }
+              });
+          });
+
           snapKeys.forEach(key => {
             this.props.firebase.event(key).once("value", snapshot => {
               const eventObject = snapshot.val();
@@ -98,6 +119,13 @@ class UpcomingBase extends Component {
                           hour: "2-digit",
                           minute: "2-digit"
                         })}
+                        {new Date(Number(key) + 3600000).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }
+                        )}
                       </li>
                     ))
                   ) : (
@@ -121,6 +149,16 @@ class UpcomingBase extends Component {
                 >
                   Oh God, Help me!!
                 </MyEventsButton>
+                <AttendEventButton
+                  value={eventUid}
+                  key={"Attend: " + eventUid}
+                  index={evt.index}
+                  onClick={this.attendEvent}
+                  toggleButton={this.state.buttonDisabled}
+                  eventStatus={this.state.active}
+                >
+                  ATTEND
+                </AttendEventButton>
               </InviteDiv>
             )
           )}
