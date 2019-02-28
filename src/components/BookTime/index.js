@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
-import TimeSlots from "../TimeSlots";
 
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
