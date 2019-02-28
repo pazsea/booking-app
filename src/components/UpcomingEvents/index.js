@@ -24,13 +24,11 @@ class UpcomingBase extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("Upcoming did mount");
-
+  componentWillMount() {
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
-      .on("value", snapshot => {
+      .once("value", snapshot => {
         const snap = snapshot.val();
         if (snap == null) {
           this.setState({
@@ -48,16 +46,14 @@ class UpcomingBase extends Component {
               .events()
               .child(key)
               .child("time")
-              .on("value", snapshot => {
+              .once("value", snapshot => {
                 const startTime = Number(Object.keys(snapshot.val()));
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
-                console.log(startTime);
-                console.log(endTime);
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  this.setState(prevState => ({
-                    active: [...prevState.active, key]
-                  }));
+                  this.setState({
+                    active: key
+                  });
 
                   // this.setState(prevState => ({
                   //   active: [...prevState.active], key
@@ -91,7 +87,6 @@ class UpcomingBase extends Component {
   }
 
   attendEvent(evt) {
-    console.log(evt.target.value);
     const eventUid = evt.target.value;
     this.props.firebase
       .events()
@@ -150,7 +145,7 @@ class UpcomingBase extends Component {
                     <li>{noTimes}</li>
                   )}
                 </ul>
-
+                {console.log(eventUid)}
                 <MyEventsButton
                   value={eventUid}
                   key={"Dont need help: " + eventUid}
@@ -168,11 +163,7 @@ class UpcomingBase extends Component {
                   Oh God, Help me!!
                 </MyEventsButton>
                 <AttendEventButton
-                  className={
-                    active.map(bookingId => bookingId === [eventUid])
-                      ? "activeButton"
-                      : ""
-                  }
+                  className={eventUid === active ? "activeButton" : ""}
                   value={eventUid}
                   key={"Attend: " + eventUid}
                   index={evt.index}
