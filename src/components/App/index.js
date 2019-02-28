@@ -38,11 +38,7 @@ class App extends Component {
         <React.Fragment>
           <Menu>
             <MenuItems>
-              <i
-                className="fas fa-bars fa-3x"
-                stateNav={this.state.isOpen}
-                onClick={this.navToggle}
-              />
+              <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
               <h1>Project Grex</h1>
             </MenuItems>
           </Menu>
