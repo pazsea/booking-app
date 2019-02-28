@@ -61,8 +61,10 @@ class InvitesBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.user().off();
-    this.props.firebase.event().off();
+    this.props.firebase
+      .user()
+      .child("invitedToEvents")
+      .off();
   }
 
   //TO DO:
@@ -111,12 +113,10 @@ class InvitesBase extends Component {
       .child("invitedToEvents")
       .equalTo(currentEvent)
       .once("value", snapshot => {
-        console.log(snapshot.val());
         if (snapshot.val() === null) {
           delete userEventObjects[currentEvent];
           this.setState({ userEventObjects });
         } else {
-          console.log(snapshot.val());
           this.setState({
             loading: true
           });
@@ -188,7 +188,6 @@ class InvitesBase extends Component {
         </div>
       );
     } else if (userEventObjects === null) {
-      console.log(userEventObjects);
       return (
         <div>
           Fetching invites....
@@ -214,7 +213,6 @@ class InvitesBase extends Component {
                   {time ? (
                     Object.keys(time).map((key, index) => (
                       <li key={index + eventUid}>
-                        {console.log(Number(key))}
                         {new Date(Number(key)).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit"

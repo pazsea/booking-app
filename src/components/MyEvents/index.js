@@ -64,6 +64,13 @@ class MyEventsBase extends Component {
         });
       });
   }
+  componentWillUnmount() {
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("hostedEvents")
+      .off();
+  }
 
   //TO DO
   //IN I INVITE UID OCH TA UT ANVÄNDARNA
@@ -141,7 +148,6 @@ class MyEventsBase extends Component {
           return null;
         } else {
           const includedUid = Object.keys(snapshot.val());
-          console.log(includedUid);
           includedUid.map(inUid =>
             this.props.firebase
               .user(inUid)

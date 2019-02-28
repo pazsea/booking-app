@@ -71,7 +71,6 @@ class BookTimeBase extends Component {
       .child(this.props.groupRoom)
       .on("value", snapshot => {
         const bookedObject = snapshot.val();
-        console.log(bookedObject);
         if (bookedObject) {
           const bookedList = bookedObject;
           // convert booked list from snapshot
@@ -80,7 +79,6 @@ class BookTimeBase extends Component {
         } else {
           this.setState({ time: {}, loading: false });
         }
-        console.log(this.state.time);
       });
   }
 
@@ -110,7 +108,6 @@ class BookTimeBase extends Component {
     this.props.firebase
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
-      .child(this.props.bookDate)
       .off();
     this.props.firebase.users().off();
   }

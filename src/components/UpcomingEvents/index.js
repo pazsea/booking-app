@@ -24,7 +24,7 @@ class UpcomingBase extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -149,7 +149,6 @@ class UpcomingBase extends Component {
                     <li>{noTimes}</li>
                   )}
                 </ul>
-                {console.log(eventUid)}
                 <MyEventsButton
                   value={eventUid}
                   key={"Dont need help: " + eventUid}
