@@ -46,7 +46,8 @@ class BookRoomBase extends Component {
       showTimeComponent: false,
       showClassroomComponent: false,
       showGroupRoomComponent: false,
-      bookDate: new Date().toLocaleDateString()
+      bookDate: new Date().setHours(0, 0, 0, 0),
+      currentDate: new Date().toLocaleDateString()
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -69,7 +70,11 @@ class BookRoomBase extends Component {
 
   handleChange(day) {
     this.setState({
-      bookDate: day.toLocaleDateString()
+      bookDate: day.setHours(0, 0, 0, 0)
+    });
+
+    this.setState({
+      currentDate: day
     });
   }
 
@@ -133,7 +138,7 @@ class BookRoomBase extends Component {
         <br />
         <DayPickerInput
           placeholder="Select Date"
-          value={this.state.bookDate}
+          value={this.state.currentDate}
           onDayChange={day => this.handleChange(day)}
         />
         {authUser.roles.includes(ROLES.TEACHER) ||

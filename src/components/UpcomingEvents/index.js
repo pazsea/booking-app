@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton } from "../MyEvents/styles";
+import { MyEventsButton, AttendEventButton } from "./styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -19,12 +19,14 @@ class UpcomingBase extends Component {
       uid: [],
       loading: true,
       userEventObjects: [],
-      noUpcoming: false
+      noUpcoming: false,
+      active: []
     };
   }
 
   componentDidMount() {
     console.log("Upcoming did mount");
+
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -41,6 +43,30 @@ class UpcomingBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
+          snapKeys.map(key => {
+            this.props.firebase
+              .events()
+              .child(key)
+              .child("time")
+              .on("value", snapshot => {
+                const startTime = Number(Object.keys(snapshot.val()));
+                const endTime = Number(Object.keys(snapshot.val())) + 3600000;
+                console.log(startTime);
+                console.log(endTime);
+
+                if (startTime < Date.now() && endTime > Date.now()) {
+                  this.setState(prevState => ({
+                    active: [...prevState.active, key]
+                  }));
+
+                  // this.setState(prevState => ({
+                  //   active: [...prevState.active], key
+
+                  // }));
+                }
+              });
+          });
+
           snapKeys.forEach(key => {
             this.props.firebase.event(key).once("value", snapshot => {
               const eventObject = snapshot.val();
@@ -64,6 +90,18 @@ class UpcomingBase extends Component {
     this.props.firebase.event().off();
   }
 
+  attendEvent(evt) {
+    console.log(evt.target.value);
+    const eventUid = evt.target.value;
+    this.props.firebase
+      .events()
+      .child(eventUid)
+      .child("attendees")
+      .update({
+        [this.props.authUser.username]: true
+      });
+  }
+
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
     const noTimes = "You have no times? WTF?";
@@ -78,20 +116,35 @@ class UpcomingBase extends Component {
         </div>
       );
     } else {
+      const { active } = this.state;
       return (
         <section>
           {userEventObjects.map(
             ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
-              <InviteDiv key={"Div " + eventUid}>
+              <InviteDiv key={"Div " + eventUid} {...this.state}>
                 <p key={"Host paragraph: " + eventUid}>Hosted by: {username}</p>
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
-                <p key={"Date paragrah:" + eventUid}>{date}</p>
+                <p key={"Date paragrah:" + eventUid}>
+                  {new Date(date).toLocaleDateString()}
+                </p>
                 <ul>
                   <li>Time: </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
-                      <li key={index + eventUid}>{key}</li>
+                      <li key={index + eventUid}>
+                        {new Date(Number(key)).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}
+                        {new Date(Number(key) + 3600000).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }
+                        )}
+                      </li>
                     ))
                   ) : (
                     <li>{noTimes}</li>
@@ -100,11 +153,35 @@ class UpcomingBase extends Component {
 
                 <MyEventsButton
                   value={eventUid}
-                  key={"Button accept: " + eventUid}
+                  key={"Dont need help: " + eventUid}
+                  onClick={this.notNeeded}
                   index={evt.index}
                 >
-                  Attend
+                  Dont need help anymore.
                 </MyEventsButton>
+                <MyEventsButton
+                  value={eventUid}
+                  key={"Help wanted: " + eventUid}
+                  index={evt.index}
+                  onClick={this.helpMe}
+                >
+                  Oh God, Help me!!
+                </MyEventsButton>
+                <AttendEventButton
+                  className={
+                    active.map(bookingId => bookingId === [eventUid])
+                      ? "activeButton"
+                      : ""
+                  }
+                  value={eventUid}
+                  key={"Attend: " + eventUid}
+                  index={evt.index}
+                  onClick={evt =>
+                    eventUid === active ? this.attendEvent(evt) : null
+                  }
+                >
+                  ATTEND
+                </AttendEventButton>
               </InviteDiv>
             )
           )}
