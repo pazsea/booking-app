@@ -66,14 +66,13 @@ export const MyEventsDeleteButton = styled.button`
 
 export const AttendEventButton = styled.button`
   font-family: "Montserrat", sans-serif;
-
   padding: 10px;
-  background-color: ${props =>
-    props.eventStatus === props.value && props.toggleButton
-      ? "#cecece"
-      : "#99ba6d"};
+  background-color: grey;
   width: 50%;
   border-radius: 8px;
   border: 2px solid #ced8ec;
   color: black;
+  &.activeButton {
+    background: green;
+  }
 `;

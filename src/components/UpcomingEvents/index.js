@@ -20,7 +20,6 @@ class UpcomingBase extends Component {
       loading: true,
       userEventObjects: [],
       noUpcoming: false,
-      buttonDisabled: true,
       active: []
     };
   }
@@ -56,20 +55,14 @@ class UpcomingBase extends Component {
                 console.log(endTime);
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  this.setState({
-                    active: key,
-                    buttonDisabled: false
-                  });
+                  this.setState(prevState => ({
+                    active: [...prevState.active, key]
+                  }));
 
                   // this.setState(prevState => ({
                   //   active: [...prevState.active], key
 
                   // }));
-                } else {
-                  this.setState({
-                    active: [],
-                    buttonDisabled: true
-                  });
                 }
               });
           });
@@ -97,6 +90,18 @@ class UpcomingBase extends Component {
     this.props.firebase.event().off();
   }
 
+  attendEvent(evt) {
+    console.log(evt.target.value);
+    const eventUid = evt.target.value;
+    this.props.firebase
+      .events()
+      .child(eventUid)
+      .child("attendees")
+      .update({
+        [this.props.authUser.username]: true
+      });
+  }
+
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
     const noTimes = "You have no times? WTF?";
@@ -111,11 +116,12 @@ class UpcomingBase extends Component {
         </div>
       );
     } else {
+      const { active } = this.state;
       return (
         <section>
           {userEventObjects.map(
             ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
-              <InviteDiv key={"Div " + eventUid}>
+              <InviteDiv key={"Div " + eventUid} {...this.state}>
                 <p key={"Host paragraph: " + eventUid}>Hosted by: {username}</p>
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
                 <p key={"Date paragrah:" + eventUid}>
@@ -162,11 +168,17 @@ class UpcomingBase extends Component {
                   Oh God, Help me!!
                 </MyEventsButton>
                 <AttendEventButton
+                  className={
+                    active.map(bookingId => bookingId === [eventUid])
+                      ? "activeButton"
+                      : ""
+                  }
                   value={eventUid}
                   key={"Attend: " + eventUid}
                   index={evt.index}
-                  onClick={this.attendEvent}
-                  {...this.state}
+                  onClick={evt =>
+                    eventUid === active ? this.attendEvent(evt) : null
+                  }
                 >
                   ATTEND
                 </AttendEventButton>
