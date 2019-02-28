@@ -18,7 +18,9 @@ export const Nav = styled.nav`
     list-style: none;
 
     @media screen and (max-width: 1024px) {
+      width: auto;
       flex-direction: column;
+      text-decoration: none;
       justify-content: center;
       align-items: center;
     }
@@ -26,37 +28,44 @@ export const Nav = styled.nav`
   li {
     color: #fff;
     cursor: pointer;
+    text-decoration: none;
     text-transform: uppercase;
-    height: fit-content;
 
     @media screen and (max-width: 1024px) {
       text-align: center;
     }
   }
+
   ul li a {
-    color: white;
-    text-decoration: none;
     display: block;
     border: #111921 1px solid;
-    box-shadow: #192530 1px 1px 10px;
-    padding: 15px;
+    border-radius: 0.09375em;
+    box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+
+    padding: 15px 10px;
     margin: 1px 5px;
-    background: #e1c74e;
+    background: #edc903;
     transition: 0.3s;
     animation: fadein 0.3s;
-    text-decoration: none;
-    text-shadow: 1px 1px 1px #152029;
+    text-shadow: 0.03125em 0.03125em 0.09355em #152029;
     font-family: "Montserrat", sans-serif;
-    font-weight: 750;
-    font-size: 2.5rem;
+    font-weight: 500;
+    font-size: 2rem;
     color: #f1f1f1;
     &.active {
+<<<<<<< HEAD
       text-decoration: #f1f1f1;
       background-color: #6c5f24;
     }
     :hover {
       text-decoration: #f1f1f1;
       background: #87772e;
+=======
+      background-color: #d1a200;
+    }
+    :hover {
+      background: #d1a200;
+>>>>>>> master
     }
     :focus {
       border-color: #e9b52282;
@@ -64,28 +73,15 @@ export const Nav = styled.nav`
   }
 `;
 
-// a {
-//   width: 40 %;
-//   margin: 10px 10 %;
-//   border: #111921 1px solid;
-//   box - shadow: #192530 1px 1px 10px;
-//   background - color: #1f2f3c;
-//   transition: 0.3s;
-//   animation: fadein 0.3s;
-//   text - decoration: none;
-// }
-
-// a: hover {
-//   background: #213d54;
-//   border: 1px solid #192530;
-// }
-
-// h1 {
-//   font - family: "Oswald", sans - serif;
-//   font - weight: 300;
-//   font - size: 2rem;
-//   color: #f1f1f1;
-// }
-
-// h1: hover {
-// }
+export const InvCounter = styled.span`
+  text-shadow: 0.03125em 0.0625em 0.0625em #152029;
+  font-family: "lobster", cursive;
+  font-weight: 250;
+  font-size: 1.8rem;
+  padding-left: 5px;
+  color: #f1f1f1;
+  i {
+    margin: 0 5px;
+    color: #f1f1f1;
+  }
+`;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 
-import { Nav } from "./styles";
+import { Nav, InvCounter } from "./styles";
 import SignOutButton from "../SignOut";
+
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Session";
@@ -13,9 +14,9 @@ const Navigation = props => (
     <AuthUserContext.Consumer>
       {authUser =>
         authUser ? (
-          <NavigationAuthComplete authUser={authUser} />
+          <NavigationAuthComplete authUser={authUser} {...props} />
         ) : (
-          <NavigationNonAuth navToggle={props.navToggle} />
+          <NavigationNonAuth navToggle={props.navToggle} {...props} />
         )
       }
     </AuthUserContext.Consumer>
@@ -60,28 +61,44 @@ class NavigationAuthBase extends Component {
       <React.Fragment>
         <ul className="main-nav">
           <li>
-            <NavLink to={ROUTES.HOME}>Home</NavLink>
-          </li>
-          <li>
-            <NavLink to={ROUTES.UPCOMING_EVENTS}>Upcoming Events</NavLink>
-          </li>
-          <li>
-            <NavLink to={ROUTES.INVITES}>
-              Invites {this.state.totalInvites}
+            <NavLink to={ROUTES.HOME} onClick={this.props.showNav}>
+              Home
             </NavLink>
           </li>
           <li>
-            <NavLink to={ROUTES.MY_EVENTS}>My Events</NavLink>
+            <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
+              Upcoming Events
+            </NavLink>
           </li>
           <li>
-            <NavLink to={ROUTES.BOOK_ROOM}>Book a room</NavLink>
+            <NavLink to={ROUTES.INVITES} onClick={this.props.showNav}>
+              Invites{" "}
+              <InvCounter>
+                <i class="fas fa-bell" />
+                {this.state.totalInvites}
+              </InvCounter>
+            </NavLink>
           </li>
           <li>
-            <NavLink to={ROUTES.ACCOUNT}>Account</NavLink>
+            <NavLink to={ROUTES.MY_EVENTS} onClick={this.props.showNav}>
+              My Events
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={ROUTES.BOOK_ROOM} onClick={this.props.showNav}>
+              Book a room
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={ROUTES.ACCOUNT} onClick={this.props.showNav}>
+              Account
+            </NavLink>
           </li>
           {this.props.authUser.roles.includes(ROLES.ADMIN) && (
             <li>
-              <NavLink to={ROUTES.ADMIN}>Admin</NavLink>
+              <NavLink to={ROUTES.ADMIN} onClick={this.props.showNav}>
+                Admin
+              </NavLink>
             </li>
           )}
           <li>

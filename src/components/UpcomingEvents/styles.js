@@ -31,11 +31,48 @@ export const InviteDiv = styled.div`
     padding: 0.5em;
     margin-bottom: 1em;
   }
-  button {
+
+  /* button {
     width: 50%;
-  }
+  } */
 
   * {
     margin: 0;
+    font-family: "Montserrat", sans-serif;
+  }
+`;
+
+export const MyEventsButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+
+  padding: 10px;
+  background-color: white;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+`;
+
+export const MyEventsDeleteButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+
+  padding: 10px;
+  background-color: white;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+`;
+
+export const AttendEventButton = styled.button`
+  font-family: "Montserrat", sans-serif;
+  padding: 10px;
+  background-color: grey;
+  width: 50%;
+  border-radius: 8px;
+  border: 2px solid #ced8ec;
+  color: black;
+  &.activeButton {
+    background: green;
   }
 `;

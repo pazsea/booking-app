@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
+import TimeSlots from "../TimeSlots";
 
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
@@ -28,26 +29,23 @@ const BookTime = props => (
 );
 
 const times = [
-  "07:00-08:00",
-  "08:00-09:00",
-  "09:00-10:00",
-  "10:00-11:00",
-  "11:00-12:00",
-  "12:00-13:00",
-  "13:00-14:00",
-  "14:00-15:00",
-  "15:00-16:00",
-  "16:00-17:00"
+  "25200000",
+  "28800000",
+  "32400000",
+  "36000000",
+  "39600000",
+  "43200000",
+  "46800000",
+  "50400000",
+  "54000000",
+  "57600000"
 ];
-
-/* const returnFalseTimes = () =>
-  Object.assign({}, ...times.map(item => ({ [item]: false }))); */
 
 class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookDate: this.props.bookDate,
+      bookDate: new Date(this.props.bookDate).toDateString(),
       time: {},
       chosenTimeSlots: {},
       loading: false,
@@ -72,10 +70,9 @@ class BookTimeBase extends Component {
     this.props.firebase
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
-      .child(this.props.bookDate)
-      .child("time")
       .on("value", snapshot => {
         const bookedObject = snapshot.val();
+        console.log(bookedObject);
         if (bookedObject) {
           const bookedList = bookedObject;
           // convert booked list from snapshot
@@ -84,6 +81,7 @@ class BookTimeBase extends Component {
         } else {
           this.setState({ time: {}, loading: false });
         }
+        console.log(this.state.time);
       });
   }
 
@@ -96,8 +94,6 @@ class BookTimeBase extends Component {
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
-        .child(this.props.bookDate)
-        .child("time")
         .on("value", snapshot => {
           const bookedObject = snapshot.val();
           if (bookedObject) {
@@ -120,32 +116,21 @@ class BookTimeBase extends Component {
     this.props.firebase.users().off();
   }
 
-  componentWillReceiveProps() {
-    /*     this.setState({ loading: true });
-    this.props.firebase
-      .bookedEventDateTimes()
-      .child(this.props.groupRoom)
-      .child(this.props.bookDate)
-      .child("time")
-      .on("value", snapshot => {
-        const bookedObject = snapshot.val();
-        if (bookedObject) {
-          const bookedList = bookedObject;
-          // convert booked list from snapshot
-          this.setState({ time: bookedList, loading: false });
-        } else {
-          this.setState({ time: returnFalseTimes(), loading: false });
-        }
-      }); */
-  }
-
   onClickTimeSlot = name => {
-    this.setState(prevState => ({
-      chosenTimeSlots: {
-        ...prevState.chosenTimeSlots,
-        [name]: !prevState.chosenTimeSlots[name]
-      }
-    }));
+    if (this.state.chosenTimeSlots[name]) {
+      this.setState({
+        chosenTimeSlots: {
+          [name]: null
+        }
+      });
+    } else {
+      this.setState(prevState => ({
+        chosenTimeSlots: {
+          ...prevState.chosenTimeSlots,
+          [name]: !prevState.chosenTimeSlots[name]
+        }
+      }));
+    }
   };
 
   getValueInput(evt) {
@@ -231,8 +216,7 @@ class BookTimeBase extends Component {
       this.props.firebase
         .bookedEventDateTimes()
         .child(this.props.groupRoom)
-        .child(this.props.bookDate)
-        .set({ time: { ...newObj } });
+        .set({ ...newObj });
 
       const eventKey = this.props.firebase.events().push().key;
 
@@ -265,9 +249,7 @@ class BookTimeBase extends Component {
           time: { ...this.state.chosenTimeSlots },
           isInvited: { ...this.state.isInvited },
           description: this.state.desc,
-          eventUid: eventKey,
-          hasAccepted: {},
-          hasDeclines: {}
+          eventUid: eventKey
         });
 
       this.props.firebase
@@ -294,8 +276,8 @@ class BookTimeBase extends Component {
   };
 
   render() {
-    const { close, bookDate, groupRoom } = this.props;
-    const { loading, username, showModal } = this.state;
+    const { close, groupRoom } = this.props;
+    const { loading, username, showModal, bookDate } = this.state;
 
     const isInvitedKeys = Object.keys(this.state.isInvited);
     return (
@@ -319,6 +301,7 @@ class BookTimeBase extends Component {
                 </h2>
                 <br />
                 {times
+                  .map(time => parseInt(time) + parseInt(this.props.bookDate))
                   .filter(time => !this.state.time[time])
                   .map(time => (
                     <TimeSlot
@@ -411,6 +394,15 @@ class BookTimeBase extends Component {
 }
 
 export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
+  const timeSlotStart = new Date(name).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+  const timeSlotEnd = new Date(name + 3600000).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
   return (
     <React.Fragment>
       <TimeSlotBtn
@@ -420,7 +412,7 @@ export const TimeSlot = ({ name, onClickTimeSlot, chosenTimeSlots }) => {
           e.preventDefault();
         }}
       >
-        {name}
+        {timeSlotStart} - {timeSlotEnd}
       </TimeSlotBtn>
     </React.Fragment>
   );
