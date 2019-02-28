@@ -74,7 +74,7 @@ class NavigationAuthBase extends Component {
             <NavLink to={ROUTES.INVITES} onClick={this.props.showNav}>
               Invites{" "}
               <InvCounter>
-                <i class="fas fa-bell" />
+                <i className="fas fa-bell" />
                 {this.state.totalInvites}
               </InvCounter>
             </NavLink>

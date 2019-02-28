@@ -36,73 +36,71 @@ class GeolocationBase extends Component {
   };
 
   updatePosition = position => {
+    console.log(this.props.firebase);
     this.setState({ browserCoords: position.coords });
-    if (position.coords && this.state.dbCoords) {
+    if (position.coords && this.state.lastKnownCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
-      const { latitude: lat2, longitude: lng2 } = this.state.dbCoords;
+      const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
       const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
       if (dist > 1) {
-        // this.writeUserPositionToDB(position.coords);
+        this.writeUserPositionToDB(position.coords);
       }
     }
-    this.writeUserPositionToDB(position.coords);
   };
 
   writeUserPositionToDB = position => {
+    console.log(position);
     const { latitude, longitude } = position;
     console.log("writeUserPositionToDB called");
     this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("positions")
-      .push({ latitude: latitude, longitude: longitude });
-
-    this.setState({ dbCoords: position });
-    // console.log(this.state.lastKnownCoords);
-    // console.log(this.state.dbCoords);
-  };
-
-  getUserPositionFromDB = () => {
-    this.props.firebase
       .user(this.props.authUser.uid)
-      .child("position")
-      .once("value", snapshot => {
-        const userPosition = snapshot.val();
-        console.log(JSON.parse(JSON.stringify(userPosition)));
-        this.setState({ dbCoords: userPosition });
+      .child("positions")
+      .push({
+        latitude: latitude,
+        longitude: longitude,
+        createdAt: Date.now()
       });
+
+    this.setState({ lastKnownCoords: position });
   };
 
-  getLastKnownPosition = () => {
-    // const { latitude, longitude } = position;
+  //   getUserPositionFromDB = () => {
+  //     this.props.firebase
+  //       .user(this.props.authUser.uid)
+  //       .child("position")
+  //       .once("value", snapshot => {
+  //         const userPosition = snapshot.val();
+  //         console.log(JSON.parse(JSON.stringify(userPosition)));
+  //         this.setState({ dbCoords: userPosition });
+  //       });
+  //   };
+
+  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
     this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
+      .user(user)
       .child("positions")
-      .limitToLast(1)
-
-      .once("value", snapshot => {
-        const lastKnownPosition = snapshot.val();
-        //   var key = Object.keys( snapshot.val() )[ 0 ];
-
-        const lastLat = lastKnownPosition.latitude;
-        // const lastLong = snapshot.val()[1];
-
-        // console.log(JSON.parse(JSON.stringify(lastKnownPosition)));
-        // console.log(lastKnownPosition);
-        console.log("lastLat");
-        console.log(lastLat);
-        console.log("lastLong");
-        // console.log(lastLong);
-        console.log("lastKnownPosition snapVal");
-        console.log(lastKnownPosition);
-        this.setState({ lastKnownCoords: lastKnownPosition });
+      .limitToLast(num)
+      .on("value", snapshot => {
+        const lastKnownPositionObject = snapshot.val();
+        if (lastKnownPositionObject) {
+          const positionsList = Object.keys(lastKnownPositionObject).map(
+            key => ({
+              ...lastKnownPositionObject[key],
+              uid: key
+            })
+          );
+          let tempPositions = {};
+          if (positionsList.length === 1) {
+            tempPositions = Object.assign(positionsList[0]);
+          }
+          this.setState({ lastKnownCoords: tempPositions });
+        }
       });
   };
 
   componentDidMount() {
-    //   this.getUserPositionFromDB();
-    this.getLastKnownPosition();
+    this.getLastKnownPosition(1);
+
     console.log("geolocation mounted");
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
@@ -124,11 +122,6 @@ class GeolocationBase extends Component {
   }
 
   render() {
-    console.log("browserCoords");
-
-    console.log(JSON.parse(JSON.stringify(this.state.browserCoords)));
-    console.log("lastKnownCoords");
-    console.log(JSON.parse(JSON.stringify(this.state.lastKnownCoords)));
     return (
       <div>
         <div>Geolocation</div>
