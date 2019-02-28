@@ -36,7 +36,6 @@ class GeolocationBase extends Component {
   };
 
   updatePosition = position => {
-    console.log(this.props.firebase);
     this.setState({ browserCoords: position.coords });
     if (position.coords && this.state.lastKnownCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
@@ -49,7 +48,6 @@ class GeolocationBase extends Component {
   };
 
   writeUserPositionToDB = position => {
-    console.log(position);
     const { latitude, longitude } = position;
     console.log("writeUserPositionToDB called");
     this.props.firebase
@@ -101,7 +99,6 @@ class GeolocationBase extends Component {
   componentDidMount() {
     this.getLastKnownPosition(1);
 
-    console.log("geolocation mounted");
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
 
