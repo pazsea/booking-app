@@ -43,7 +43,7 @@ class UpcomingBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
-          snapKeys.map(key => {
+          snapKeys.forEach(key => {
             this.props.firebase
               .events()
               .child(key)
