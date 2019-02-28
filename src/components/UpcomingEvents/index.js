@@ -85,13 +85,20 @@ class UpcomingBase extends Component {
               <InviteDiv key={"Div " + eventUid}>
                 <p key={"Host paragraph: " + eventUid}>Hosted by: {username}</p>
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
-                <p key={"Date paragrah:" + eventUid}>{date}</p>
+                <p key={"Date paragrah:" + eventUid}>
+                  {new Date(date).toLocaleDateString()}
+                </p>
                 <ul>
                   <li>Time: </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
-                      <li key={index + eventUid}>{key}</li>
+                      <li key={index + eventUid}>
+                        {new Date(Number(key)).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}
+                      </li>
                     ))
                   ) : (
                     <li>{noTimes}</li>
