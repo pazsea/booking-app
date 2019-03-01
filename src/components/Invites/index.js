@@ -238,7 +238,7 @@ class InvitesBase extends Component {
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
                       <li key={index + eventUid}>
-                        {key} <i class="fas fa-question" />
+                        {key} <i className="fas fa-question" />
                       </li>
                     ))
                   ) : (
@@ -249,7 +249,7 @@ class InvitesBase extends Component {
                   {evt.hasAccepted ? (
                     Object.keys(evt.hasAccepted).map((key, index) => (
                       <li key={index + eventUid}>
-                        {key} <i class="fas fa-check" />{" "}
+                        {key} <i className="fas fa-check" />{" "}
                       </li>
                     ))
                   ) : (
