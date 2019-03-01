@@ -234,30 +234,34 @@ class InvitesBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Is invited: </li>
+                  <li>Invitees: </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
-                      <li key={index + eventUid}>{key}</li>
+                      <li key={index + eventUid}>
+                        {key} <i class="fas fa-question" />
+                      </li>
                     ))
                   ) : (
                     <li>{noInvited}</li>
                   )}
                 </ul>
                 <ul>
-                  <li>Has accepted: </li>
                   {evt.hasAccepted ? (
                     Object.keys(evt.hasAccepted).map((key, index) => (
-                      <li key={index + eventUid}>{key}</li>
+                      <li key={index + eventUid}>
+                        {key} <i class="fas fa-check" />{" "}
+                      </li>
                     ))
                   ) : (
                     <li>{noAccepted}</li>
                   )}
                 </ul>
                 <ul>
-                  <li>Has declined: </li>
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map((key, index) => (
-                      <li key={index + eventUid}>{key}</li>
+                      <li key={index + eventUid}>
+                        {key} <i class="fas fa-times" />
+                      </li>
                     ))
                   ) : (
                     <li>{noDeclined}</li>

@@ -353,6 +353,7 @@ class BookTimeBase extends Component {
                   type="textarea"
                   name="description"
                   value={this.state.desc}
+                  placeholder="Write a short description what the booking is about"
                   onChange={event => this.writeDesc(event)}
                 />
                 <br />

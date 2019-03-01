@@ -2,19 +2,19 @@ import styled from "styled-components";
 
 export const InviteDiv = styled.div`
   margin: 10%;
-  border: 2px solid #c49cce;
+  border: 2px solid wheat;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
-  padding: 1em;
-  background: #feedff;
+  padding: 1.5em 1em;
+  background: #535d69;
   border-radius: 8px;
-
+  text-align: center;
+  color: wheat;
   ul {
-    display: flex;
-    justify-content: center;
     list-style: none;
     line-height: 2em;
+    padding: 0.8em;
   }
   input {
     width: 100%;

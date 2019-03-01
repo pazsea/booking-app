@@ -7,6 +7,7 @@ import Geolocation from "./geolocation";
 const Wrapper = styled.div`
   width: ${props => props.width};
   height: ${props => props.height};
+  margin: 1em auto;
 `;
 
 class Map extends Component {
@@ -29,6 +30,11 @@ class Map extends Component {
           "pk.eyJ1IjoibmFpY2FoIiwiYSI6ImNqc2xsdGFxczJwYm40M254MnpnMGJlaHEifQ.CrjwoRsRgeGSWSFGC3xp6A"
       }
     ).addTo(this.map);
+
+    L.marker([59.313448, 18.110614])
+      .addTo(this.map)
+      .bindPopup("KYH, en märklig skola")
+      .openPopup();
   }
 
   render() {
