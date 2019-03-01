@@ -65,6 +65,7 @@ class InvitesBase extends Component {
       .user()
       .child("invitedToEvents")
       .off();
+    this.props.firebase.event().off();
   }
 
   //TO DO:
