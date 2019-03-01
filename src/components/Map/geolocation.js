@@ -14,7 +14,8 @@ class GeolocationBase extends Component {
     super(props);
     this.state = {
       browserCoords: null,
-      dbCoords: null
+      dbCoords: null,
+      lastKnownCoords: null
     };
   }
 
@@ -36,15 +37,29 @@ class GeolocationBase extends Component {
 
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
-    if (position.coords && this.state.dbCoords) {
+    if (position.coords && this.state.lastKnownCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
-      const { latitude: lat2, longitude: lng2 } = this.state.dbCoords;
+      const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
       const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
       if (dist > 1) {
-        // this.writeUserPositionToDB(position.coords);
+        this.writeUserPositionToDB(position.coords);
       }
     }
-    this.writeUserPositionToDB(position.coords);
+  };
+
+  writeUserPositionToDB = position => {
+    const { latitude, longitude } = position;
+    console.log("writeUserPositionToDB called");
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("positions")
+      .push({
+        latitude: latitude,
+        longitude: longitude,
+        createdAt: Date.now()
+      });
+
+    this.setState({ lastKnownCoords: position });
   };
 
   //   getUserPositionFromDB = () => {
@@ -58,23 +73,35 @@ class GeolocationBase extends Component {
   //       });
   //   };
 
-  writeUserPositionToDB = position => {
-    const { latitude, longitude } = position;
-
+  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
     this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
+      .user(user)
       .child("positions")
-      .push({ latitude: latitude, longitude: longitude });
-
-    this.setState({ dbCoords: position });
+      .limitToLast(num)
+      .on("value", snapshot => {
+        const lastKnownPositionObject = snapshot.val();
+        if (lastKnownPositionObject) {
+          const positionsList = Object.keys(lastKnownPositionObject).map(
+            key => ({
+              ...lastKnownPositionObject[key],
+              uid: key
+            })
+          );
+          let tempPositions = {};
+          if (positionsList.length === 1) {
+            tempPositions = Object.assign(positionsList[0]);
+          }
+          this.setState({ lastKnownCoords: tempPositions });
+        }
+      });
   };
 
   componentDidMount() {
-    //   this.getUserPositionFromDB();
+    this.getLastKnownPosition(1);
 
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
+
       error => {
         console.log("error" + error);
       },
@@ -86,6 +113,7 @@ class GeolocationBase extends Component {
       }
     );
   }
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
@@ -97,8 +125,12 @@ class GeolocationBase extends Component {
         <div>
           <p>Coords from Browser</p>
           <Coords position={this.state.browserCoords} />
+
           <p>Coords from DB</p>
           <Coords position={this.state.dbCoords} />
+
+          <p>Last known coords</p>
+          <Coords position={this.state.lastKnownCoords} />
         </div>
       </div>
     );
@@ -109,8 +141,8 @@ const Coords = props => (
   <div>
     {props.position ? (
       <div>
-        <div>{props.position.latitude}</div>
-        <div>{props.position.longitude}</div>
+        <div>Lat: {props.position.latitude}</div>
+        <div>Long: {props.position.longitude}</div>
       </div>
     ) : null}
   </div>
