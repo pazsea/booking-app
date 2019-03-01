@@ -109,6 +109,10 @@ class BookTimeBase extends Component {
       .bookedEventDateTimes()
       .child(this.props.groupRoom)
       .off();
+    this.props.firebase
+      .bookedEventDateTimes()
+      .child(this.props.groupRoom)
+      .off();
     this.props.firebase.users().off();
   }
 

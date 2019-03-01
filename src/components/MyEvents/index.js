@@ -45,7 +45,6 @@ class MyEventsBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
-          console.log(snapKeys);
           snapKeys.forEach(key => {
             this.props.firebase.event(key).once("value", snapshot => {
               const eventSnaps = snapshot.val();
@@ -61,48 +60,26 @@ class MyEventsBase extends Component {
         });
       });
   }
+
+  componentWillUnmount() {
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("hostedEvents")
+      .off();
+
+    this.props.firebase.events().off();
+  }
   componentDidMount() {
     this.updateEvents();
-    // this.props.firebase
-    //   .user(this.props.authUser.uid)
-    //   .child("hostedEvents")
-    //   .on("value", snapshot => {
-    //     const snap = snapshot.val();
-    //     if (snap == null) {
-    //       this.setState({
-    //         noEvents: true
-    //       });
-    //     } else {
-    //       this.setState({
-    //         myEvents: [],
-    //         noEvents: false
-    //       });
-
-    //       const snapKeys = Object.keys(snap);
-    //       console.log(snapKeys);
-    //       snapKeys.forEach(key => {
-    //         this.props.firebase.event(key).once("value", snapshot => {
-    //           const eventSnaps = snapshot.val();
-    //           this.setState({
-    //             myEvents: [...this.state.myEvents, { ...eventSnaps }]
-    //           });
-    //         });
-    //         return snap;
-    //       });
-    //     }
-    //     this.setState({
-    //       loading: false
-    //     });
-    //   });
   }
 
   deleteEvent(event, { eventUid, grouproom, time, isInvitedUid }) {
-    console.log(
-      "grupproum" + grouproom,
-      "Tide" + time,
-      "EventUID" + eventUid,
-      "invitations" + isInvitedUid
-    );
+    // console.log(
+    //   "grupproum" + grouproom,
+    //   "Tide" + time,
+    //   "EventUID" + eventUid,
+    //   "invitations" + isInvitedUid
+    // );
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("hostedEvents")
@@ -111,6 +88,7 @@ class MyEventsBase extends Component {
     this.setState({
       myEvents: []
     });
+
     this.props.firebase
       .users()
       .child(this.props.authUser.uid)
@@ -120,7 +98,6 @@ class MyEventsBase extends Component {
       });
 
     const times = Object.keys(time);
-    console.log("tiderna i arrays" + times);
 
     times.forEach(slot => {
       this.props.firebase
@@ -130,6 +107,7 @@ class MyEventsBase extends Component {
           [slot]: null
         });
     });
+    this.props.firebase.events().update({ [eventUid]: null });
 
     if (isInvitedUid === undefined) {
       return null;
@@ -153,8 +131,6 @@ class MyEventsBase extends Component {
           });
       });
     }
-
-    this.props.firebase.event(eventUid).remove();
 
     this.updateEvents();
   }

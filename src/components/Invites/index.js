@@ -62,10 +62,11 @@ class InvitesBase extends Component {
 
   componentWillUnmount() {
     this.props.firebase
-      .user()
+      .user(this.props.authUser.uid)
       .child("invitedToEvents")
       .off();
-    this.props.firebase.event().off();
+    this.props.firebase.users().off();
+    this.props.firebase.events().off();
   }
 
   //TO DO:
