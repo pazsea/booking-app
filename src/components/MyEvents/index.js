@@ -166,7 +166,7 @@ class MyEventsBase extends Component {
     const noDeclined = "No one has declined yet.";
     const noTimes = "You have no times? WTF?";
     if (noEvents) {
-      return <h3>You have no invites. </h3>;
+      return <h3>You have no events. </h3>;
     } else if (loading) {
       return (
         <div>
