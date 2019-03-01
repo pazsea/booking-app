@@ -36,8 +36,11 @@ i {
   width: 100%;
   font-size: 1.2em;
   padding: 10px;
-  background-color: #c6f4c3;
+  background-color: #c3d0d9;
   text-decoration: none;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
+  color: black;
+  margin: 0.3em auto;
+  font-weight: 600;
 }
