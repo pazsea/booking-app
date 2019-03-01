@@ -2,15 +2,17 @@ import styled from "styled-components";
 
 export const InviteDiv = styled.div`
   margin: 10%;
-  border: 2px solid wheat;
+  border: none;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
   background: #535d69;
-  border-radius: 8px;
+  border-radius: 4px;
   text-align: center;
   color: wheat;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
   ul {
     list-style: none;
     line-height: 2em;
@@ -46,20 +48,24 @@ export const MyEventsButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;
-  background-color: white;
+  background-color: #86a3b1;
   width: 50%;
-  border-radius: 8px;
-  border: 2px solid #ced8ec;
-  color: black;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 `;
 
 export const MyEventsDeleteButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;
-  background-color: white;
+  background-color: #d2b9bf;
   width: 50%;
-  border-radius: 8px;
-  border: 2px solid #ced8ec;
-  color: black;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 `;

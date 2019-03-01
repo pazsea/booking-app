@@ -6,25 +6,25 @@ export const Form = styled.form`
 
   h2 {
     font-family: "Montserrat", sans-serif;
-    color: black;
+    color: wheat;
     font-size: 3em;
     p {
       font-family: "Montserrat", sans-serif;
       font-size: 0.5em;
-      color: #535d69;
+      color: #97a7b9;
     }
   }
   h4 {
     font-family: "Montserrat", sans-serif;
-    color: #535d69;
+    color: wheat;
   }
   #searchUser {
     font-family: "Montserrat", sans-serif;
     width: 100%;
     margin: 5% 0;
     padding: 0.5em;
-    border-radius: 8px;
-    border: 1px solid wheat;
+    border-radius: 4px;
+    border: none;
   }
 
   #descriptionInput {
@@ -33,8 +33,8 @@ export const Form = styled.form`
     height: 150px;
     overflow-y: auto;
     padding: 1em;
-    border-radius: 8px;
-    border: 1px solid wheat;
+    border-radius: 4px;
+    border: none;
   }
 `;
 
@@ -47,10 +47,12 @@ export const TimeSlotBtn = styled.div`
   margin: 1%;
   flex-direction: column-reverse;
   color: wheat;
-  border-radius: 5px;
+  border-radius: 4px;
 
   background: #535d69;
-  border: solid 2px wheat;
+  border: none;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 
   :hover {
     background: #5b5b7791;
@@ -71,7 +73,7 @@ export const TimeSlotBtn = styled.div`
     margin: 3%;
     flex-direction: column-reverse;
     color: white;
-    border-radius: 5px;
+    border-radius: 4px;
 
     background: #c8c8fd;
     border: solid 2px white;
@@ -95,8 +97,10 @@ export const CustomButton2 = styled.button`
   background-color: #535d69;
   border: none;
   color: wheat;
-  border-radius: 8px;
+  border-radius: 4px;
   margin: 1%;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 `;
 
 export const LoadingDiv = styled.div`
@@ -112,8 +116,11 @@ export const CustomButton = styled.button`
   padding: 10px;
   background-color: #d2b9bf;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   margin: 1%;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  color: black;
+  font-weight: 600;
 `;
 
 const tadaAnimation = keyframes`${tada}`;

@@ -38,8 +38,9 @@ i {
   padding: 10px;
   background-color: #c3d0d9;
   text-decoration: none;
-  border: 1px solid #535d69;
-  border-radius: 8px;
-  color: #535d69;
+  border: none;
+  border-radius: 4px;
+  color: black;
   margin: 0.3em auto;
+  font-weight: 600;
 }

@@ -2,15 +2,17 @@ import styled from "styled-components";
 
 export const InviteDiv = styled.div`
   margin: 10%;
-  border: 2px solid wheat;
+  border: none;
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
   background: #535d69;
-  border-radius: 8px;
+  border-radius: 4px;
   text-align: center;
   color: wheat;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 
   ul {
     list-style: none;
