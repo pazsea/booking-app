@@ -14,7 +14,6 @@ class GeolocationBase extends Component {
     super(props);
     this.state = {
       browserCoords: null,
-      dbCoords: null,
       lastKnownCoords: null
     };
   }
@@ -62,17 +61,6 @@ class GeolocationBase extends Component {
     this.setState({ lastKnownCoords: position });
   };
 
-  //   getUserPositionFromDB = () => {
-  //     this.props.firebase
-  //       .user(this.props.authUser.uid)
-  //       .child("position")
-  //       .once("value", snapshot => {
-  //         const userPosition = snapshot.val();
-  //         console.log(JSON.parse(JSON.stringify(userPosition)));
-  //         this.setState({ dbCoords: userPosition });
-  //       });
-  //   };
-
   getLastKnownPosition = (num, user = this.props.authUser.uid) => {
     this.props.firebase
       .user(user)
@@ -80,6 +68,7 @@ class GeolocationBase extends Component {
       .limitToLast(num)
       .on("value", snapshot => {
         const lastKnownPositionObject = snapshot.val();
+
         if (lastKnownPositionObject) {
           const positionsList = Object.keys(lastKnownPositionObject).map(
             key => ({
@@ -87,11 +76,13 @@ class GeolocationBase extends Component {
               uid: key
             })
           );
-          let tempPositions = {};
+          let lastKnownPositions = {};
           if (positionsList.length === 1) {
-            tempPositions = Object.assign(positionsList[0]);
+            lastKnownPositions = Object.assign(positionsList[0]);
+          } else {
+            lastKnownPositions = Object.assign(positionsList);
           }
-          this.setState({ lastKnownCoords: tempPositions });
+          this.setState({ lastKnownCoords: lastKnownPositions });
         }
       });
   };
@@ -119,16 +110,14 @@ class GeolocationBase extends Component {
   }
 
   render() {
+    const whiteText = { color: "white" };
     return (
-      <div>
+      <div style={whiteText}>
         <div>Geolocation</div>
         <div>
           <p>Coords from Browser</p>
           <Coords position={this.state.browserCoords} />
-
-          <p>Coords from DB</p>
-          <Coords position={this.state.dbCoords} />
-
+          <p />
           <p>Last known coords</p>
           <Coords position={this.state.lastKnownCoords} />
         </div>

@@ -4,6 +4,7 @@ import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 import { MyEventsButton, AttendEventButton } from "./styles";
+import Map from "../Map";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -185,6 +186,7 @@ class UpcomingBase extends Component {
               </InviteDiv>
             )
           )}
+          <Map />
         </section>
       );
     }

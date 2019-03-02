@@ -10,6 +10,14 @@ const Wrapper = styled.div`
   margin: 1em auto;
 `;
 
+const PersonMarker = L.icon({
+  iconUrl: "./personMarker.png",
+
+  iconSize: [38, 95] // size of the icon
+  // iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+  // popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
 class Map extends Component {
   componentDidMount() {
     this.map = L.map("map", {
@@ -34,6 +42,11 @@ class Map extends Component {
     L.marker([59.313448, 18.110614])
       .addTo(this.map)
       .bindPopup("KYH, en märklig skola")
+      .openPopup();
+
+    L.marker([58.5, 18.4, { icon: PersonMarker }])
+      .addTo(this.map)
+      .bindPopup("Användare")
       .openPopup();
   }
 
