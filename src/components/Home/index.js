@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-import { AuthUserContext } from "../Session";
+import { compose } from "recompose";
+
+import { AuthUserContext, withAuthorization } from "../Session";
 import Map from "../Map";
 
 class HomePage extends Component {
@@ -15,4 +17,5 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+const condition = authUser => !!authUser;
+export default compose(withAuthorization(condition))(HomePage);
