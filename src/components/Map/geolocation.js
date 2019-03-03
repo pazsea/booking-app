@@ -34,6 +34,65 @@ class GeolocationBase extends Component {
     return Math.round(d * 1000);
   };
 
+  calculateETA = (
+    startLat,
+    startLong,
+    currentLat,
+    currentLong,
+    endLat,
+    endLong,
+    startTime
+  ) => {
+    var distanceTraveled = this.calculateDistance(
+      startLat,
+      startLong,
+      currentLat,
+      currentLong
+    );
+    var remainingDistance = this.calculateDistance(
+      currentLat,
+      currentLong,
+      endLat,
+      endLong
+    );
+    var passedTime = Date.now() - startTime; //millisekunder
+    var speed = distanceTraveled / passedTime;
+    var timeLeft = remainingDistance / speed;
+
+    return timeLeft;
+  };
+
+  getStartingPositionForETA = (userID, bookingID) => {
+    var bookingStartTime; //snapshot som hämtar starttime utifrån bookingID
+    var startingPosition; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
+    var startLat; //Latitude från startingPosition
+    var startLong; //Longitude från startingPosition
+
+    return startLat, startLong;
+  };
+
+  getETA = (userID, bookingID) => {
+    var startPosition = this.getStartingPositionForETA(userID, bookingID);
+    var startLat = startPosition.startLat; //funkar detta?
+    var startLong = startPosition.startLong; //funkar detta?
+    var currentPosition = this.getLastKnownPosition(1, userID);
+    var currentLat; //Latitude från currentPosition (getLastKnownPosition)
+    var currentLong; //Longitude från currentPosition (getLastKnownPosition)
+    var endLat = 59.313448; //Static value for KYH
+    var endLong = 18.110614; //Static value for KYH
+    var startTime; //Snapshot med startTime för booking utifrån given bookingID
+
+    this.calculateETA(
+      startLat,
+      startLong,
+      currentLat,
+      currentLong,
+      endLat,
+      endLong,
+      startTime
+    );
+  };
+
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
     if (position.coords && this.state.lastKnownCoords) {
@@ -88,8 +147,6 @@ class GeolocationBase extends Component {
   };
 
   componentDidMount() {
-    this.getLastKnownPosition(1);
-
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
 
@@ -103,6 +160,7 @@ class GeolocationBase extends Component {
         distanceFilter: 1
       }
     );
+    this.getLastKnownPosition(1);
   }
 
   componentWillUnmount() {
