@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
+import { MyEventsButton, MyEventsDeleteButton, H3 } from "../MyEvents/styles";
 
 const Invites = () => (
   <AuthUserContext.Consumer>
@@ -179,7 +179,7 @@ class InvitesBase extends Component {
     const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
-      return <h3>You have no invites. </h3>;
+      return <H3>You have no invites. </H3>;
     } else if (loading) {
       return (
         <div>

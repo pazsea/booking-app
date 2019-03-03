@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, AttendEventButton } from "./styles";
+import { MyEventsButton, AttendEventButton, H3 } from "./styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -107,7 +107,7 @@ class UpcomingBase extends Component {
     const noTimes = "You have no times? WTF?";
 
     if (noUpcoming) {
-      return <h3>You have no upcoming events at this time.</h3>;
+      return <H3>You have no upcoming events at this time.</H3>;
     } else if (loading) {
       return (
         <div>

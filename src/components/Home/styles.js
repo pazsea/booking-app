@@ -4,7 +4,7 @@ export const Div = styled.div`
   margin-left: 10px;
 
   h1 {
-    color: #f1f1f1;
+    color: wheat;
   }
   p {
     color: #f1f1f1;

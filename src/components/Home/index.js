@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 
+import { Div } from "./styles";
 // import { AuthUserContext } from "../Session";
 // import Map from "../Map";
 
 class HomePage extends Component {
   render() {
-    return <h1>Home</h1>;
+    return (
+      <Div>
+        <h1>Home</h1>
+      </Div>
+    );
   }
 }
 
