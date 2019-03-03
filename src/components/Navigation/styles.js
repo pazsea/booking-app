@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+//background: #edc903;
+
 export const Nav = styled.nav`
   margin: 0;
   padding: 0;
@@ -44,22 +46,22 @@ export const Nav = styled.nav`
 
     padding: 15px 10px;
     margin: 1px 5px;
-    background: #edc903;
+    background: #535d69;
     transition: 0.3s;
     animation: fadein 0.3s;
     text-shadow: 0.03125em 0.03125em 0.09355em #152029;
     font-family: "Montserrat", sans-serif;
     font-weight: 500;
     font-size: 2rem;
-    color: #f1f1f1;
+    color: wheat;
     &.active {
-      background-color: #d1a200;
+      background-color: #424a54;
     }
     :hover {
-      background: #d1a200;
+      background: #424a54;
     }
     :focus {
-      border-color: #e9b52282;
+      border-color: #424a54;
     }
   }
 `;
@@ -73,6 +75,6 @@ export const InvCounter = styled.span`
   color: #f1f1f1;
   i {
     margin: 0 5px;
-    color: #f1f1f1;
+    color: wheat;
   }
 `;

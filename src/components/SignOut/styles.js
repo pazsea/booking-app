@@ -15,6 +15,7 @@ export const SignOutBtn = styled.button`
   font-weight: 500;
   font-size: 1.5rem;
   color: #f1f1f1;
+  cursor: pointer;
   &.active {
     background-color: #920b00;
   }
