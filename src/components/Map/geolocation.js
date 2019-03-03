@@ -63,29 +63,15 @@ class GeolocationBase extends Component {
   };
 
   getStartingPositionForETA = (userID, bookingID) => {
-    // let bookingStartTime; //snapshot som hämtar starttime utifrån bookingID
-    // let bookingDescription;
-
     this.props.firebase
       .events()
       .child(bookingID)
       .child("time")
       .limitToFirst(1)
-      // .key()
       .on("value", snapshot => {
-        let bookingStartTimeObject = snapshot.val();
-        // let bookingStartTime = Object.keys(bookingStartTimeObject);
-        console.log(bookingStartTimeObject);
-      });
-
-    this.props.firebase
-      .events()
-      .child(bookingID)
-      .child("description")
-      // .getKey()
-      .on("value", snapshot => {
-        let bookingDescription = snapshot.val();
-        console.log(bookingDescription);
+        let bookingStartTime = Object.keys(snapshot.val());
+        console.log(bookingID);
+        console.log(bookingStartTime);
       });
 
     var startingPosition; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
@@ -173,7 +159,7 @@ class GeolocationBase extends Component {
   componentDidMount() {
     this.getStartingPositionForETA(
       "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
-      "-LZyJ5kLF8iTqNLqigZW"
+      "-L_42-knG0FiHHjlC4dS"
     );
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
