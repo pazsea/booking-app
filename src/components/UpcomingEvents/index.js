@@ -4,6 +4,7 @@ import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 import { MyEventsButton, AttendEventButton } from "./styles";
+import { hostname } from "os";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -119,9 +120,9 @@ class UpcomingBase extends Component {
       return (
         <section>
           {userEventObjects.map(
-            ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
+            ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid} {...this.state}>
-                <p key={"Host paragraph: " + eventUid}>Hosted by: {username}</p>
+                <p key={"Host paragraph: " + eventUid}>Hosted by: {hostName}</p>
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
                 <p key={"Date paragrah:" + eventUid}>
                   {new Date(date).toLocaleDateString()}

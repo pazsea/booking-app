@@ -165,7 +165,7 @@ class MyEventsBase extends Component {
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
               <p key={"Host paragraph: " + evt.eventUid}>
-                Host for this event: {evt.username}
+                Host for this event: {evt.hostName}
               </p>
               <p key={"Date paragrah:" + evt.eventUid}>
                 {new Date(evt.date).toLocaleDateString()}
