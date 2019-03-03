@@ -54,4 +54,7 @@ export const InviteDiv = styled.div`
   .fa-times {
     color: #c5766b;
   }
+  h3 {
+    color: wheat;
+  }
 `;
