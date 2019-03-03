@@ -209,7 +209,9 @@ class InvitesBase extends Component {
                   {new Date(date).toLocaleDateString()}
                 </p>
                 <ul>
-                  <li>Time: </li>
+                  <li>
+                    <strong>Time: </strong>
+                  </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
@@ -218,7 +220,8 @@ class InvitesBase extends Component {
                         {new Date(Number(key)).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit"
-                        })}
+                        })}{" "}
+                        {"- "}
                         {new Date(Number(key) + 3600000).toLocaleTimeString(
                           [],
                           {
@@ -234,7 +237,9 @@ class InvitesBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Invitees: </li>
+                  <li>
+                    <strong>Invitees: </strong>
+                  </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
                       <li key={index + eventUid}>
@@ -260,7 +265,7 @@ class InvitesBase extends Component {
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map((key, index) => (
                       <li key={index + eventUid}>
-                        {key} <i class="fas fa-times" />
+                        {key} <i className="fas fa-times" />
                       </li>
                     ))
                   ) : (

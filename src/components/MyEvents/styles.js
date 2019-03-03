@@ -49,12 +49,14 @@ export const MyEventsButton = styled.button`
 
   padding: 10px;
   background-color: #86a3b1;
-  width: 50%;
+  width: 48%;
   border-radius: 20px;
   border: none;
-  color: white;
+  color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  font-size: 1.2em;
+  margin-right: 1%;
+  font-weight: 600;
 `;
 
 export const MyEventsDeleteButton = styled.button`
@@ -62,10 +64,12 @@ export const MyEventsDeleteButton = styled.button`
 
   padding: 10px;
   background-color: #d2b9bf;
-  width: 50%;
+  width: 48%;
   border-radius: 20px;
   border: none;
-  color: white;
+  color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  font-size: 1.2em;
+  margin-left: 1%;
+  font-weight: 600;
 `;
