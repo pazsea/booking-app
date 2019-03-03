@@ -13,11 +13,11 @@ export const Div = styled.div`
   flex-direction: column; */
 
   width: 500px;
+  margin: 1% 0;
   margin-left: 30%;
   margin-right: 10%;
-  margin-top: 8%;
   font-size: 16px;
-  border: 2px solid white;
+  border: 2px solid wheat;
 
   button {
     background: white;
@@ -29,17 +29,17 @@ export const Div = styled.div`
   }
 
   h2 {
-    background: #28d;
+    background: #535d69;
     padding: 20px;
     font-size: 1.4em;
     font-weight: normal;
     text-align: center;
     text-transform: uppercase;
-    color: #fff;
+    color: wheat;
   }
 
   form {
-    background: #ebebeb;
+    background: #c3d0d9;
     padding: 12px;
   }
 
@@ -56,17 +56,25 @@ export const Div = styled.div`
   }
 
   button[type="submit"] {
-    background: #28d;
-    border-color: transparent;
-    color: #fff;
-    cursor: pointer;
-    padding: 12px;
-    text-transform: uppercase;
     width: 100%;
+    color: wheat;
+    padding: 0.7em 1.7em;
+    margin-top: 5%;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.3em;
+    background-color: #535d69;
+    position: relative;
+    box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   }
 
   button[type="submit"]:hover {
-    background: #17c;
+    background: #192530;
   }
 
   /* Buttons' focus effect */
