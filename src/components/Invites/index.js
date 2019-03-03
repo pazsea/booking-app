@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
+import { MyEventsButton, MyEventsDeleteButton, H3 } from "../MyEvents/styles";
 
 const Invites = () => (
   <AuthUserContext.Consumer>
@@ -61,8 +61,12 @@ class InvitesBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.user().off();
-    this.props.firebase.event().off();
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .off();
+    this.props.firebase.users().off();
+    this.props.firebase.events().off();
   }
 
   //TO DO:
@@ -111,12 +115,10 @@ class InvitesBase extends Component {
       .child("invitedToEvents")
       .equalTo(currentEvent)
       .once("value", snapshot => {
-        console.log(snapshot.val());
         if (snapshot.val() === null) {
           delete userEventObjects[currentEvent];
           this.setState({ userEventObjects });
         } else {
-          console.log(snapshot.val());
           this.setState({
             loading: true
           });
@@ -179,7 +181,7 @@ class InvitesBase extends Component {
     const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
-      return <h3>You have no invites. </h3>;
+      return <H3>You have no invites. </H3>;
     } else if (loading) {
       return (
         <div>
@@ -188,7 +190,6 @@ class InvitesBase extends Component {
         </div>
       );
     } else if (userEventObjects === null) {
-      console.log(userEventObjects);
       return (
         <div>
           Fetching invites....
@@ -199,10 +200,10 @@ class InvitesBase extends Component {
       return (
         <section>
           {userEventObjects.map(
-            ({ eventUid, grouproom, date, username, time, ...evt }, index) => (
+            ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid}>
                 <p key={"Host paragraph: " + eventUid}>
-                  {username} has invited you to this event:
+                  {hostName} has invited you to this event:
                 </p>
                 <p key={"Event UID: " + eventUid}>{grouproom}</p>
                 <p key={"Date paragrah:" + eventUid}>
@@ -216,7 +217,6 @@ class InvitesBase extends Component {
                   {time ? (
                     Object.keys(time).map((key, index) => (
                       <li key={index + eventUid}>
-                        {console.log(Number(key))}
                         {new Date(Number(key)).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit"

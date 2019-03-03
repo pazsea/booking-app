@@ -1,18 +1,17 @@
 import React, { Component } from "react";
-
-import { AuthUserContext } from "../Session";
-import Map from "../Map";
+import { Div } from "./styles";
+import { compose } from "recompose";
+import { AuthUserContext, withAuthorization } from "../Session";
 
 class HomePage extends Component {
   render() {
     return (
-      <AuthUserContext.Consumer>
-        {authUser => (
-          <Map userId={authUser.uid} firebase={this.props.firebase} />
-        )}
-      </AuthUserContext.Consumer>
+      <Div>
+        <h1>Home</h1>
+      </Div>
     );
   }
 }
 
-export default HomePage;
+const condition = authUser => !!authUser;
+export default compose(withAuthorization(condition))(HomePage);

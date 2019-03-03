@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const H3 = styled.h3`
+  color: wheat;
+`;
+
 export const InviteDiv = styled.div`
   margin: 10%;
   border: 2px solid wheat;
@@ -11,6 +15,7 @@ export const InviteDiv = styled.div`
   border-radius: 8px;
   text-align: center;
   color: wheat;
+
   ul {
     list-style: none;
     line-height: 2em;

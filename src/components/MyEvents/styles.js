@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const H3 = styled.h3`
+  color: wheat;
+`;
+
 export const InviteDiv = styled.div`
   margin: 10%;
   border: none;

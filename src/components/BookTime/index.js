@@ -44,79 +44,73 @@ class BookTimeBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookDate: new Date(this.props.bookDate).toDateString(),
+      bookingDate: new Date(this.props.bookDate).toDateString(),
       time: {},
       chosenTimeSlots: {},
       loading: false,
-      username: [],
+      dbUsernames: [],
       isInvited: {},
       isInvitedUid: [],
-      desc: "",
+      description: "",
       showModal: false
     };
   }
 
+  updateBookedTimeSlots = () => {
+    const { firebase, groupRoom } = this.props;
+
+    firebase
+      .bookedEventDateTimes()
+      .child(groupRoom)
+      .on("value", snapshot => {
+        const bookedObject = snapshot.val();
+        if (bookedObject) {
+          const bookedList = bookedObject;
+          this.setState({ time: bookedList, loading: false });
+          this.setState({ chosenTimeSlots: {} });
+        } else {
+          this.setState({ time: {}, loading: false });
+        }
+      });
+  };
+
   componentDidMount() {
+    const { firebase } = this.props;
+    this.updateBookedTimeSlots();
+
     this.setState({ loading: true });
-    this.props.firebase.users().on("value", snapshot => {
+    firebase.users().on("value", snapshot => {
       const userObj = Object.values(snapshot.val());
       const map1 = userObj.map(function(userO) {
         return userO.username;
       });
       this.setState({ mapeusernames: map1, loading: false });
     });
-
-    this.props.firebase
-      .bookedEventDateTimes()
-      .child(this.props.groupRoom)
-      .on("value", snapshot => {
-        const bookedObject = snapshot.val();
-        console.log(bookedObject);
-        if (bookedObject) {
-          const bookedList = bookedObject;
-          // convert booked list from snapshot
-          this.setState({ time: bookedList });
-          this.setState({ chosenTimeSlots: {} });
-        } else {
-          this.setState({ time: {}, loading: false });
-        }
-        console.log(this.state.time);
-      });
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.groupRoom !== prevProps.groupRoom ||
-      this.props.bookDate !== prevProps.bookDate
-    ) {
+    const { groupRoom, bookDate } = this.props;
+
+    if (groupRoom !== prevProps.groupRoom || bookDate !== prevProps.bookDate) {
       this.setState({ loading: true });
-      this.props.firebase
-        .bookedEventDateTimes()
-        .child(this.props.groupRoom)
-        .on("value", snapshot => {
-          const bookedObject = snapshot.val();
-          if (bookedObject) {
-            const bookedList = bookedObject;
-            this.setState({ time: bookedList, loading: false });
-            this.setState({ chosenTimeSlots: {} });
-          } else {
-            this.setState({ time: {}, loading: false });
-          }
-        });
+      this.updateBookedTimeSlots();
     }
   }
 
   componentWillUnmount() {
-    this.props.firebase
+    const { firebase, groupRoom, bookDate } = this.props;
+
+    firebase
       .bookedEventDateTimes()
-      .child(this.props.groupRoom)
-      .child(this.props.bookDate)
+      .child(groupRoom)
+      .child(bookDate)
       .off();
-    this.props.firebase.users().off();
+    firebase.users().off();
   }
 
   onClickTimeSlot = name => {
-    if (this.state.chosenTimeSlots[name]) {
+    const { chosenTimeSlots } = this.state;
+    if (chosenTimeSlots[name]) {
       this.setState({
         chosenTimeSlots: {
           [name]: null
@@ -141,10 +135,10 @@ class BookTimeBase extends Component {
     const { mapeusernames } = this.state;
     const inputeValueUpper = inputValue.toUpperCase();
     if (inputValue.length === 0) {
-      this.setState({ username: [] });
+      this.setState({ dbUsernames: [] });
     } else {
       this.setState({
-        username: mapeusernames.filter(usernames =>
+        dbUsernames: mapeusernames.filter(usernames =>
           usernames.includes(inputeValueUpper)
         )
       });
@@ -152,13 +146,15 @@ class BookTimeBase extends Component {
   }
 
   pushToInvited = (event, user) => {
-    var { isInvited } = this.state;
+    const { firebase } = this.props;
+    const { isInvited } = this.state;
+
     const invitees = Object.keys(isInvited);
     if (invitees.length === 0 || !invitees.includes(user)) {
       isInvited[user] = true;
       this.setState({ isInvited });
 
-      this.props.firebase
+      firebase
         .users()
         .orderByChild("username")
         .equalTo(user)
@@ -175,9 +171,8 @@ class BookTimeBase extends Component {
     }
   };
 
-  writeDesc(event) {
-    const inputValue = event.target.value;
-    this.setState({ desc: inputValue });
+  updateDescription(event) {
+    this.setState({ description: event.target.value });
   }
 
   closeModule = () => {
@@ -187,11 +182,12 @@ class BookTimeBase extends Component {
   };
 
   deleteInvited = key => {
+    const { firebase } = this.props;
     const { isInvited, isInvitedUid } = this.state;
     delete isInvited[key];
     this.setState({ isInvited });
 
-    this.props.firebase
+    firebase
       .users()
       .orderByChild("username")
       .equalTo(key)
@@ -205,24 +201,28 @@ class BookTimeBase extends Component {
   };
 
   sendToDB = (event, authUser) => {
-    if (Object.keys(this.state.chosenTimeSlots).length) {
-      const newObj = Object.assign(
-        {},
-        { ...this.state.time },
-        { ...this.state.chosenTimeSlots }
-      );
+    const { firebase, groupRoom, bookDate } = this.props;
+    const {
+      isInvited,
+      isInvitedUid,
+      chosenTimeSlots,
+      time,
+      description
+    } = this.state;
+    if (Object.keys(chosenTimeSlots).length) {
+      const newObj = Object.assign({}, { ...time }, { ...chosenTimeSlots });
 
-      this.props.firebase
+      firebase
         .bookedEventDateTimes()
-        .child(this.props.groupRoom)
+        .child(groupRoom)
         .set({ ...newObj });
 
-      const eventKey = this.props.firebase.events().push().key;
+      const eventKey = firebase.events().push().key;
 
-      const mapInviteUid = this.state.isInvitedUid;
+      const mapInviteUid = isInvitedUid;
 
       mapInviteUid.map(inviteUid =>
-        this.props.firebase
+        firebase
           .users()
           .child(inviteUid)
           .child("invitedToEvents")
@@ -230,28 +230,28 @@ class BookTimeBase extends Component {
       );
 
       mapInviteUid.map(inviteUid =>
-        this.props.firebase
+        firebase
           .events()
           .child(eventKey)
           .child("isInvitedUid")
           .update({ [inviteUid]: true })
       );
 
-      this.props.firebase
+      firebase
         .events()
         .child(eventKey)
         .update({
-          grouproom: this.props.groupRoom,
-          date: this.props.bookDate,
-          host: authUser.uid,
-          username: authUser.username,
-          time: { ...this.state.chosenTimeSlots },
-          isInvited: { ...this.state.isInvited },
-          description: this.state.desc,
+          grouproom: groupRoom,
+          date: bookDate,
+          hostID: authUser.uid,
+          hostName: authUser.username,
+          time: { ...chosenTimeSlots },
+          isInvited: { ...isInvited },
+          description: description,
           eventUid: eventKey
         });
 
-      this.props.firebase
+      firebase
         .users()
         .child(authUser.uid)
         .child("hostedEvents")
@@ -259,8 +259,8 @@ class BookTimeBase extends Component {
 
       this.setState({
         isInvited: {},
-        desc: "",
-        username: [],
+        description: "",
+        dbUsername: [],
         isInvitedUid: []
       });
       this.setState({
@@ -275,10 +275,19 @@ class BookTimeBase extends Component {
   };
 
   render() {
-    const { close, groupRoom } = this.props;
-    const { loading, username, showModal, bookDate } = this.state;
+    const { close, groupRoom, bookDate } = this.props;
+    const {
+      loading,
+      dbUsernames,
+      showModal,
+      bookingDate,
+      isInvited,
+      chosenTimeSlots,
+      description
+    } = this.state;
 
-    const isInvitedKeys = Object.keys(this.state.isInvited);
+    const isInvitedKeys = Object.keys(isInvited);
+
     return (
       <AuthUserContext.Consumer>
         {authUser => (
@@ -293,21 +302,21 @@ class BookTimeBase extends Component {
                 <button onClick={close}>Close</button>
                 <br />
                 <h2>
-                  Date: <p>{bookDate}</p>
+                  Date: <p>{bookingDate}</p>
                 </h2>
                 <h2>
                   Room: <p>{groupRoom}</p>
                 </h2>
                 <br />
                 {times
-                  .map(time => parseInt(time) + parseInt(this.props.bookDate))
+                  .map(time => parseInt(time) + parseInt(bookDate))
                   .filter(time => !this.state.time[time])
                   .map(time => (
                     <TimeSlot
                       key={time}
                       name={time}
-                      time={this.state.time}
-                      chosenTimeSlots={this.state.chosenTimeSlots}
+                      time={time}
+                      chosenTimeSlots={chosenTimeSlots}
                       onClickTimeSlot={this.onClickTimeSlot}
                     />
                   ))}
@@ -316,7 +325,7 @@ class BookTimeBase extends Component {
                   <br />
                   <h4>Invite user:</h4>
 
-                  {username
+                  {dbUsernames
                     .filter(user => user.length > 0)
                     .map(user => (
                       <CustomButton2
@@ -352,9 +361,9 @@ class BookTimeBase extends Component {
                   id="descriptionInput"
                   type="textarea"
                   name="description"
-                  value={this.state.desc}
+                  value={description}
                   placeholder="Write a short description what the booking is about"
-                  onChange={event => this.writeDesc(event)}
+                  onChange={event => this.updateDescription(event)}
                 />
                 <br />
                 <input

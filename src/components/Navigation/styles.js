@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+//background: #edc903;
+
 export const Nav = styled.nav`
   margin: 0;
   padding: 0;
@@ -58,7 +60,7 @@ export const Nav = styled.nav`
       background: #d1a200;
     }
     :focus {
-      border-color: #e9b52282;
+      border-color: #424a54;
     }
   }
 `;
@@ -72,6 +74,6 @@ export const InvCounter = styled.span`
   color: #f1f1f1;
   i {
     margin: 0 5px;
-    color: #f1f1f1;
+    color: wheat;
   }
 `;

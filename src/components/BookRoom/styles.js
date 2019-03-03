@@ -23,6 +23,8 @@ export const Div = styled.div`
     width: 100%;
     padding: 10px;
     text-align: center;
+    cursor: pointer;
+
     input:first-child:focus {
       box-shadow: 0 0 10px white;
       border: 5px solid white;
@@ -46,6 +48,7 @@ export const GroupRoomButton = styled.button`
   background-color: #535d69;
   position: relative;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  cursor: pointer;
 
   :focus {
     outline: 0;
@@ -67,6 +70,7 @@ export const ClassroomButton = styled.button`
   background-color: #c3d0d9;
   position: relative;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  cursor: pointer;
 
   :focus {
     outline: 0;
