@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import styled from "styled-components";
 import Geolocation from "./geolocation";
 
@@ -10,11 +9,18 @@ const Wrapper = styled.div`
   margin: 1em auto;
 `;
 
+var PersonMarker = L.icon({
+  iconUrl: require("./personMarker.png"),
+  iconSize: [50, 50], // size of the icon
+  iconAnchor: [25, 50], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -50] // point from which the popup should open relative to the iconAnchor
+});
+
 class Map extends Component {
   componentDidMount() {
     this.map = L.map("map", {
-      center: [58, 16],
-      zoom: 6,
+      center: [59.313448, 18.110614],
+      zoom: 13,
       zoomControl: false
     });
 
@@ -35,6 +41,10 @@ class Map extends Component {
       .addTo(this.map)
       .bindPopup("KYH, en märklig skola")
       .openPopup();
+
+    L.marker([59.31445, 18.110613], { icon: PersonMarker })
+      .addTo(this.map)
+      .bindPopup("Användare");
   }
 
   render() {

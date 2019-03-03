@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv, MyEventsButton, MyEventsDeleteButton } from "./styles";
+import Map from "../Map";
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -184,6 +185,7 @@ class MyEventsBase extends Component {
     } else {
       return (
         <section>
+          <Map />
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
               <p key={"Host paragraph: " + evt.eventUid}>

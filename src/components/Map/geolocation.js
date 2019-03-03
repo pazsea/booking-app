@@ -14,7 +14,6 @@ class GeolocationBase extends Component {
     super(props);
     this.state = {
       browserCoords: null,
-      dbCoords: null,
       lastKnownCoords: null
     };
   }
@@ -33,6 +32,65 @@ class GeolocationBase extends Component {
     var d = R * c;
 
     return Math.round(d * 1000);
+  };
+
+  calculateETA = (
+    startLat,
+    startLong,
+    currentLat,
+    currentLong,
+    endLat,
+    endLong,
+    startTime
+  ) => {
+    var distanceTraveled = this.calculateDistance(
+      startLat,
+      startLong,
+      currentLat,
+      currentLong
+    );
+    var remainingDistance = this.calculateDistance(
+      currentLat,
+      currentLong,
+      endLat,
+      endLong
+    );
+    var passedTime = Date.now() - startTime; //millisekunder
+    var speed = distanceTraveled / passedTime;
+    var timeLeft = remainingDistance / speed;
+
+    return timeLeft;
+  };
+
+  getStartingPositionForETA = (userID, bookingID) => {
+    var bookingStartTime; //snapshot som hämtar starttime utifrån bookingID
+    var startingPosition; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
+    var startLat; //Latitude från startingPosition
+    var startLong; //Longitude från startingPosition
+
+    return startLat, startLong;
+  };
+
+  getETA = (userID, bookingID) => {
+    var startPosition = this.getStartingPositionForETA(userID, bookingID);
+    var startLat = startPosition.startLat; //funkar detta?
+    var startLong = startPosition.startLong; //funkar detta?
+    var currentPosition = this.getLastKnownPosition(1, userID);
+    var currentLat; //Latitude från currentPosition (getLastKnownPosition)
+    var currentLong; //Longitude från currentPosition (getLastKnownPosition)
+    var endLat = 59.313448; //Static value for KYH
+    var endLong = 18.110614; //Static value for KYH
+    var startTime; //Snapshot med startTime för booking utifrån given bookingID
+
+    this.calculateETA(
+      startLat,
+      startLong,
+      currentLat,
+      currentLong,
+      endLat,
+      endLong,
+      startTime
+    );
   };
 
   updatePosition = position => {
@@ -62,17 +120,6 @@ class GeolocationBase extends Component {
     this.setState({ lastKnownCoords: position });
   };
 
-  //   getUserPositionFromDB = () => {
-  //     this.props.firebase
-  //       .user(this.props.authUser.uid)
-  //       .child("position")
-  //       .once("value", snapshot => {
-  //         const userPosition = snapshot.val();
-  //         console.log(JSON.parse(JSON.stringify(userPosition)));
-  //         this.setState({ dbCoords: userPosition });
-  //       });
-  //   };
-
   getLastKnownPosition = (num, user = this.props.authUser.uid) => {
     this.props.firebase
       .user(user)
@@ -80,6 +127,7 @@ class GeolocationBase extends Component {
       .limitToLast(num)
       .on("value", snapshot => {
         const lastKnownPositionObject = snapshot.val();
+
         if (lastKnownPositionObject) {
           const positionsList = Object.keys(lastKnownPositionObject).map(
             key => ({
@@ -87,18 +135,18 @@ class GeolocationBase extends Component {
               uid: key
             })
           );
-          let tempPositions = {};
+          let lastKnownPositions = {};
           if (positionsList.length === 1) {
-            tempPositions = Object.assign(positionsList[0]);
+            lastKnownPositions = Object.assign(positionsList[0]);
+          } else {
+            lastKnownPositions = Object.assign(positionsList);
           }
-          this.setState({ lastKnownCoords: tempPositions });
+          this.setState({ lastKnownCoords: lastKnownPositions });
         }
       });
   };
 
   componentDidMount() {
-    this.getLastKnownPosition(1);
-
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
 
@@ -112,6 +160,7 @@ class GeolocationBase extends Component {
         distanceFilter: 1
       }
     );
+    this.getLastKnownPosition(1);
   }
 
   componentWillUnmount() {
@@ -119,16 +168,14 @@ class GeolocationBase extends Component {
   }
 
   render() {
+    const whiteText = { color: "white" };
     return (
-      <div>
+      <div style={whiteText}>
         <div>Geolocation</div>
         <div>
           <p>Coords from Browser</p>
           <Coords position={this.state.browserCoords} />
-
-          <p>Coords from DB</p>
-          <Coords position={this.state.dbCoords} />
-
+          <p />
           <p>Last known coords</p>
           <Coords position={this.state.lastKnownCoords} />
         </div>
