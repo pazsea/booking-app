@@ -48,7 +48,7 @@ class BookTimeBase extends Component {
       time: {},
       chosenTimeSlots: {},
       loading: false,
-      hostName: [],
+      dbUsernames: [],
       isInvited: {},
       isInvitedUid: [],
       description: "",
@@ -127,17 +127,18 @@ class BookTimeBase extends Component {
   };
 
   getValueInput(evt) {
-    this.filterNames(evt.target.value);
+    const inputValue = evt.target.value;
+    this.filterNames(inputValue);
   }
 
   filterNames(inputValue) {
     const { mapeusernames } = this.state;
     const inputeValueUpper = inputValue.toUpperCase();
     if (inputValue.length === 0) {
-      this.setState({ username: [] });
+      this.setState({ dbUsernames: [] });
     } else {
       this.setState({
-        username: mapeusernames.filter(usernames =>
+        dbUsernames: mapeusernames.filter(usernames =>
           usernames.includes(inputeValueUpper)
         )
       });
@@ -259,7 +260,7 @@ class BookTimeBase extends Component {
       this.setState({
         isInvited: {},
         description: "",
-        username: [],
+        dbUsername: [],
         isInvitedUid: []
       });
       this.setState({
@@ -277,7 +278,7 @@ class BookTimeBase extends Component {
     const { close, groupRoom, bookDate } = this.props;
     const {
       loading,
-      hostName,
+      dbUsernames,
       showModal,
       bookingDate,
       isInvited,
@@ -324,7 +325,7 @@ class BookTimeBase extends Component {
                   <br />
                   <h4>Invite user:</h4>
 
-                  {hostName
+                  {dbUsernames
                     .filter(user => user.length > 0)
                     .map(user => (
                       <CustomButton2

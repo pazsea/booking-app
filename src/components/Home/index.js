@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
-// import { AuthUserContext } from "../Session";
-// import Map from "../Map";
+import { compose } from "recompose";
+
+import { AuthUserContext, withAuthorization } from "../Session";
 
 class HomePage extends Component {
   render() {
@@ -9,16 +10,5 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
-
-// class HomePage extends Component {
-//   render () {
-//     return (
-//       <AuthUserContext.Consumer>
-//         { authUser => (
-//           {/* <Map userId={authUser.uid} firebase={this.props.firebase} /> */ }
-//         ) }
-//       </AuthUserContext.Consumer>
-//     );
-//   }
-// }
+const condition = authUser => !!authUser;
+export default compose(withAuthorization(condition))(HomePage);
