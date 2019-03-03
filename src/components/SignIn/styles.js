@@ -13,9 +13,7 @@ export const Div = styled.div`
   flex-direction: column; */
 
   width: 500px;
-  margin: 1% 0;
-  margin-left: 30%;
-  margin-right: 10%;
+  margin: 10% auto;
   font-size: 16px;
   border: 2px solid wheat;
 
@@ -39,7 +37,7 @@ export const Div = styled.div`
   }
 
   form {
-    background: #c3d0d9;
+    background: #ebebeb;
     padding: 12px;
   }
 
@@ -58,8 +56,7 @@ export const Div = styled.div`
   button[type="submit"] {
     width: 100%;
     color: wheat;
-    padding: 0.7em 1.7em;
-    margin-top: 5%;
+    padding: 12px;
     border: none;
     border-radius: 4px;
     box-sizing: border-box;
@@ -67,10 +64,11 @@ export const Div = styled.div`
     font-family: "Montserrat", sans-serif;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 1.3em;
+    font-size: 1.2em;
     background-color: #535d69;
     position: relative;
     box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+    cursor: pointer;
   }
 
   button[type="submit"]:hover {
@@ -96,7 +94,6 @@ export const Div = styled.div`
   @media screen and (max-width: 768px) {
     margin-left: 10%;
     margin-right: 10%;
-    margin-top: 20%;
     width: 80%;
   }
 `;

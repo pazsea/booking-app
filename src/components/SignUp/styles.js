@@ -15,21 +15,22 @@ export const Div = styled.div`
   width: 500px;
   margin: 10% auto;
   font-size: 16px;
-  border: 2px solid white;
   text-align: center;
+  border: 2px solid wheat;
+
   button {
     background: white;
     border-radius: 3px;
   }
 
   h1 {
-    background: #28d;
+    background: #535d69;
     padding: 20px;
     font-size: 1.4em;
     font-weight: normal;
     text-align: center;
     text-transform: uppercase;
-    color: #fff;
+    color: wheat;
   }
 
   form {
@@ -50,17 +51,21 @@ export const Div = styled.div`
   }
 
   button[type="submit"] {
-    background: #28d;
-    border-color: transparent;
-    color: #fff;
-    cursor: pointer;
-    padding: 12px;
-    text-transform: uppercase;
     width: 100%;
+    color: wheat;
+    padding: 12px;
+    text-decoration: none;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    background-color: #535d69;
+    position: relative;
+    cursor: pointer;
   }
 
   button[type="submit"]:hover {
-    background: #17c;
+    background: #192530;
   }
 
   /* Buttons' focus effect */
@@ -79,7 +84,7 @@ export const Div = styled.div`
     font-family: inherit;
     font-size: 0.95em;
   }
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 768px) {
     margin-left: 10%;
     margin-right: 10%;
     width: 80%;
