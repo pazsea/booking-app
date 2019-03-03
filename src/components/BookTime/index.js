@@ -52,8 +52,7 @@ class BookTimeBase extends Component {
       isInvited: {},
       isInvitedUid: [],
       description: "",
-      showModal: false,
-      emptySearchInput: ""
+      showModal: false
     };
   }
 
@@ -284,8 +283,7 @@ class BookTimeBase extends Component {
       bookingDate,
       isInvited,
       chosenTimeSlots,
-      description,
-      emptySearchInput
+      description
     } = this.state;
 
     const isInvitedKeys = Object.keys(isInvited);
@@ -341,7 +339,6 @@ class BookTimeBase extends Component {
 
                   <input
                     id="searchUser"
-                    value={emptySearchInput}
                     type="text"
                     name="name"
                     placeholder="Search for users to invite."
