@@ -11,7 +11,7 @@ const AccountPage = () => (
     {authUser => (
       <Div>
         <h1>Account: {authUser.email}</h1>
-        <PasswordForgetForm />
+
         <PasswordChangeForm />
       </Div>
     )}
