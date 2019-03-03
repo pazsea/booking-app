@@ -55,7 +55,6 @@ class SignUpFormBase extends Component {
     this.setState({
       roles: selectRole
     });
-    console.log(this.state.role);
   };
 
   handleChangeClass = selectedClassOption => {
@@ -64,8 +63,6 @@ class SignUpFormBase extends Component {
     this.setState({
       classes: selectClass
     });
-
-    console.log(selectClass);
   };
 
   onSubmit = event => {
@@ -79,7 +76,6 @@ class SignUpFormBase extends Component {
     } = this.state;
 
     const usernameUpper = username.toUpperCase();
-    console.log();
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
