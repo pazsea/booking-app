@@ -57,4 +57,8 @@ export const InviteDiv = styled.div`
   h3 {
     color: wheat;
   }
+  h1 {
+    color: wheat;
+    font-size: 1.5em;
+  }
 `;
