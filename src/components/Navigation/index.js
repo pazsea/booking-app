@@ -50,9 +50,6 @@ class NavigationAuthBase extends Component {
 
   writeUserPositionToDB = position => {
     const { latitude, longitude } = position;
-    console.log("writeUserPositionToDB called from Nav");
-    console.log("lat: " + latitude);
-    console.log("long: " + longitude);
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("positions")
@@ -65,33 +62,13 @@ class NavigationAuthBase extends Component {
   };
 
   updatePosition = position => {
-    console.log("updatePosition called");
-    if (this.state.lastStoredPosition) {
-      console.log("state lastStoredPosition is NOT empty");
-      const { latitude: lat1, longitude: lng1 } = position.coords;
-      const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
+    const { latitude: lat1, longitude: lng1 } = position.coords;
+    const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
 
-      const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
-      if (dist > 1) {
-        console.log("moved");
-        // console.log(position.coords);
-        this.writeUserPositionToDB(position.coords);
-
-        console.log("writeUserPositionToDB called from update if moved");
-      }
-      console.log("NOT moved");
-      // console.log(this.state.lastStoredPosition);
-    } else {
+    const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+    if (dist > 1) {
       this.writeUserPositionToDB(position.coords);
-      console.log("state lastStoredPosition is empty");
     }
-    console.log("outside of if");
-    console.log(this.state.lastStoredPosition);
-    // this.writeUserPositionToDB(position.coords);
-    // console.log(this.state.lastStoredPosition);
-    // this.setState({ lastStoredPosition: position.coords });
-
-    // console.log(position.coords);
   };
 
   getLastKnownPosition = (num, user = this.props.authUser.uid) => {
@@ -121,8 +98,6 @@ class NavigationAuthBase extends Component {
   };
 
   componentDidMount() {
-    console.log("Nav mounted");
-
     // -------------- GET NUMBER OF INVITES -------------- //
     this.props.firebase
       .user(this.props.authUser.uid)
@@ -140,9 +115,8 @@ class NavigationAuthBase extends Component {
         }
       });
 
-    // --------------  STORE POSITION ON LOGIN -------------- //
+    // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
-      // this.writeUserPositionToDB,
       this.updatePosition,
 
       error => {
@@ -155,9 +129,6 @@ class NavigationAuthBase extends Component {
         distanceFilter: 1
       }
     );
-    // let lastKnownPosition = this.getLastKnownPosition(1);
-    // this.setState({ lastStoredPosition: lastKnownPosition });
-    console.log(this.state.lastStoredPosition);
   }
 
   componentWillUnmount() {
