@@ -199,18 +199,7 @@ class GeolocationBase extends Component {
 
   render() {
     const whiteText = { color: "white" };
-    return (
-      <div style={whiteText}>
-        <div>Geolocation</div>
-        <div>
-          <p>Coords from Browser</p>
-          <Coords position={this.state.browserCoords} />
-          <p />
-          <p>Last known coords</p>
-          <Coords position={this.state.lastKnownCoords} />
-        </div>
-      </div>
-    );
+    return <div />;
   }
 }
 

@@ -117,7 +117,7 @@ class NavigationAuthBase extends Component {
         }
       });
 
-    // STORE POSITION ON LOGIN
+    // UPDATERAR POSTION HELA TIDEN. MÅSTE FIXAS.
     // this.watchId = navigator.geolocation.watchPosition(
     //   this.writeUserPositionToDB,
 
