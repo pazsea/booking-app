@@ -11,17 +11,20 @@
   font-size: 1.5em;
   font-family: "Montserrat", sans-serif;
   position: fixed;
-  background: white;
   width: 80%;
   height: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 1em;
+  padding: 0.5em 1em;
+  background: #56768d;
+  color: white;
+  border-radius: 4px;
+  font-weight: 800;
 }
 
 i {
-  color: green;
+  color: white;
 }
 
 .display-block {
@@ -34,13 +37,14 @@ i {
 
 .sendButton {
   width: 100%;
-  font-size: 1.2em;
+  font-size: 1.3em;
   padding: 10px;
-  background-color: #c3d0d9;
+  background-color: #28694a;
   text-decoration: none;
   border: none;
   border-radius: 4px;
-  color: black;
+  color: wheat;
   margin: 0.3em auto;
-  font-weight: 600;
+  font-weight: 400;
+  font-family: "Montserrat";
 }

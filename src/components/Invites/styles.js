@@ -7,7 +7,7 @@ export const InviteDiv = styled.div`
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
-  background: #535d69;
+  background: #193948;
   border-radius: 4px;
   text-align: center;
   color: wheat;
@@ -18,8 +18,12 @@ export const InviteDiv = styled.div`
     margin-bottom: 0;
     letter-spacing: 0;
     line-height: 1.8em;
-    font-size: 1.2em;
   }
+
+  p:nth-child(1) {
+    font-size: 1.3em;
+  }
+
   ul {
     list-style: none;
     font-size: 1.2em;
@@ -39,6 +43,10 @@ export const InviteDiv = styled.div`
     border-radius: 8px;
     padding: 0.5em;
     margin-bottom: 1em;
+  }
+
+  ul li:nth-child(1) {
+    font-size: 1.3em;
   }
 
   li {

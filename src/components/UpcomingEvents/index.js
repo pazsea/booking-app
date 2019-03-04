@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, AttendEventButton, H3 } from "./styles";
+import { HelpButton, NoHelpButton, AttendEventButton, H3 } from "./styles";
 import { hostname } from "os";
 
 const UpcomingEvents = () => (
@@ -151,23 +151,24 @@ class UpcomingBase extends Component {
                     <li>{noTimes}</li>
                   )}
                 </ul>
-                <MyEventsButton
-                  value={eventUid}
-                  key={"Dont need help: " + eventUid}
-                  onClick={this.notNeeded}
-                  index={evt.index}
-                >
-                  Dont need help anymore.
-                </MyEventsButton>
-                <MyEventsButton
+                <HelpButton
                   value={eventUid}
                   key={"Help wanted: " + eventUid}
                   index={evt.index}
                   onClick={this.helpMe}
                 >
-                  Oh God, Help me!!
-                </MyEventsButton>
-                <AttendEventButton
+                  Help queue
+                </HelpButton>
+                <NoHelpButton
+                  value={eventUid}
+                  key={"Dont need help: " + eventUid}
+                  onClick={this.notNeeded}
+                  index={evt.index}
+                >
+                  Cancel help queue
+                </NoHelpButton>
+
+                {/* <AttendEventButton
                   className={
                     Object.values(active).find(
                       bookingId => bookingId === eventUid
@@ -184,7 +185,7 @@ class UpcomingBase extends Component {
                   }
                 >
                   ATTEND
-                </AttendEventButton>
+                </AttendEventButton> */}
               </InviteDiv>
             )
           )}

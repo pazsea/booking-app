@@ -67,7 +67,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
-              Upcoming Events
+              Upcoming
             </NavLink>
           </li>
           <li>
@@ -81,7 +81,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.MY_EVENTS} onClick={this.props.showNav}>
-              My Events
+              My Bookings
             </NavLink>
           </li>
           <li>

@@ -39,7 +39,7 @@ class App extends Component {
           <Menu>
             <MenuItems>
               <i className="fas fa-bars fa-3x" onClick={this.navToggle} />
-              <h1>Project Grex</h1>
+              <h1>KYH BOOKING</h1>
             </MenuItems>
           </Menu>
           <Navigation stateNav={this.state.isOpen} showNav={this.navToggle} />

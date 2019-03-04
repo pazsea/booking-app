@@ -15,7 +15,7 @@ export const InviteDiv = styled.div`
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
-  background: #535d69;
+  background: #193948;
   border-radius: 4px;
   text-align: center;
   color: wheat;
@@ -26,6 +26,11 @@ export const InviteDiv = styled.div`
     line-height: 2em;
     padding: 0.8em;
   }
+
+  ul li:nth-child(1) {
+    font-size: 1.3em;
+  }
+
   input {
     width: 100%;
     height: 4em;
@@ -42,6 +47,9 @@ export const InviteDiv = styled.div`
     margin-bottom: 1em;
   }
 
+  p:nth-child(1) {
+    font-size: 1.3em;
+  }
   /* button {
     width: 50%;
   } */
