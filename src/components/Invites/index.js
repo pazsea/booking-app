@@ -89,6 +89,13 @@ class InvitesBase extends Component {
     this.props.firebase
       .events()
       .child(currentEvent)
+      .child("hasAcceptedUid")
+      .update({
+        [this.props.authUser.uid]: true
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
       .child("isInvited")
       .update({
         [this.props.authUser.username]: null
@@ -175,9 +182,9 @@ class InvitesBase extends Component {
   render() {
     console.log("RENDER");
     const { loading, userEventObjects, noInvites } = this.state;
-    const noAccepted = "No one has accepted yet.";
+    const noAccepted = "";
     const noInvited = "No one is invited.";
-    const noDeclined = "No one has declined yet.";
+    const noDeclined = "";
     const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
@@ -210,9 +217,7 @@ class InvitesBase extends Component {
                   {new Date(date).toLocaleDateString()}
                 </p>
                 <ul>
-                  <li>
-                    <strong>Time: </strong>
-                  </li>
+                  <li>Time: </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
@@ -237,9 +242,7 @@ class InvitesBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>
-                    <strong>Invitees: </strong>
-                  </li>
+                  <li>Invitees: </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
                       <li key={index + eventUid}>

@@ -19,15 +19,11 @@ class MyEventsBase extends Component {
     this.state = {
       noEvents: false,
       myEvents: [],
-      loading: true
+      loading: true,
+      showMap: false,
+      mapEvent: []
     };
   }
-
-  //TO DO:
-  // CONSOLE LOG
-  //DESTRACTA EVT
-  // ON på alla
-  //WILL UNMOUNT ALLA ON TILL OFF
 
   updateEvents() {
     this.props.firebase
@@ -136,11 +132,24 @@ class MyEventsBase extends Component {
     this.updateEvents();
   }
 
+  displayMap = (event, evt) => {
+    this.setState({
+      mapEvent: evt.eventUid,
+      showMap: true
+    });
+  };
+
+  closeMap = () => {
+    this.setState({
+      showMap: false
+    });
+  };
+
   render() {
-    const { loading, myEvents, noEvents } = this.state;
-    const noAccepted = "No one has accepted yet.";
+    const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
+    const noAccepted = "";
     const noInvited = "No one is invited.";
-    const noDeclined = "No one has declined yet.";
+    const noDeclined = "";
     const noTimes = "You have no times? WTF?";
     if (noEvents) {
       return <H3>You have no events. </H3>;
@@ -161,7 +170,8 @@ class MyEventsBase extends Component {
     } else {
       return (
         <section>
-          <Map />
+          {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
+
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
               <p key={"Host paragraph: " + evt.eventUid}>
@@ -194,7 +204,7 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Is invited: </li>
+                <li>Invitees: </li>
                 {evt.isInvited ? (
                   Object.keys(evt.isInvited).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -204,7 +214,6 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has accepted: </li>
                 {evt.hasAccepted ? (
                   Object.keys(evt.hasAccepted).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -214,7 +223,6 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has declined: </li>
                 {evt.hasDeclined ? (
                   Object.keys(evt.hasDeclined).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -231,7 +239,12 @@ class MyEventsBase extends Component {
                 key={"Description event: " + evt.eventUid}
                 readOnly
               />
-              <MyEventsButton key={Math.random()}>Chatt?</MyEventsButton>
+              <MyEventsButton
+                key={"Map Event " + evt.eventUid}
+                onClick={event => this.displayMap(event, evt)}
+              >
+                Show Map
+              </MyEventsButton>
               <MyEventsDeleteButton
                 key={"Delete event" + evt.eventUid}
                 value={evt.eventUid}

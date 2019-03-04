@@ -49,7 +49,14 @@ class NavigationAuthBase extends Component {
   };
 
   writeUserPositionToDB = position => {
+<<<<<<< HEAD
     const { latitude, longitude } = position;
+=======
+    const { latitude, longitude } = position.coords;
+    console.log("writeUserPositionToDB called from Nav");
+    console.log("lat: " + latitude);
+    console.log("long: " + longitude);
+>>>>>>> master
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("positions")
@@ -58,6 +65,7 @@ class NavigationAuthBase extends Component {
         longitude: longitude,
         createdAt: Date.now()
       });
+<<<<<<< HEAD
     this.setState({ lastStoredPosition: position });
   };
 
@@ -68,6 +76,17 @@ class NavigationAuthBase extends Component {
     const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
     if (dist > 1) {
       this.writeUserPositionToDB(position.coords);
+=======
+  };
+
+  updatePosition = (lastStoredPosition, currentPosition) => {
+    const { latitude: lat1, longitude: lng1 } = lastStoredPosition.coords;
+    const { latitude: lat2, longitude: lng2 } = currentPosition.coords;
+
+    const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+    if (dist > 1) {
+      this.writeUserPositionToDB(currentPosition.coords);
+>>>>>>> master
     }
   };
 
@@ -150,7 +169,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
-              Upcoming Events
+              Upcoming
             </NavLink>
           </li>
           <li>
@@ -164,7 +183,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.MY_EVENTS} onClick={this.props.showNav}>
-              My Events
+              My Bookings
             </NavLink>
           </li>
           <li>

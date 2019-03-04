@@ -138,6 +138,7 @@ class GeolocationBase extends Component {
   //FLYTTAD TILL NAVIGATION
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
+
     if (position.coords && this.state.lastKnownCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
       const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
@@ -146,6 +147,7 @@ class GeolocationBase extends Component {
         this.writeUserPositionToDB(position.coords);
       }
     }
+    this.writeUserPositionToDB(position.coords);
   };
 
   // FLYTTAD TILL NAVIGATION
@@ -218,18 +220,7 @@ class GeolocationBase extends Component {
 
   render() {
     const whiteText = { color: "white" };
-    return (
-      <div style={whiteText}>
-        <div>Geolocation</div>
-        <div>
-          <p>Coords from Browser</p>
-          <Coords position={this.state.browserCoords} />
-          <p />
-          <p>Last known coords</p>
-          <Coords position={this.state.lastKnownCoords} />
-        </div>
-      </div>
-    );
+    return <div />;
   }
 }
 

@@ -25,8 +25,7 @@ const INITIAL_STATE = {
   selectedClassOption: null,
   selectedRoleOption: null,
   roles: null,
-  classes: null,
-  positions: {}
+  classes: null
 };
 
 const roleOptions = [
@@ -66,14 +65,7 @@ class SignUpFormBase extends Component {
   };
 
   onSubmit = event => {
-    const {
-      username,
-      email,
-      passwordOne,
-      classes,
-      roles,
-      positions
-    } = this.state;
+    const { username, email, passwordOne, classes, roles } = this.state;
 
     const usernameUpper = username.toUpperCase();
     this.props.firebase
@@ -88,7 +80,7 @@ class SignUpFormBase extends Component {
             hostedEvents: {},
             class: classes,
             roles,
-            positions
+            position: { latitude: "0", longitude: "0" }
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });
