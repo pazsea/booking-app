@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Div } from "./styles";
 import { compose } from "recompose";
-import { AuthUserContext, withAuthorization } from "../Session";
+import { withAuthorization } from "../Session";
 
 class HomePage extends Component {
   render() {

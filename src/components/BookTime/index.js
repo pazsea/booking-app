@@ -182,7 +182,7 @@ class BookTimeBase extends Component {
     this.setState({
       showModal: false
     });
-    this.timer = setTimeout(this.showContent.bind(this), 3000);
+    // this.timer = setTimeout(this.showContent.bind(this), 3000);
   };
 
   deleteInvited = key => {

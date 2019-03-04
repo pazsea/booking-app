@@ -225,7 +225,6 @@ class UpcomingBase extends Component {
                 <HelpButton
                   value={eventUid}
                   key={"Help wanted: " + eventUid}
-                  key={"Dont need help: " + eventUid}
                   onClick={evt => this.toggleHelpQueue(evt)}
                   index={evt.index}
                   onClick={this.helpMe}
