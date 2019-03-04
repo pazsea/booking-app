@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { InviteDiv, MyEventsButton, MyEventsDeleteButton } from "./styles";
+import { InviteDiv, MyEventsButton, MyEventsDeleteButton, H3 } from "./styles";
 import Map from "../Map";
 
 const MyEvents = () => (
@@ -152,7 +152,7 @@ class MyEventsBase extends Component {
     const noDeclined = "No one has declined yet.";
     const noTimes = "You have no times? WTF?";
     if (noEvents) {
-      return <h3>You have no events. </h3>;
+      return <H3>You have no events. </H3>;
     } else if (loading) {
       return (
         <div>

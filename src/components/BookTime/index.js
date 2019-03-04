@@ -12,7 +12,9 @@ import {
   TimeSlotBtn,
   LoadingDiv,
   AnimationDivConfirmed,
-  CorrectionDiv
+  CorrectionDiv,
+  CloseButton,
+  TopButton
 } from "./styles";
 import "./module.css";
 
@@ -299,7 +301,7 @@ class BookTimeBase extends Component {
               </LoadingDiv>
             ) : (
               <Form>
-                <button onClick={close}>Close</button>
+                <CloseButton onClick={close}>Close</CloseButton>
                 <br />
                 <h2>
                   Date: <p>{bookingDate}</p>
@@ -393,7 +395,7 @@ class BookTimeBase extends Component {
                 )}
               </Form>
             )}
-            <button onClick={scrollToTop}>To the top!</button>
+            <TopButton onClick={scrollToTop}>To the top!</TopButton>
           </React.Fragment>
         )}
       </AuthUserContext.Consumer>

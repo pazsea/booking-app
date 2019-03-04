@@ -14,10 +14,16 @@ export const InviteDiv = styled.div`
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 
+  p {
+    margin-bottom: 0;
+    letter-spacing: 0;
+    line-height: 1.8em;
+    font-size: 1.2em;
+  }
   ul {
     list-style: none;
-    line-height: 2em;
-    padding: 0.8em;
+    font-size: 1.2em;
+    padding: 0.5em;
   }
   input {
     width: 100%;
@@ -34,11 +40,25 @@ export const InviteDiv = styled.div`
     padding: 0.5em;
     margin-bottom: 1em;
   }
-  button {
-    width: 50%;
-  }
 
-  * {
-    margin: 0;
+  li {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .fa-question {
+    color: white;
+  }
+  .fa-check {
+    color: #599272;
+  }
+  .fa-times {
+    color: #c5766b;
+  }
+  h3 {
+    color: wheat;
+  }
+  h1 {
+    color: wheat;
+    font-size: 1.5em;
   }
 `;

@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton } from "../MyEvents/styles";
+import { MyEventsButton, MyEventsDeleteButton, H3 } from "../MyEvents/styles";
 
 const Invites = () => (
   <AuthUserContext.Consumer>
@@ -188,7 +188,7 @@ class InvitesBase extends Component {
     const noTimes = "You have no times? WTF?";
 
     if (noInvites) {
-      return <h3>You have no invites. </h3>;
+      return <H3>You have no invites. </H3>;
     } else if (loading) {
       return (
         <div>
@@ -217,7 +217,9 @@ class InvitesBase extends Component {
                   {new Date(date).toLocaleDateString()}
                 </p>
                 <ul>
-                  <li>Time: </li>
+                  <li>
+                    <strong>Time: </strong>
+                  </li>
 
                   {time ? (
                     Object.keys(time).map((key, index) => (
@@ -225,7 +227,8 @@ class InvitesBase extends Component {
                         {new Date(Number(key)).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit"
-                        })}
+                        })}{" "}
+                        {"- "}
                         {new Date(Number(key) + 3600000).toLocaleTimeString(
                           [],
                           {
@@ -241,7 +244,9 @@ class InvitesBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Invitees: </li>
+                  <li>
+                    <strong>Invitees: </strong>
+                  </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
                       <li key={index + eventUid}>
@@ -267,7 +272,7 @@ class InvitesBase extends Component {
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map((key, index) => (
                       <li key={index + eventUid}>
-                        {key} <i class="fas fa-times" />
+                        {key} <i className="fas fa-times" />
                       </li>
                     ))
                   ) : (

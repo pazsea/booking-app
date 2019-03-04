@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, AttendEventButton } from "./styles";
+import { MyEventsButton, AttendEventButton, H3 } from "./styles";
 import { hostname } from "os";
 
 const UpcomingEvents = () => (
@@ -26,69 +26,6 @@ class UpcomingBase extends Component {
   }
 
   componentDidMount() {
-    // this.props.firebase
-    //   .events()
-    //   .child("-L_6qq9KMkNOrb4lcN9I")
-    //   .child("hasAcceptedUid")
-    //   .on("value", snapshot => {
-    //     const acceptedUid = Object.keys(snapshot.val());
-    //     console.log(acceptedUid);
-    // acceptedUid.forEach(acceptUid => {
-    //   this.props.firebase
-    //     .users()
-    //     .child(acceptUid)
-    //     .child("positions")
-    //     .limitToLast(1)
-    //     .on("value", snapshot => {
-    // console.log(snapshot.val());
-
-    // const { latitude, longitude } = snapshot.val();
-    // console.log(latitude);
-    // console.log(longitude);
-    // const lastKnownPositionObject = snapshot.val();
-
-    // if (lastKnownPositionObject) {
-    //   const positionsList = Object.keys(lastKnownPositionObject).map(
-    //     key => ({
-    //       ...lastKnownPositionObject[key]
-    //     })
-    //   );
-    //   let lastKnownPositions = {};
-    //   if (positionsList.length === 1) {
-    //     lastKnownPositions = Object.assign(positionsList[0]);
-    //   } else {
-    //     lastKnownPositions = Object.assign(positionsList);
-    //   }
-    //   const { latitude, longitude } = lastKnownPositions;
-    // }
-
-    // const schoolNorth = "59.313544";
-    // const schoolSouth = "59.312755";
-
-    // const schoolWest = "18.109941";
-    // const schoolEast = "18.111293";
-
-    // if (
-    //   latitude > schoolSouth &&
-    //   latitude < schoolNorth &&
-    //   longitude > schoolWest &&
-    //   longitude < schoolEast
-    // ) {
-    //   console.log("DU KOM EFTER DIN COOL IF SATS");
-    //   this.props.firebase
-    //     .events()
-    //     .child("-L_6qq9KMkNOrb4lcN9I")
-    //     .child("attendees")
-    //     .update({
-    //       [this.props.authUser.username]: true
-    //     });
-    // } else {
-    //   return null;
-    // }
-    //       });
-    //   });
-    // });
-
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -110,7 +47,7 @@ class UpcomingBase extends Component {
               .events()
               .child(key)
               .child("time")
-              .on("value", snapshot => {
+              .once("value", snapshot => {
                 const startTime = Number(Object.keys(snapshot.val()));
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
@@ -202,23 +139,46 @@ class UpcomingBase extends Component {
     this.props.firebase.event().off();
   }
 
-  /*   attendEvent(evt) {
+  toggleHelpQueue(evt) {
     const eventUid = evt.target.value;
+
     this.props.firebase
       .events()
       .child(eventUid)
-      .child("attendees")
-      .update({
-        [this.props.authUser.username]: true
+      .child("helpQueue")
+      .once("value", snapshot => {
+        const snap = snapshot.val();
+        if (snap === null) {
+          console.log("snap was null");
+          this.props.firebase
+            .events()
+            .child(eventUid)
+            .child("helpQueue")
+            .update({ [this.props.authUser.username]: true });
+        } else {
+          const snapKeys = Object.keys(snap);
+
+          snapKeys.find(name => name === this.props.authUser.username)
+            ? this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: null })
+            : this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: true });
+        }
       });
-  } */
+  }
 
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
     const noTimes = "You have no times? WTF?";
 
     if (noUpcoming) {
-      return <h3>You have no upcoming events at this time.</h3>;
+      return <H3>You have no upcoming events at this time.</H3>;
     } else if (loading) {
       return (
         <div>
@@ -265,19 +225,12 @@ class UpcomingBase extends Component {
                 <MyEventsButton
                   value={eventUid}
                   key={"Dont need help: " + eventUid}
-                  onClick={this.notNeeded}
+                  onClick={evt => this.toggleHelpQueue(evt)}
                   index={evt.index}
                 >
-                  Dont need help anymore.
+                  I need help
                 </MyEventsButton>
-                <MyEventsButton
-                  value={eventUid}
-                  key={"Help wanted: " + eventUid}
-                  index={evt.index}
-                  onClick={this.helpMe}
-                >
-                  Oh God, Help me!!
-                </MyEventsButton>
+
                 <AttendEventButton
                   className={
                     Object.values(active).find(
