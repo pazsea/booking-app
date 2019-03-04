@@ -19,15 +19,11 @@ class MyEventsBase extends Component {
     this.state = {
       noEvents: false,
       myEvents: [],
-      loading: true
+      loading: true,
+      showMap: false,
+      mapEvent: []
     };
   }
-
-  //TO DO:
-  // CONSOLE LOG
-  //DESTRACTA EVT
-  // ON på alla
-  //WILL UNMOUNT ALLA ON TILL OFF
 
   updateEvents() {
     this.props.firebase
@@ -136,8 +132,21 @@ class MyEventsBase extends Component {
     this.updateEvents();
   }
 
+  displayMap = (event, evt) => {
+    this.setState({
+      mapEvent: evt.eventUid,
+      showMap: true
+    });
+  };
+
+  closeMap = () => {
+    this.setState({
+      showMap: false
+    });
+  };
+
   render() {
-    const { loading, myEvents, noEvents } = this.state;
+    const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
     const noAccepted = "No one has accepted yet.";
     const noInvited = "No one is invited.";
     const noDeclined = "No one has declined yet.";
@@ -161,7 +170,8 @@ class MyEventsBase extends Component {
     } else {
       return (
         <section>
-          <Map />
+          {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
+
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
               <p key={"Host paragraph: " + evt.eventUid}>
@@ -231,7 +241,12 @@ class MyEventsBase extends Component {
                 key={"Description event: " + evt.eventUid}
                 readOnly
               />
-              <MyEventsButton key={Math.random()}>Chatt?</MyEventsButton>
+              <MyEventsButton
+                key={"Map Event " + evt.eventUid}
+                onClick={event => this.displayMap(event, evt)}
+              >
+                Show Map
+              </MyEventsButton>
               <MyEventsDeleteButton
                 key={"Delete event" + evt.eventUid}
                 value={evt.eventUid}

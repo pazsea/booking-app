@@ -2,6 +2,17 @@ import React, { Component } from "react";
 import L from "leaflet";
 import styled from "styled-components";
 import Geolocation from "./geolocation";
+import { AuthUserContext, withAuthorization } from "../Session";
+import { withFirebase } from "../Firebase";
+import { compose } from "recompose";
+
+// import { userInfo } from "os";
+
+const Map = props => (
+  <AuthUserContext.Consumer>
+    {authUser => <MapComplete authUser={authUser} {...props} />}
+  </AuthUserContext.Consumer>
+);
 
 const Wrapper = styled.div`
   width: ${props => props.width};
@@ -16,13 +27,77 @@ var PersonMarker = L.icon({
   popupAnchor: [0, -50] // point from which the popup should open relative to the iconAnchor
 });
 
-class Map extends Component {
+class MapBase extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUsers: [],
+      mapEvent: this.props.mapEvent,
+      noUsers: false
+    };
+  }
+
   componentDidMount() {
+    console.log("MOOOOOOOUNT");
     this.map = L.map("map", {
       center: [59.313448, 18.110614],
       zoom: 13,
       zoomControl: false
     });
+    console.log("efter this map");
+
+    this.props.firebase
+      .events()
+      .child(this.state.mapEvent)
+      .child("hasAcceptedUid")
+      .once("value", snapshot => {
+        console.log("nuuu är du på första steget");
+        if (snapshot.val()) {
+          const eventUsernames = Object.keys(snapshot.val());
+          eventUsernames.forEach(nameUid => {
+            this.props.firebase
+              .user(nameUid)
+              .child("positions")
+              .limitToLast(1)
+              .once("value", snapshot => {
+                console.log(snapshot.val());
+                const lastKnownPositionUser = snapshot.val();
+                if (lastKnownPositionUser) {
+                  const positionsList = Object.keys(lastKnownPositionUser).map(
+                    key => ({
+                      ...lastKnownPositionUser[key]
+                    })
+                  );
+                  let lastKnownPositions = {};
+                  if (positionsList.length === 1) {
+                    lastKnownPositions = Object.assign(positionsList[0]);
+                  } else {
+                    lastKnownPositions = Object.assign(positionsList);
+                  }
+                  const { latitude, longitude } = lastKnownPositions;
+                  console.log("Latitude för användaren " + latitude);
+                  console.log("Latitude för användaren " + longitude);
+
+                  this.props.firebase
+                    .user(nameUid)
+                    .child("username")
+                    .once("value", snapshot => {
+                      const name = snapshot.val();
+                      console.log("Användare som är inbjuden " + name);
+
+                      L.marker([latitude, longitude], { icon: PersonMarker })
+                        .addTo(this.map)
+                        .bindPopup(name);
+                    });
+                }
+              });
+          });
+        } else {
+          this.setState({
+            noUsers: true
+          });
+        }
+      });
 
     L.tileLayer(
       "https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png",
@@ -41,20 +116,27 @@ class Map extends Component {
       .addTo(this.map)
       .bindPopup("KYH, en märklig skola")
       .openPopup();
-
-    L.marker([59.31445, 18.110613], { icon: PersonMarker })
-      .addTo(this.map)
-      .bindPopup("Användare");
   }
 
   render() {
-    return (
-      <div>
-        <Wrapper width="90vw" height="80vh" id="map" />
-        <Geolocation />
-      </div>
-    );
+    const { noUsers } = this.state;
+    {
+      if (noUsers) {
+        return <div>No users has accepted in this event</div>;
+      } else {
+        return (
+          <div>
+            <Wrapper width="90vw" height="80vh" id="map" />
+            <Geolocation />
+            <button onClick={this.props.close}>CLOSE</button>
+          </div>
+        );
+      }
+    }
   }
 }
+const condition = authUser => !!authUser;
 
-export default Map;
+const MapComplete = withFirebase(MapBase);
+
+export default compose(withAuthorization(condition))(Map);
