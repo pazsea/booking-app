@@ -102,6 +102,40 @@ class UpcomingBase extends Component {
       });
   }
 
+  toggleHelpQueue(evt) {
+    const eventUid = evt.target.value;
+
+    this.props.firebase
+      .events()
+      .child(eventUid)
+      .child("helpQueue")
+      .once("value", snapshot => {
+        const snap = snapshot.val();
+        if (snap === null) {
+          console.log("snap was null");
+          this.props.firebase
+            .events()
+            .child(eventUid)
+            .child("helpQueue")
+            .update({ [this.props.authUser.username]: true });
+        } else {
+          const snapKeys = Object.keys(snap);
+
+          snapKeys.find(name => name === this.props.authUser.username)
+            ? this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: null })
+            : this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: true });
+        }
+      });
+  }
+
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
     const noTimes = "You have no times? WTF?";
@@ -154,19 +188,12 @@ class UpcomingBase extends Component {
                 <MyEventsButton
                   value={eventUid}
                   key={"Dont need help: " + eventUid}
-                  onClick={this.notNeeded}
+                  onClick={evt => this.toggleHelpQueue(evt)}
                   index={evt.index}
                 >
-                  Dont need help anymore.
+                  I need help
                 </MyEventsButton>
-                <MyEventsButton
-                  value={eventUid}
-                  key={"Help wanted: " + eventUid}
-                  index={evt.index}
-                  onClick={this.helpMe}
-                >
-                  Oh God, Help me!!
-                </MyEventsButton>
+
                 <AttendEventButton
                   className={
                     Object.values(active).find(
