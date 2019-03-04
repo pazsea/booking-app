@@ -18,21 +18,22 @@ class GeolocationBase extends Component {
     };
   }
 
-  calculateDistance = (lat1, lon1, lat2, lon2) => {
-    var R = 6371; // km (change this constant to get miles)
-    var dLat = ((lat2 - lat1) * Math.PI) / 180;
-    var dLon = ((lon2 - lon1) * Math.PI) / 180;
-    var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
+  // FLYTTAD TILL NAVIGATION
+  // calculateDistance = (lat1, lon1, lat2, lon2) => {
+  //   var R = 6371; // km (change this constant to get miles)
+  //   var dLat = ((lat2 - lat1) * Math.PI) / 180;
+  //   var dLon = ((lon2 - lon1) * Math.PI) / 180;
+  //   var a =
+  //     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+  //     Math.cos((lat1 * Math.PI) / 180) *
+  //       Math.cos((lat2 * Math.PI) / 180) *
+  //       Math.sin(dLon / 2) *
+  //       Math.sin(dLon / 2);
+  //   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  //   var d = R * c;
 
-    return Math.round(d * 1000);
-  };
+  //   return Math.round(d * 1000);
+  // };
 
   calculateETA = (
     startLat,
@@ -63,20 +64,40 @@ class GeolocationBase extends Component {
   };
 
   getStartingPositionForETA = (userID, bookingID) => {
+    let bookingStartTime;
+    let startingPositionID; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
+
+    let startLat;
+    let startLong;
+
     this.props.firebase
       .events()
       .child(bookingID)
       .child("time")
       .limitToFirst(1)
       .on("value", snapshot => {
-        let bookingStartTime = Object.keys(snapshot.val());
+        bookingStartTime = Object.keys(snapshot.val());
         console.log(bookingID);
         console.log(bookingStartTime);
       });
 
-    var startingPosition; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
-    var startLat; //Latitude från startingPosition
-    var startLong; //Longitude från startingPosition
+    this.props.firebase
+      .user(userID)
+      .child(startingPositionID)
+      .child("latitude")
+      .on("value", snapshot => {
+        startLat = snapshot.val();
+        console.log(startLat);
+      });
+
+    this.props.firebase
+      .user(userID)
+      .child(startingPositionID)
+      .child("longitude")
+      .on("value", snapshot => {
+        startLong = snapshot.val();
+        console.log(startLong);
+      });
 
     return startLat, startLong;
   };
@@ -103,64 +124,67 @@ class GeolocationBase extends Component {
     );
   };
 
-  updatePosition = position => {
-    this.setState({ browserCoords: position.coords });
-    if (position.coords && this.state.lastKnownCoords) {
-      const { latitude: lat1, longitude: lng1 } = position.coords;
-      const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
-      const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
-      if (dist > 1) {
-        this.writeUserPositionToDB(position.coords);
-      }
-    }
-  };
+  //FLYTTAD TILL NAVIGATION
+  // updatePosition = position => {
+  //   this.setState({ browserCoords: position.coords });
+  //   if (position.coords && this.state.lastKnownCoords) {
+  //     const { latitude: lat1, longitude: lng1 } = position.coords;
+  //     const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
+  //     const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+  //     if (dist > 1) {
+  //       this.writeUserPositionToDB(position.coords);
+  //     }
+  //   }
+  // };
 
-  writeUserPositionToDB = position => {
-    const { latitude, longitude } = position;
-    console.log("writeUserPositionToDB called");
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("positions")
-      .push({
-        latitude: latitude,
-        longitude: longitude,
-        createdAt: Date.now()
-      });
+  //FLYTTAD TILL NAVIGATION
+  // writeUserPositionToDB = position => {
+  //   const { latitude, longitude } = position;
+  //   console.log("writeUserPositionToDB called");
+  //   this.props.firebase
+  //     .user(this.props.authUser.uid)
+  //     .child("positions")
+  //     .push({
+  //       latitude: latitude,
+  //       longitude: longitude,
+  //       createdAt: Date.now()
+  //     });
 
-    this.setState({ lastKnownCoords: position });
-  };
+  //   this.setState({ lastKnownCoords: position });
+  // };
 
-  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
-    this.props.firebase
-      .user(user)
-      .child("positions")
-      .limitToLast(num)
-      .on("value", snapshot => {
-        const lastKnownPositionObject = snapshot.val();
+  //FLYTTAD TILL NAVIGATION
+  // getLastKnownPosition = (num, user = this.props.authUser.uid) => {
+  //   this.props.firebase
+  //     .user(user)
+  //     .child("positions")
+  //     .limitToLast(num)
+  //     .on("value", snapshot => {
+  //       const lastKnownPositionObject = snapshot.val();
 
-        if (lastKnownPositionObject) {
-          const positionsList = Object.keys(lastKnownPositionObject).map(
-            key => ({
-              ...lastKnownPositionObject[key],
-              uid: key
-            })
-          );
-          let lastKnownPositions = {};
-          if (positionsList.length === 1) {
-            lastKnownPositions = Object.assign(positionsList[0]);
-          } else {
-            lastKnownPositions = Object.assign(positionsList);
-          }
-          this.setState({ lastKnownCoords: lastKnownPositions });
-        }
-      });
-  };
+  //       if (lastKnownPositionObject) {
+  //         const positionsList = Object.keys(lastKnownPositionObject).map(
+  //           key => ({
+  //             ...lastKnownPositionObject[key],
+  //             uid: key
+  //           })
+  //         );
+  //         let lastKnownPositions = {};
+  //         if (positionsList.length === 1) {
+  //           lastKnownPositions = Object.assign(positionsList[0]);
+  //         } else {
+  //           lastKnownPositions = Object.assign(positionsList);
+  //         }
+  //         this.setState({ lastKnownCoords: lastKnownPositions });
+  //       }
+  //     });
+  // };
 
   componentDidMount() {
-    this.getStartingPositionForETA(
-      "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
-      "-L_42-knG0FiHHjlC4dS"
-    );
+    // this.getStartingPositionForETA(
+    //   "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
+    //   "-L_42-knG0FiHHjlC4dS"
+    // );
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
 

@@ -27,11 +27,103 @@ class NavigationAuthBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalInvites: 0
+      totalInvites: 0,
+      lastStoredPosition: { latitude: 0, longitude: 0 }
     };
   }
 
+  calculateDistance = (lat1, lon1, lat2, lon2) => {
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = ((lat2 - lat1) * Math.PI) / 180;
+    var dLon = ((lon2 - lon1) * Math.PI) / 180;
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+
+    return Math.round(d * 1000);
+  };
+
+  writeUserPositionToDB = position => {
+    const { latitude, longitude } = position;
+    console.log("writeUserPositionToDB called from Nav");
+    console.log("lat: " + latitude);
+    console.log("long: " + longitude);
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("positions")
+      .push({
+        latitude: latitude,
+        longitude: longitude,
+        createdAt: Date.now()
+      });
+    this.setState({ lastStoredPosition: position });
+  };
+
+  updatePosition = position => {
+    console.log("updatePosition called");
+    if (this.state.lastStoredPosition) {
+      console.log("state lastStoredPosition is NOT empty");
+      const { latitude: lat1, longitude: lng1 } = position.coords;
+      const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
+
+      const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+      if (dist > 1) {
+        console.log("moved");
+        // console.log(position.coords);
+        this.writeUserPositionToDB(position.coords);
+
+        console.log("writeUserPositionToDB called from update if moved");
+      }
+      console.log("NOT moved");
+      // console.log(this.state.lastStoredPosition);
+    } else {
+      this.writeUserPositionToDB(position.coords);
+      console.log("state lastStoredPosition is empty");
+    }
+    console.log("outside of if");
+    console.log(this.state.lastStoredPosition);
+    // this.writeUserPositionToDB(position.coords);
+    // console.log(this.state.lastStoredPosition);
+    // this.setState({ lastStoredPosition: position.coords });
+
+    // console.log(position.coords);
+  };
+
+  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
+    this.props.firebase
+      .user(user)
+      .child("positions")
+      .limitToLast(num)
+      .on("value", snapshot => {
+        const lastKnownPositionObject = snapshot.val();
+
+        if (lastKnownPositionObject) {
+          const positionsList = Object.keys(lastKnownPositionObject).map(
+            key => ({
+              ...lastKnownPositionObject[key],
+              uid: key
+            })
+          );
+          let lastKnownPositions = {};
+          if (positionsList.length === 1) {
+            lastKnownPositions = Object.assign(positionsList[0]);
+          } else {
+            lastKnownPositions = Object.assign(positionsList);
+          }
+          this.setState({ lastStoredPosition: lastKnownPositions });
+        }
+      });
+  };
+
   componentDidMount() {
+    console.log("Nav mounted");
+
+    // -------------- GET NUMBER OF INVITES -------------- //
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
@@ -47,6 +139,25 @@ class NavigationAuthBase extends Component {
           });
         }
       });
+
+    // --------------  STORE POSITION ON LOGIN -------------- //
+    this.watchId = navigator.geolocation.watchPosition(
+      // this.writeUserPositionToDB,
+      this.updatePosition,
+
+      error => {
+        console.log("error" + error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+        distanceFilter: 1
+      }
+    );
+    // let lastKnownPosition = this.getLastKnownPosition(1);
+    // this.setState({ lastStoredPosition: lastKnownPosition });
+    console.log(this.state.lastStoredPosition);
   }
 
   componentWillUnmount() {
@@ -54,6 +165,7 @@ class NavigationAuthBase extends Component {
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
       .off();
+    navigator.geolocation.clearWatch(this.watchId);
   }
 
   render() {
