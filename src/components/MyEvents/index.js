@@ -5,6 +5,7 @@ import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv, MyEventsButton, MyEventsDeleteButton, H3 } from "./styles";
 import Map from "../Map";
+import Geolocation from "../Map/geolocation";
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -56,18 +57,6 @@ class MyEventsBase extends Component {
           loading: false
         });
       });
-  }
-
-  componentWillUnmount() {
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("hostedEvents")
-      .off();
-
-    this.props.firebase.events().off();
-  }
-  componentDidMount() {
-    this.updateEvents();
   }
 
   deleteEvent(event, { eventUid, grouproom, time, isInvitedUid }) {
@@ -145,7 +134,25 @@ class MyEventsBase extends Component {
     });
   };
 
+  componentDidMount() {
+    this.updateEvents();
+  }
+
+  componentWillUnmount() {
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("hostedEvents")
+      .off();
+
+    this.props.firebase.events().off();
+  }
+
   render() {
+    return (
+      <div>
+        <Geolocation bookingID="booking1" />
+      </div>
+    );
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
     const noAccepted = "";
     const noInvited = "No one is invited.";

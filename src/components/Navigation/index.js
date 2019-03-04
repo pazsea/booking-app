@@ -23,6 +23,25 @@ const Navigation = props => (
   </Nav>
 );
 
+export const calculateDistance = (position1, position2) => {
+  const { latitude: lat1, longitude: lon1 } = position1;
+  const { latitude: lat2, longitude: lon2 } = position2;
+
+  var R = 6371; // km (change this constant to get miles)
+  var dLat = ((lat2 - lat1) * Math.PI) / 180;
+  var dLon = ((lon2 - lon1) * Math.PI) / 180;
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+
+  return Math.round(d * 1000);
+};
+
 class NavigationAuthBase extends Component {
   constructor(props) {
     super(props);
@@ -31,22 +50,6 @@ class NavigationAuthBase extends Component {
       lastStoredPosition: { latitude: 0, longitude: 0 }
     };
   }
-
-  calculateDistance = (lat1, lon1, lat2, lon2) => {
-    var R = 6371; // km (change this constant to get miles)
-    var dLat = ((lat2 - lat1) * Math.PI) / 180;
-    var dLon = ((lon2 - lon1) * Math.PI) / 180;
-    var a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-
-    return Math.round(d * 1000);
-  };
 
   writeUserPositionToDB = position => {
     const { latitude, longitude } = position;
@@ -65,7 +68,7 @@ class NavigationAuthBase extends Component {
     const { latitude: lat1, longitude: lng1 } = position.coords;
     const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
 
-    const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+    const dist = calculateDistance(lat1, lng1, lat2, lng2);
     if (dist > 1) {
       this.writeUserPositionToDB(position.coords);
     }
