@@ -230,8 +230,6 @@ class UpcomingBase extends Component {
       const { active } = this.state;
       return (
         <section>
-          <p>hello</p>
-
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid} {...this.state}>
