@@ -119,6 +119,7 @@ class GeolocationBase extends Component {
 
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
+
     if (position.coords && this.state.lastKnownCoords) {
       const { latitude: lat1, longitude: lng1 } = position.coords;
       const { latitude: lat2, longitude: lng2 } = this.state.lastKnownCoords;
@@ -127,6 +128,7 @@ class GeolocationBase extends Component {
         this.writeUserPositionToDB(position.coords);
       }
     }
+    this.writeUserPositionToDB(position.coords);
   };
 
   writeUserPositionToDB = position => {

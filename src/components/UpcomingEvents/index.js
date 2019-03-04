@@ -26,6 +26,69 @@ class UpcomingBase extends Component {
   }
 
   componentDidMount() {
+    // this.props.firebase
+    //   .events()
+    //   .child("-L_6qq9KMkNOrb4lcN9I")
+    //   .child("hasAcceptedUid")
+    //   .on("value", snapshot => {
+    //     const acceptedUid = Object.keys(snapshot.val());
+    //     console.log(acceptedUid);
+    // acceptedUid.forEach(acceptUid => {
+    //   this.props.firebase
+    //     .users()
+    //     .child(acceptUid)
+    //     .child("positions")
+    //     .limitToLast(1)
+    //     .on("value", snapshot => {
+    // console.log(snapshot.val());
+
+    // const { latitude, longitude } = snapshot.val();
+    // console.log(latitude);
+    // console.log(longitude);
+    // const lastKnownPositionObject = snapshot.val();
+
+    // if (lastKnownPositionObject) {
+    //   const positionsList = Object.keys(lastKnownPositionObject).map(
+    //     key => ({
+    //       ...lastKnownPositionObject[key]
+    //     })
+    //   );
+    //   let lastKnownPositions = {};
+    //   if (positionsList.length === 1) {
+    //     lastKnownPositions = Object.assign(positionsList[0]);
+    //   } else {
+    //     lastKnownPositions = Object.assign(positionsList);
+    //   }
+    //   const { latitude, longitude } = lastKnownPositions;
+    // }
+
+    // const schoolNorth = "59.313544";
+    // const schoolSouth = "59.312755";
+
+    // const schoolWest = "18.109941";
+    // const schoolEast = "18.111293";
+
+    // if (
+    //   latitude > schoolSouth &&
+    //   latitude < schoolNorth &&
+    //   longitude > schoolWest &&
+    //   longitude < schoolEast
+    // ) {
+    //   console.log("DU KOM EFTER DIN COOL IF SATS");
+    //   this.props.firebase
+    //     .events()
+    //     .child("-L_6qq9KMkNOrb4lcN9I")
+    //     .child("attendees")
+    //     .update({
+    //       [this.props.authUser.username]: true
+    //     });
+    // } else {
+    //   return null;
+    // }
+    //       });
+    //   });
+    // });
+
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -47,23 +110,71 @@ class UpcomingBase extends Component {
               .events()
               .child(key)
               .child("time")
-              .once("value", snapshot => {
+              .on("value", snapshot => {
                 const startTime = Number(Object.keys(snapshot.val()));
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  this.setState(prevState => ({
-                    active: [...prevState.active, key]
-                  }));
+                  this.props.firebase
+                    .events()
+                    .child(key)
+                    .child("hasAcceptedUid")
+                    .on("value", snapshot => {
+                      const acceptedUid = Object.keys(snapshot.val());
+                      acceptedUid.forEach(acceptUid => {
+                        this.props.firebase
+                          .users()
+                          .child(acceptUid)
+                          .child("positions")
+                          .limitToLast(1)
+                          .on("value", snapshot => {
+                            const lastKnownPositionObject = snapshot.val();
 
-                  /*                 this.setState({
-                    active: key
-                  }); */
+                            if (lastKnownPositionObject) {
+                              const positionsList = Object.keys(
+                                lastKnownPositionObject
+                              ).map(key => ({
+                                ...lastKnownPositionObject[key]
+                              }));
+                              let lastKnownPositions = {};
+                              if (positionsList.length === 1) {
+                                lastKnownPositions = Object.assign(
+                                  positionsList[0]
+                                );
+                              } else {
+                                lastKnownPositions = Object.assign(
+                                  positionsList
+                                );
+                              }
+                              const {
+                                latitude,
+                                longitude
+                              } = lastKnownPositions;
 
-                  // this.setState(prevState => ({
-                  //   active: [...prevState.active], key
+                              const schoolNorth = "59.313544";
+                              const schoolSouth = "59.312755";
 
-                  // }));
+                              const schoolWest = "18.109941";
+                              const schoolEast = "18.111293";
+
+                              if (
+                                latitude > schoolSouth &&
+                                latitude < schoolNorth &&
+                                longitude > schoolWest &&
+                                longitude < schoolEast
+                              ) {
+                                this.props.firebase
+                                  .events()
+                                  .child(key)
+                                  .child("attendees")
+                                  .update({
+                                    [this.props.authUser.username]: true
+                                  });
+                              }
+                            }
+                          });
+                      });
+                    });
                 }
               });
           });
@@ -91,7 +202,7 @@ class UpcomingBase extends Component {
     this.props.firebase.event().off();
   }
 
-  attendEvent(evt) {
+  /*   attendEvent(evt) {
     const eventUid = evt.target.value;
     this.props.firebase
       .events()
@@ -100,7 +211,7 @@ class UpcomingBase extends Component {
       .update({
         [this.props.authUser.username]: true
       });
-  }
+  } */
 
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
@@ -119,6 +230,8 @@ class UpcomingBase extends Component {
       const { active } = this.state;
       return (
         <section>
+          <p>hello</p>
+
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid} {...this.state}>
