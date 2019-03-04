@@ -12,9 +12,9 @@ export const Div = styled.div`
   min-height: calc(100vh - 78px);
   h1 {
     text-align: center;
-    border: 2px solid #cfecef;
-    background: rgba(30, 128, 121, 0.6);
-    color: #cfecef;
+    border: 2px solid #424a54;
+    background: rgba(66, 74, 84, 0.6);
+    color: wheat;
     margin: 10% auto;
     width: 50%;
     height: fit-content;

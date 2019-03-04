@@ -88,6 +88,37 @@ export const TimeSlotBtn = styled.div`
     }
   }
 `;
+export const CloseButton = styled.div`
+  display: flex;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  width: 4em;
+  /* background-color: #535d69; */
+  border-bottom: solid 1px;
+  color: wheat;
+  border-radius: 4px;
+  margin: auto;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  text-align: center;
+  cursor: pointer;
+`;
+
+export const TopButton = styled.div`
+  display: flex;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  width: 6em;
+  /* background-color: #535d69; */
+  border-bottom: solid 1px;
+  color: wheat;
+  border-radius: 4px;
+  margin: auto;
+  box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+  text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  text-align: center;
+  cursor: pointer;
+`;
 
 export const CustomButton2 = styled.button`
   font-family: "Montserrat", sans-serif;
@@ -101,6 +132,7 @@ export const CustomButton2 = styled.button`
   margin: 1%;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  cursor: pointer;
 `;
 
 export const LoadingDiv = styled.div`
@@ -121,6 +153,7 @@ export const CustomButton = styled.button`
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   color: black;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 const tadaAnimation = keyframes`${tada}`;

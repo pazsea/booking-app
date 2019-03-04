@@ -23,11 +23,11 @@ export const MenuItems = styled.div`
     z-index: 2;
     margin: auto 0;
     &.active {
-      color: #d1a200;
+      color: wheat;
     }
 
     :hover {
-      color: #d1a200;
+      color: wheat;
       cursor: pointer;
     }
   }

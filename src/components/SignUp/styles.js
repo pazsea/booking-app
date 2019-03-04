@@ -70,7 +70,7 @@ export const Div = styled.div`
 
   /* Buttons' focus effect */
   button[type="submit"]:focus {
-    border-color: #05a;
+    background: #192530;
   }
 
   input {
@@ -84,7 +84,7 @@ export const Div = styled.div`
     font-family: inherit;
     font-size: 0.95em;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 700px) {
     margin-left: 10%;
     margin-right: 10%;
     width: 80%;
