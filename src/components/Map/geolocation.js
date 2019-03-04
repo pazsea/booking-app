@@ -65,10 +65,21 @@ class GeolocationBase extends Component {
 
   getStartingPositionForETA = (userID, bookingID) => {
     let bookingStartTime;
+    let ETACalcStartTime;
     let startingPositionID; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
 
     let startLat;
     let startLong;
+
+    this.props.firebase
+      .user(userID)
+      .child("positions")
+      .orderByChild("createdAt")
+      .startAt(ETACalcStartTime)
+      .limitToFirst(1)
+      .on("child_added", function(snapshot) {
+        startingPositionID = snapshot.key;
+      });
 
     this.props.firebase
       .events()
