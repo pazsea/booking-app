@@ -52,18 +52,66 @@ class UpcomingBase extends Component {
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  this.setState(prevState => ({
-                    active: [...prevState.active, key]
-                  }));
+                  this.props.firebase
+                    .events()
+                    .child(key)
+                    .child("hasAcceptedUid")
+                    .on("value", snapshot => {
+                      const acceptedUid = Object.keys(snapshot.val());
+                      acceptedUid.forEach(acceptUid => {
+                        this.props.firebase
+                          .users()
+                          .child(acceptUid)
+                          .child("positions")
+                          .limitToLast(1)
+                          .on("value", snapshot => {
+                            const lastKnownPositionObject = snapshot.val();
 
-                  /*                 this.setState({
-                    active: key
-                  }); */
+                            if (lastKnownPositionObject) {
+                              const positionsList = Object.keys(
+                                lastKnownPositionObject
+                              ).map(key => ({
+                                ...lastKnownPositionObject[key]
+                              }));
+                              let lastKnownPositions = {};
+                              if (positionsList.length === 1) {
+                                lastKnownPositions = Object.assign(
+                                  positionsList[0]
+                                );
+                              } else {
+                                lastKnownPositions = Object.assign(
+                                  positionsList
+                                );
+                              }
+                              const {
+                                latitude,
+                                longitude
+                              } = lastKnownPositions;
 
-                  // this.setState(prevState => ({
-                  //   active: [...prevState.active], key
+                              const schoolNorth = "59.313544";
+                              const schoolSouth = "59.312755";
 
-                  // }));
+                              const schoolWest = "18.109941";
+                              const schoolEast = "18.111293";
+
+                              if (
+                                latitude > schoolSouth &&
+                                latitude < schoolNorth &&
+                                longitude > schoolWest &&
+                                longitude < schoolEast
+                              ) {
+                                this.props.firebase
+                                  .events()
+                                  .child(key)
+                                  .child("attendees")
+                                  .update({
+                                    [this.props.authUser.username]: true
+                                  });
+                              }
+                            }
+                          });
+                      });
+                    });
                 }
               });
           });
@@ -91,14 +139,37 @@ class UpcomingBase extends Component {
     this.props.firebase.event().off();
   }
 
-  attendEvent(evt) {
+  toggleHelpQueue(evt) {
     const eventUid = evt.target.value;
+
     this.props.firebase
       .events()
       .child(eventUid)
-      .child("attendees")
-      .update({
-        [this.props.authUser.username]: true
+      .child("helpQueue")
+      .once("value", snapshot => {
+        const snap = snapshot.val();
+        if (snap === null) {
+          console.log("snap was null");
+          this.props.firebase
+            .events()
+            .child(eventUid)
+            .child("helpQueue")
+            .update({ [this.props.authUser.username]: true });
+        } else {
+          const snapKeys = Object.keys(snap);
+
+          snapKeys.find(name => name === this.props.authUser.username)
+            ? this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: null })
+            : this.props.firebase
+                .events()
+                .child(eventUid)
+                .child("helpQueue")
+                .update({ [this.props.authUser.username]: true });
+        }
       });
   }
 
@@ -154,6 +225,8 @@ class UpcomingBase extends Component {
                 <HelpButton
                   value={eventUid}
                   key={"Help wanted: " + eventUid}
+                  key={"Dont need help: " + eventUid}
+                  onClick={evt => this.toggleHelpQueue(evt)}
                   index={evt.index}
                   onClick={this.helpMe}
                 >

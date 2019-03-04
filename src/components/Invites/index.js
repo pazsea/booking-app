@@ -89,6 +89,13 @@ class InvitesBase extends Component {
     this.props.firebase
       .events()
       .child(currentEvent)
+      .child("hasAcceptedUid")
+      .update({
+        [this.props.authUser.uid]: true
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
       .child("isInvited")
       .update({
         [this.props.authUser.username]: null
