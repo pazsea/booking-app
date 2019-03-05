@@ -65,17 +65,12 @@ class NavigationAuthBase extends Component {
   };
 
   updatePosition = position => {
-    const { latitude: lat1, longitude: lng1 } = position.coords;
-    const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
-
-<<<<<<< HEAD
-    const dist = calculateDistance(lat1, lng1, lat2, lng2);
-    if (dist > 1) {
-=======
-    const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+    const dist = calculateDistance(
+      position.coords,
+      this.state.lastStoredPosition
+    );
     if (dist > 10) {
       // ÄNDRADE FRÅN 1 TILL 10 SÅ ATT DEN INTE PUSHAR TILL FIREBASE HELA TIDEN
->>>>>>> master
       this.writeUserPositionToDB(position.coords);
     }
   };
@@ -107,9 +102,9 @@ class NavigationAuthBase extends Component {
   };
 
   componentDidMount() {
-<<<<<<< HEAD
     console.log("nav mpounted");
-=======
+
+    // --------------  UPDATE AMOUNT OF INVITES -------------- //
     this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
       const inbj = snapshot.val();
       if (inbj.hasOwnProperty("invitedToEvents")) {
@@ -123,7 +118,7 @@ class NavigationAuthBase extends Component {
         });
       }
     });
->>>>>>> master
+
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,

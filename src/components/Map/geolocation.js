@@ -66,86 +66,86 @@ class GeolocationBase extends Component {
     return roundMilliseconds(timeLeft); //milliseconds left to arrival
   };
 
-  getDataForETA = (userID, bookingID) => {
-    let bookingStartTime;
-    let ETACalcStartTime;
-    let startingPositionID; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
+  // getDataForETA = (userID, bookingID) => {
+  //   let bookingStartTime;
+  //   let ETACalcStartTime;
+  //   let startingPositionID; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
 
-    let startLat;
-    let startLong;
+  //   let startLat;
+  //   let startLong;
 
-    let bookingLocation = KYHLocation;
+  //   let bookingLocation = KYHLocation;
 
-    let userName;
-    let originLocation;
-    let currentLocation;
+  //   let userName;
+  //   let originLocation;
+  //   let currentLocation;
 
-    this.setState({
-      booking: {
-        startTime: bookingStartTime,
-        location: {
-          latitude: bookingLocation.latitude,
-          longitude: bookingLocation.longitude
-        },
-        invitees: {
-          user1: {
-            userID: userID,
-            userName: userName,
-            origin: {
-              latitude: originLocation.latitude,
-              longitude: originLocation.longitude,
-              timestamp: originLocation.createdAt
-            },
-            current: {
-              latitude: currentLocation.latitude,
-              longitude: currentLocation,
-              timestamp: currentLocation.createdAt
-            }
-          }
-        }
-      }
-    });
+  //   this.setState({
+  //     booking: {
+  //       startTime: bookingStartTime,
+  //       location: {
+  //         latitude: bookingLocation.latitude,
+  //         longitude: bookingLocation.longitude
+  //       },
+  //       invitees: {
+  //         user1: {
+  //           userID: userID,
+  //           userName: userName,
+  //           origin: {
+  //             latitude: originLocation.latitude,
+  //             longitude: originLocation.longitude,
+  //             timestamp: originLocation.createdAt
+  //           },
+  //           current: {
+  //             latitude: currentLocation.latitude,
+  //             longitude: currentLocation,
+  //             timestamp: currentLocation.createdAt
+  //           }
+  //         }
+  //       }
+  //     }
+  //   });
 
-    // startingPositionID
-    this.props.firebase
-      .user(userID)
-      .child("positions")
-      .orderByChild("createdAt")
-      .startAt(ETACalcStartTime)
-      .limitToFirst(1)
-      .on("child_added", function(snapshot) {
-        startingPositionID = snapshot.key;
-      });
+  //   // startingPositionID
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child("positions")
+  //     .orderByChild("createdAt")
+  //     .startAt(ETACalcStartTime)
+  //     .limitToFirst(1)
+  //     .on("child_added", function(snapshot) {
+  //       startingPositionID = snapshot.key;
+  //     });
 
-    this.props.firebase
-      .events()
-      .child(bookingID)
-      .child("time")
-      .limitToFirst(1)
-      .on("value", snapshot => {
-        bookingStartTime = Object.keys(snapshot.val());
-        console.log(bookingID);
-        console.log(bookingStartTime);
-      });
+  //   this.props.firebase
+  //     .events()
+  //     .child(bookingID)
+  //     .child("time")
+  //     .limitToFirst(1)
+  //     .on("value", snapshot => {
+  //       bookingStartTime = Object.keys(snapshot.val());
+  //       console.log(bookingID);
+  //       console.log(bookingStartTime);
+  //     });
 
-    this.props.firebase
-      .user(userID)
-      .child(startingPositionID)
-      .child("latitude")
-      .on("value", snapshot => {
-        startLat = snapshot.val();
-        console.log(startLat);
-      });
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child(startingPositionID)
+  //     .child("latitude")
+  //     .on("value", snapshot => {
+  //       startLat = snapshot.val();
+  //       console.log(startLat);
+  //     });
 
-    this.props.firebase
-      .user(userID)
-      .child(startingPositionID)
-      .child("longitude")
-      .on("value", snapshot => {
-        startLong = snapshot.val();
-        console.log(startLong);
-      });
-  };
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child(startingPositionID)
+  //     .child("longitude")
+  //     .on("value", snapshot => {
+  //       startLong = snapshot.val();
+  //       console.log(startLong);
+  //     });
+  // };
 
   componentDidMount() {
     this.setState({
