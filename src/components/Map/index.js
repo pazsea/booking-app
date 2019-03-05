@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import L from "leaflet";
 import styled from "styled-components";
-import Geolocation from "./geolocation";
+// import Geolocation from "./geolocation";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
@@ -127,7 +127,6 @@ class MapBase extends Component {
       return (
         <div>
           <Wrapper width="90vw" height="80vh" id="map" />
-          <Geolocation />
           <button onClick={this.props.close}>CLOSE</button>
         </div>
       );
