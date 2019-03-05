@@ -145,11 +145,6 @@ class NavigationAuthBase extends Component {
       <React.Fragment>
         <ul className="main-nav">
           <li>
-            <NavLink to={ROUTES.HOME} onClick={this.props.showNav}>
-              Home
-            </NavLink>
-          </li>
-          <li>
             <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
               Upcoming
             </NavLink>
