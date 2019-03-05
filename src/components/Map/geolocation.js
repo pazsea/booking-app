@@ -18,6 +18,7 @@ class GeolocationBase extends Component {
     };
   }
 
+  // FLYTTAD TILL NAVIGATION
   calculateDistance = (lat1, lon1, lat2, lon2) => {
     var R = 6371; // km (change this constant to get miles)
     var dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -62,61 +63,79 @@ class GeolocationBase extends Component {
     return timeLeft;
   };
 
-  getStartingPositionForETA = (userID, bookingID) => {
-    // let bookingStartTime; //snapshot som hämtar starttime utifrån bookingID
-    // let bookingDescription;
+  // getStartingPositionForETA = (userID, bookingID) => {
+  //   let bookingStartTime;
+  //   let ETACalcStartTime;
+  //   let startingPositionID; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
 
-    this.props.firebase
-      .events()
-      .child(bookingID)
-      .child("time")
-      .limitToFirst(1)
-      // .key()
-      .on("value", snapshot => {
-        let bookingStartTimeObject = snapshot.val();
-        // let bookingStartTime = Object.keys(bookingStartTimeObject);
-        console.log(bookingStartTimeObject);
-      });
+  //   let startLat;
+  //   let startLong;
 
-    this.props.firebase
-      .events()
-      .child(bookingID)
-      .child("description")
-      // .getKey()
-      .on("value", snapshot => {
-        let bookingDescription = snapshot.val();
-        console.log(bookingDescription);
-      });
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child("positions")
+  //     .orderByChild("createdAt")
+  //     .startAt(ETACalcStartTime)
+  //     .limitToFirst(1)
+  //     .on("child_added", function(snapshot) {
+  //       startingPositionID = snapshot.key;
+  //     });
 
-    var startingPosition; //snapshot som hämtar första reggad position för angiven userID inom 1h innan srtattid för booking
-    var startLat; //Latitude från startingPosition
-    var startLong; //Longitude från startingPosition
+  //   this.props.firebase
+  //     .events()
+  //     .child(bookingID)
+  //     .child("time")
+  //     .limitToFirst(1)
+  //     .on("value", snapshot => {
+  //       bookingStartTime = Object.keys(snapshot.val());
+  //       console.log(bookingID);
+  //       console.log(bookingStartTime);
+  //     });
 
-    return startLat, startLong;
-  };
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child(startingPositionID)
+  //     .child("latitude")
+  //     .on("value", snapshot => {
+  //       startLat = snapshot.val();
+  //       console.log(startLat);
+  //     });
 
-  getETA = (userID, bookingID) => {
-    var startPosition = this.getStartingPositionForETA(userID, bookingID);
-    var startLat = startPosition.startLat; //funkar detta?
-    var startLong = startPosition.startLong; //funkar detta?
-    var currentPosition = this.getLastKnownPosition(1, userID);
-    var currentLat; //Latitude från currentPosition (getLastKnownPosition)
-    var currentLong; //Longitude från currentPosition (getLastKnownPosition)
-    var endLat = 59.313448; //Static value for KYH
-    var endLong = 18.110614; //Static value for KYH
-    var startTime; //Snapshot med startTime för booking utifrån given bookingID
+  //   this.props.firebase
+  //     .user(userID)
+  //     .child(startingPositionID)
+  //     .child("longitude")
+  //     .on("value", snapshot => {
+  //       startLong = snapshot.val();
+  //       console.log(startLong);
+  //     });
 
-    this.calculateETA(
-      startLat,
-      startLong,
-      currentLat,
-      currentLong,
-      endLat,
-      endLong,
-      startTime
-    );
-  };
+  //   return startLat, startLong;
+  // };
 
+  // getETA = (userID, bookingID) => {
+  //   var startPosition = this.getStartingPositionForETA(userID, bookingID);
+  //   var startLat = startPosition.startLat; //funkar detta?
+  //   var startLong = startPosition.startLong; //funkar detta?
+  //   var currentPosition = this.getLastKnownPosition(1, userID);
+  //   var currentLat; //Latitude från currentPosition (getLastKnownPosition)
+  //   var currentLong; //Longitude från currentPosition (getLastKnownPosition)
+  //   var endLat = 59.313448; //Static value for KYH
+  //   var endLong = 18.110614; //Static value for KYH
+  //   var startTime; //Snapshot med startTime för booking utifrån given bookingID
+
+  //   this.calculateETA(
+  //     startLat,
+  //     startLong,
+  //     currentLat,
+  //     currentLong,
+  //     endLat,
+  //     endLong,
+  //     startTime
+  //   );
+  // };
+
+  //FLYTTAD TILL NAVIGATION
   updatePosition = position => {
     this.setState({ browserCoords: position.coords });
 
@@ -131,6 +150,7 @@ class GeolocationBase extends Component {
     this.writeUserPositionToDB(position.coords);
   };
 
+  // FLYTTAD TILL NAVIGATION
   writeUserPositionToDB = position => {
     const { latitude, longitude } = position;
     console.log("writeUserPositionToDB called");
@@ -146,6 +166,7 @@ class GeolocationBase extends Component {
     this.setState({ lastKnownCoords: position });
   };
 
+  // FLYTTAD TILL NAVIGATION
   getLastKnownPosition = (num, user = this.props.authUser.uid) => {
     this.props.firebase
       .user(user)
@@ -172,6 +193,7 @@ class GeolocationBase extends Component {
       });
   };
 
+<<<<<<< HEAD
   // componentDidMount() {
   //   this.getStartingPositionForETA(
   //     "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
@@ -192,27 +214,52 @@ class GeolocationBase extends Component {
   //   );
   //   this.getLastKnownPosition(1);
   // }
+=======
+  componentDidMount() {
+    // this.getStartingPositionForETA(
+    //   "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
+    //   "-L_42-knG0FiHHjlC4dS"
+    // );
+    this.watchId = navigator.geolocation.watchPosition(
+      this.updatePosition,
+
+      error => {
+        console.log("error" + error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+        distanceFilter: 1
+      }
+    );
+    this.getLastKnownPosition(1);
+  }
+>>>>>>> master
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
   render() {
+<<<<<<< HEAD
     const whiteText = { color: "white" };
+=======
+>>>>>>> master
     return <div />;
   }
 }
 
-const Coords = props => (
-  <div>
-    {props.position ? (
-      <div>
-        <div>Lat: {props.position.latitude}</div>
-        <div>Long: {props.position.longitude}</div>
-      </div>
-    ) : null}
-  </div>
-);
+// const Coords = props => (
+//   <div>
+//     {props.position ? (
+//       <div>
+//         <div>Lat: {props.position.latitude}</div>
+//         <div>Long: {props.position.longitude}</div>
+//       </div>
+//     ) : null}
+//   </div>
+// );
 
 const condition = authUser => !!authUser;
 

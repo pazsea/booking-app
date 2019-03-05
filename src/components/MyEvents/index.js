@@ -147,9 +147,13 @@ class MyEventsBase extends Component {
 
   render() {
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
+<<<<<<< HEAD
     const noAccepted = "No one has accepted yet.";
+=======
+    const noAccepted = "";
+>>>>>>> master
     const noInvited = "No one is invited.";
-    const noDeclined = "No one has declined yet.";
+    const noDeclined = "";
     const noTimes = "You have no times? WTF?";
     if (noEvents) {
       return <H3>You have no events. </H3>;
@@ -204,7 +208,7 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Is invited: </li>
+                <li>Invitees: </li>
                 {evt.isInvited ? (
                   Object.keys(evt.isInvited).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -214,7 +218,6 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has accepted: </li>
                 {evt.hasAccepted ? (
                   Object.keys(evt.hasAccepted).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>
@@ -224,7 +227,6 @@ class MyEventsBase extends Component {
                 )}
               </ul>
               <ul>
-                <li>Has declined: </li>
                 {evt.hasDeclined ? (
                   Object.keys(evt.hasDeclined).map((key, index) => (
                     <li key={index + evt.eventUid}>{key}</li>

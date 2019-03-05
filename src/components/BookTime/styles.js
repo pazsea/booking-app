@@ -22,7 +22,7 @@ export const Form = styled.form`
     font-family: "Montserrat", sans-serif;
     width: 100%;
     margin: 5% 0;
-    padding: 0.5em;
+    padding: 0.5em 1em;
     border-radius: 4px;
     border: none;
   }
@@ -69,14 +69,16 @@ export const TimeSlotBtn = styled.div`
     display: inline-block;
     width: 10em;
     padding: 0.5em;
+    box-shadow: 0.0625em 0.0625em 0.09375em #152029;
+    text-shadow: 0.03125em 0.03125em 0.09355em #152029;
 
     margin: 3%;
     flex-direction: column-reverse;
-    color: white;
+    color: wheat;
     border-radius: 4px;
 
-    background: #c8c8fd;
-    border: solid 2px white;
+    background: #535d69;
+    border: none;
 
     :hover {
       background: #5b5b7791;

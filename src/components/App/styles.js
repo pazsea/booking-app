@@ -33,12 +33,13 @@ export const MenuItems = styled.div`
   }
 
   h1 {
-    font-family: "Lobster", cursive;
-    font-size: 3.5em;
+    font-family: "Montserrat";
+    font-size: 2.7em;
     margin: auto 0;
-    padding-left: 30px;
-    color: #f1f1f1;
+    padding-left: 1em;
+    color: #97a7b9;
     text-shadow: 0.03125em 0.03125em 0.15625em #111921;
     border-bottom: none;
+    font-weight: 900;
   }
 `;

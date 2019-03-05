@@ -27,7 +27,8 @@ class NavigationAuthBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totalInvites: 0
+      totalInvites: 0,
+      lastStoredPosition: { latitude: 0, longitude: 0 }
     };
   }
 
@@ -48,10 +49,14 @@ class NavigationAuthBase extends Component {
   };
 
   writeUserPositionToDB = position => {
+<<<<<<< HEAD
     const { latitude, longitude } = position.coords;
     console.log("writeUserPositionToDB called from Nav");
     console.log("lat: " + latitude);
     console.log("long: " + longitude);
+=======
+    const { latitude, longitude } = position;
+>>>>>>> master
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("positions")
@@ -60,6 +65,7 @@ class NavigationAuthBase extends Component {
         longitude: longitude,
         createdAt: Date.now()
       });
+<<<<<<< HEAD
   };
 
   updatePosition = (lastStoredPosition, currentPosition) => {
@@ -69,6 +75,18 @@ class NavigationAuthBase extends Component {
     const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
     if (dist > 1) {
       this.writeUserPositionToDB(currentPosition.coords);
+=======
+    this.setState({ lastStoredPosition: position });
+  };
+
+  updatePosition = position => {
+    const { latitude: lat1, longitude: lng1 } = position.coords;
+    const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
+
+    const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
+    if (dist > 1) {
+      this.writeUserPositionToDB(position.coords);
+>>>>>>> master
     }
   };
 
@@ -93,14 +111,22 @@ class NavigationAuthBase extends Component {
           } else {
             lastKnownPositions = Object.assign(positionsList);
           }
+<<<<<<< HEAD
           this.setState({ lastKnownCoords: lastKnownPositions });
+=======
+          this.setState({ lastStoredPosition: lastKnownPositions });
+>>>>>>> master
         }
       });
   };
 
   componentDidMount() {
+<<<<<<< HEAD
     console.log("Nav mounted");
 
+=======
+    // -------------- GET NUMBER OF INVITES -------------- //
+>>>>>>> master
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
@@ -117,6 +143,7 @@ class NavigationAuthBase extends Component {
         }
       });
 
+<<<<<<< HEAD
     // UPDATERAR POSTION HELA TIDEN. MÅSTE FIXAS.
     // this.watchId = navigator.geolocation.watchPosition(
     //   this.writeUserPositionToDB,
@@ -131,6 +158,22 @@ class NavigationAuthBase extends Component {
     //     distanceFilter: 10
     //   }
     // );
+=======
+    // --------------  STORE POSITION -------------- //
+    this.watchId = navigator.geolocation.watchPosition(
+      this.updatePosition,
+
+      error => {
+        console.log("error" + error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+        distanceFilter: 1
+      }
+    );
+>>>>>>> master
   }
 
   componentWillUnmount() {
@@ -152,7 +195,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
-              Upcoming Events
+              Upcoming
             </NavLink>
           </li>
           <li>
@@ -166,7 +209,7 @@ class NavigationAuthBase extends Component {
           </li>
           <li>
             <NavLink to={ROUTES.MY_EVENTS} onClick={this.props.showNav}>
-              My Events
+              My Bookings
             </NavLink>
           </li>
           <li>

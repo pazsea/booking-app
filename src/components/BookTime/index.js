@@ -56,6 +56,7 @@ class BookTimeBase extends Component {
       description: "",
       showModal: false
     };
+    this.timer = null;
   }
 
   updateBookedTimeSlots = () => {
@@ -181,6 +182,7 @@ class BookTimeBase extends Component {
     this.setState({
       showModal: false
     });
+    // this.timer = setTimeout(this.showContent.bind(this), 3000);
   };
 
   deleteInvited = key => {
@@ -382,7 +384,7 @@ class BookTimeBase extends Component {
                     <section className="modal-main">
                       <AnimationDivConfirmed>
                         <CorrectionDiv>
-                          Event booked!
+                          Room booked!
                           <i className="fas fa-check-circle fa-3x" />
                         </CorrectionDiv>
                       </AnimationDivConfirmed>
