@@ -125,7 +125,7 @@ export const InviteDiv = styled.div`
   }
 `;
 
-export const MyEventsButton = styled.button`
+export const ShowMapButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;

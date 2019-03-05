@@ -15,8 +15,6 @@ const Geolocation = props => (
 
 const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
 
-// const bookingStateObject = this.state.booking;
-
 function getObjectValues(dictionary) {
   var values = Object.keys(dictionary).map(function(key) {
     return dictionary[key];

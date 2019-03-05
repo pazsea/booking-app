@@ -76,8 +76,6 @@ class NavigationAuthBase extends Component {
   };
 
   componentDidMount() {
-    console.log("nav mpounted");
-
     // --------------  UPDATE AMOUNT OF INVITES -------------- //
     this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
       const inbj = snapshot.val();

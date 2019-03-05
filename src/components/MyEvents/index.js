@@ -5,8 +5,8 @@ import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import {
   InviteDiv,
-  MyEventsButton,
-  MyEventsDeleteButton,
+  ShowMapButton,
+  DeleteEventButton,
   H3,
   TitleOfSection
 } from "./styles";
@@ -19,13 +19,19 @@ const MyEvents = () => (
   </AuthUserContext.Consumer>
 );
 
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
+}
+
 class MyEventsBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      noEvents: false,
-      myEvents: [],
+      myEvents: null,
       loading: true,
       showMap: false,
       mapEvent: []
@@ -40,12 +46,11 @@ class MyEventsBase extends Component {
         const snap = snapshot.val();
         if (snap == null) {
           this.setState({
-            noEvents: true
+            myEvents: null
           });
         } else {
           this.setState({
-            myEvents: [],
-            noEvents: false
+            myEvents: {}
           });
 
           const snapKeys = Object.keys(snap);
@@ -56,22 +61,15 @@ class MyEventsBase extends Component {
                 myEvents: [...this.state.myEvents, { ...eventSnaps }]
               });
             });
-            return snap;
-          });
+          }); // CLosing forEach hosted eventID
         }
         this.setState({
           loading: false
-        });
-      });
-  }
+        }); // Closing setState
+      }); // Closing firebase get all hosted eventIDs
+  } // Closing UpdateEvents()
 
   deleteEvent(event, { eventUid, grouproom, time, isInvitedUid }) {
-    // console.log(
-    //   "grupproum" + grouproom,
-    //   "Tide" + time,
-    //   "EventUID" + eventUid,
-    //   "invitations" + isInvitedUid
-    // );
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("hostedEvents")
@@ -155,14 +153,14 @@ class MyEventsBase extends Component {
 
   render() {
     //Code to test calculation of ETA - do not delete - being used by Nina
-    return (
-      <div>
-        <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
-        <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
+    //     <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
+    //   </div>
+    // );
 
-    const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
+    const { loading, myEvents, showMap, mapEvent } = this.state;
     const noAccepted = "No one has accepted yet.";
     const noInvited = "";
     const noDeclined = "";
@@ -170,8 +168,8 @@ class MyEventsBase extends Component {
     const noAttendees = "No one is here yet or the event hasn't started";
     const noPending = "No one is absent yet or the event hasn't started";
 
-    if (noEvents) {
-      return <H3>You have no events. </H3>;
+    if (isEmpty(myEvents)) {
+      return <H3> You have no events </H3>;
     } else if (loading) {
       return (
         <div>
@@ -179,17 +177,19 @@ class MyEventsBase extends Component {
           <Spinner />
         </div>
       );
-    } else if (myEvents === null) {
-      return (
-        <div>
-          Fetching invites....
-          <Spinner />
-        </div>
-      );
+
+      //NEEDED??
+      // } else if (myEvents === null) {
+      //   return (
+      //     <div>
+      //       Fetching invites....
+      //       <Spinner />
+      //     </div>
+      //   );
     } else {
       return (
         <section>
-          <TitleOfSection>Your Bookings</TitleOfSection>
+          <TitleOfSection> Your Bookings </TitleOfSection>
           {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
 
           {myEvents.map((evt, index) => (
@@ -199,6 +199,7 @@ class MyEventsBase extends Component {
                 Date: &nbsp;
                 {new Date(evt.date).toLocaleDateString()}
               </p>
+
               <ul>
                 {evt.time ? (
                   Object.keys(evt.time).map((key, index) => (
@@ -219,13 +220,14 @@ class MyEventsBase extends Component {
                   <li>{noTimes}</li>
                 )}
               </ul>
+
               <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
 
               <ul>
                 <li>Invitees: </li>
                 {evt.isInvited ? (
-                  Object.keys(evt.isInvited).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                  Object.keys(evt.isInvited).map((isInvitedUserName, index) => (
+                    <li key={index + evt.eventUid}>{isInvitedUserName}</li>
                   ))
                 ) : (
                   <li>{noInvited}</li>
@@ -233,26 +235,30 @@ class MyEventsBase extends Component {
               </ul>
               <ul>
                 {evt.hasAccepted ? (
-                  Object.keys(evt.hasAccepted).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
+                  Object.keys(evt.hasAccepted).map(
+                    (hasAcceptedUserName, index) => (
+                      <li key={index + evt.eventUid}>{hasAcceptedUserName}</li>
+                    )
+                  )
                 ) : (
                   <li>{noAccepted}</li>
                 )}
               </ul>
               <ul>
                 {evt.hasDeclined ? (
-                  Object.keys(evt.hasDeclined).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
-                  ))
+                  Object.keys(evt.hasDeclined).map(
+                    (hasDeclinedUserName, index) => (
+                      <li key={index + evt.eventUid}>{hasDeclinedUserName}</li>
+                    )
+                  )
                 ) : (
                   <li>{noDeclined}</li>
                 )}
               </ul>
               <ul>
                 {evt.attendees ? (
-                  Object.keys(evt.attendees).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                  Object.keys(evt.attendees).map((attendeesUserName, index) => (
+                    <li key={index + evt.eventUid}>{attendeesUserName}</li>
                   ))
                 ) : (
                   <li>{noAttendees}</li>
@@ -260,8 +266,8 @@ class MyEventsBase extends Component {
               </ul>
               <ul>
                 {evt.pending ? (
-                  Object.keys(evt.pending).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                  Object.keys(evt.pending).map((pendingUserName, index) => (
+                    <li key={index + evt.eventUid}>{pendingUserName}</li>
                   ))
                 ) : (
                   <li>{noPending}</li>
@@ -275,20 +281,21 @@ class MyEventsBase extends Component {
                 key={"Description event: " + evt.eventUid}
                 readOnly
               />
-              <MyEventsButton
-                key={"Map Event " + evt.eventUid}
+              <ShowMapButton
+                key={"Map EventID " + evt.eventUid}
                 onClick={event => this.displayMap(event, evt)}
               >
                 Show Map
-              </MyEventsButton>
-              <MyEventsDeleteButton
+              </ShowMapButton>
+
+              <DeleteEventButton
                 key={"Delete event" + evt.eventUid}
                 value={evt.eventUid}
                 index={evt.index}
                 onClick={event => this.deleteEvent(event, evt)}
               >
                 Delete event
-              </MyEventsDeleteButton>
+              </DeleteEventButton>
             </InviteDiv>
           ))}
         </section>
