@@ -112,7 +112,7 @@ class NavigationAuthBase extends Component {
         this.setState({
           totalInvites: total
         });
-      } else if (inbj.hasOwnProperty("invitedToEvents") === null) {
+      } else {
         this.setState({
           totalInvites: 0
         });

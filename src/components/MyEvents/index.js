@@ -166,6 +166,9 @@ class MyEventsBase extends Component {
     const noInvited = "";
     const noDeclined = "";
     const noTimes = "You have no times? WTF?";
+    const noAttendees = "No one is here yet or the event hasn't started";
+    const noPending = "No one is absent yet or the event hasn't started";
+
     if (noEvents) {
       return <H3>You have no events. </H3>;
     } else if (loading) {
@@ -243,6 +246,24 @@ class MyEventsBase extends Component {
                   ))
                 ) : (
                   <li>{noDeclined}</li>
+                )}
+              </ul>
+              <ul>
+                {evt.attendees ? (
+                  Object.keys(evt.attendees).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noAttendees}</li>
+                )}
+              </ul>
+              <ul>
+                {evt.pending ? (
+                  Object.keys(evt.pending).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noPending}</li>
                 )}
               </ul>
 
