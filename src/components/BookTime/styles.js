@@ -131,7 +131,7 @@ export const CustomButton2 = styled.button`
   border: none;
   color: wheat;
   border-radius: 4px;
-  margin: 0 auto;
+  margin: 0.1em auto;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
   cursor: pointer;

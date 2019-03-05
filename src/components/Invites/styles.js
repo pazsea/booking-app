@@ -21,12 +21,12 @@ export const InviteDiv = styled.div`
   }
 
   p:nth-child(1) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 
   ul {
     list-style: none;
-    font-size: 1.2em;
+    font-size: 1em;
     padding: 0.5em;
   }
   input {
@@ -46,28 +46,30 @@ export const InviteDiv = styled.div`
   }
 
   ul li:nth-child(1) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 
   li {
-    display: flex;
-    justify-content: space-evenly;
   }
   .fa-question {
     color: white;
+    margin: auto 1em;
   }
   .fa-check {
     color: #599272;
+    margin: auto 1em;
   }
   .fa-times {
     color: #c5766b;
+    margin: auto 1em;
+    font-size: 1.3em;
   }
   h3 {
     color: wheat;
   }
   h1 {
     color: wheat;
-    font-size: 1.5em;
+    font-size: 1em;
   }
 
   @media screen and (min-width: 1024) {
@@ -91,12 +93,12 @@ export const InviteDiv = styled.div`
     }
 
     p:nth-child(1) {
-      font-size: 1.3em;
+      font-size: 1em;
     }
 
     ul {
       list-style: none;
-      font-size: 1.2em;
+      font-size: 1em;
       padding: 0.5em;
     }
     input {
@@ -116,7 +118,7 @@ export const InviteDiv = styled.div`
     }
 
     ul li:nth-child(1) {
-      font-size: 1.3em;
+      font-size: 1em;
     }
 
     li {
