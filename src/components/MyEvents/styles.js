@@ -15,7 +15,6 @@ export const TitleOfSection = styled.h1`
   margin: 0.7em 0;
   text-align: center;
   color: wheat;
-
   @media screen and (min-width: 1024px) {
     font-size: 4em;
   }
@@ -39,11 +38,9 @@ export const InviteDiv = styled.div`
     line-height: 2em;
     padding: 0.8em;
   }
-
   ul li:nth-child(1) {
     font-size: 1em;
   }
-
   input {
     width: 100%;
     height: 4em;
@@ -59,19 +56,16 @@ export const InviteDiv = styled.div`
     padding: 0.5em;
     margin-bottom: 1em;
   }
-
   p:nth-child(1) {
     font-size: 1em;
   }
   /* button {
     width: 50%;
   } */
-
   * {
     margin: 0;
     font-family: "Montserrat", sans-serif;
   }
-
   @media screen and (min-width: 1024px) {
     margin: 2% 15%;
     border: none;
@@ -90,11 +84,9 @@ export const InviteDiv = styled.div`
       line-height: 2em;
       padding: 0.8em;
     }
-
     ul li:nth-child(1) {
       font-size: 1em;
     }
-
     input {
       width: 100%;
       height: 4em;
@@ -110,14 +102,12 @@ export const InviteDiv = styled.div`
       padding: 0.5em;
       margin-bottom: 1em;
     }
-
     p:nth-child(1) {
       font-size: 1em;
     }
     /* button {
     width: 50%;
   } */
-
     * {
       margin: 0;
       font-family: "Montserrat", sans-serif;
@@ -127,7 +117,6 @@ export const InviteDiv = styled.div`
 
 export const MyEventsButton = styled.button`
   font-family: "Montserrat", sans-serif;
-
   padding: 10px;
   background-color: #97a7b9;
   width: 48%;
@@ -138,7 +127,6 @@ export const MyEventsButton = styled.button`
   font-size: 1.2em;
   margin-right: 1%;
   font-weight: 600;
-
   :hover {
     background: #97a7b9a1;
   }
@@ -146,7 +134,6 @@ export const MyEventsButton = styled.button`
 
 export const MyEventsDeleteButton = styled.button`
   font-family: "Montserrat", sans-serif;
-
   padding: 10px;
   background-color: #d2b9bf;
   width: 48%;
@@ -157,7 +144,6 @@ export const MyEventsDeleteButton = styled.button`
   font-size: 1.2em;
   margin-left: 1%;
   font-weight: 600;
-
   :hover {
     background: #d2b9bfb5;
   }

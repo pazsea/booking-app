@@ -1,5 +1,20 @@
 import styled from "styled-components";
 
+export const InfoDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5em;
+  ul {
+    padding: 0 !important;
+  }
+`;
+
+export const InfoDiv2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5em;
+`;
+
 export const InviteDiv = styled.div`
   margin: 2% 10%;
   border: none;

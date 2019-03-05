@@ -8,8 +8,23 @@ export const H3 = styled.h3`
   margin: 10%;
 `;
 
+export const InfoDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5em;
+  ul {
+    padding: 0 !important;
+  }
+`;
+
+export const InfoDiv2 = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.5em;
+`;
+
 export const InviteDiv = styled.div`
-  margin: 0 10%;
+  margin: 2% 10%;
   border: none;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -21,16 +36,22 @@ export const InviteDiv = styled.div`
   color: wheat;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
-  ul {
-    list-style: none;
-    line-height: 2em;
-    padding: 0.8em;
+
+  p {
+    margin-bottom: 0;
+    letter-spacing: 0;
+    line-height: 1.8em;
   }
 
-  ul li:nth-child(1) {
+  p:nth-child(1) {
     font-size: 1em;
   }
 
+  ul {
+    list-style: none;
+    font-size: 1em;
+    padding: 0.5em;
+  }
   input {
     width: 100%;
     height: 4em;
@@ -47,16 +68,34 @@ export const InviteDiv = styled.div`
     margin-bottom: 1em;
   }
 
-  p:nth-child(1) {
+  ul li:nth-child(1) {
     font-size: 1em;
   }
 
-  * {
-    margin: 0;
-    font-family: "Montserrat", sans-serif;
+  li {
+  }
+  .fa-question {
+    color: white;
+    margin: auto 1em;
+  }
+  .fa-check {
+    color: #599272;
+    margin: auto 1em;
+  }
+  .fa-times {
+    color: #c5766b;
+    margin: auto 1em;
+    font-size: 1.3em;
+  }
+  h3 {
+    color: wheat;
+  }
+  h1 {
+    color: wheat;
+    font-size: 1em;
   }
 
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 1024) {
     margin: 2% 15%;
     border: none;
     height: -webkit-fit-content;
@@ -69,16 +108,22 @@ export const InviteDiv = styled.div`
     color: wheat;
     box-shadow: 0.0625em 0.0625em 0.09375em #152029;
     text-shadow: 0.03125em 0.03125em 0.09355em #152029;
-    ul {
-      list-style: none;
-      line-height: 2em;
-      padding: 0.8em;
+
+    p {
+      margin-bottom: 0;
+      letter-spacing: 0;
+      line-height: 1.8em;
     }
 
-    ul li:nth-child(1) {
+    p:nth-child(1) {
       font-size: 1em;
     }
 
+    ul {
+      list-style: none;
+      font-size: 1em;
+      padding: 0.5em;
+    }
     input {
       width: 100%;
       height: 4em;
@@ -95,13 +140,29 @@ export const InviteDiv = styled.div`
       margin-bottom: 1em;
     }
 
-    p:nth-child(1) {
+    ul li:nth-child(1) {
       font-size: 1em;
     }
 
-    * {
-      margin: 0;
-      font-family: "Montserrat", sans-serif;
+    li {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    .fa-question {
+      color: white;
+    }
+    .fa-check {
+      color: #599272;
+    }
+    .fa-times {
+      color: #c5766b;
+    }
+    h3 {
+      color: wheat;
+    }
+    h1 {
+      color: wheat;
+      font-size: 1.5em;
     }
   }
 `;
@@ -109,37 +170,43 @@ export const InviteDiv = styled.div`
 export const HelpButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
-  padding: 10px;
+  padding: 0.7em;
   background-color: #86a3b1;
   width: 48%;
   border-radius: 20px;
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-
+  font-size: 0.8em;
   margin-right: 1%;
   font-weight: 600;
   :hover {
     background: #86a3b180;
+  }
+  @media screen and (min-width: 1024px) {
+    font-size: 1em;
   }
 `;
 
 export const NoHelpButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
-  padding: 10px;
+  padding: 0.7em;
   background-color: #d2b9bf;
   width: 48%;
   border-radius: 20px;
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-
+  font-size: 0.8em;
   margin-left: 1%;
   font-weight: 600;
 
   :hover {
     background: #d2b9bfb5;
+  }
+  @media screen and (min-width: 1024px) {
+    font-size: 1em;
   }
 `;
 
