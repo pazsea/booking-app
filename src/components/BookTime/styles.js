@@ -131,10 +131,14 @@ export const CustomButton2 = styled.button`
   border: none;
   color: wheat;
   border-radius: 4px;
-  margin: 1%;
+  margin: 0 auto;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
   cursor: pointer;
+  :hover {
+    background: #535d6987;
+    cursor: pointer;
+  }
 `;
 
 export const LoadingDiv = styled.div`
@@ -151,11 +155,15 @@ export const CustomButton = styled.button`
   background-color: #d2b9bf;
   border: none;
   border-radius: 4px;
-  margin: 1%;
+  margin: 0.1em auto;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   color: black;
   font-weight: 600;
   cursor: pointer;
+  :hover {
+    background: #d2b9bfc4;
+    cursor: pointer;
+  }
 `;
 
 const tadaAnimation = keyframes`${tada}`;

@@ -7,7 +7,7 @@ export const InviteDiv = styled.div`
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
-  background: #193948;
+  background: #4d4d4d;
   border-radius: 4px;
   text-align: center;
   color: wheat;

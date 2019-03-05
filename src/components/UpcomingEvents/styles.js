@@ -15,7 +15,7 @@ export const InviteDiv = styled.div`
   height: -moz-fit-content;
   height: fit-content;
   padding: 1.5em 1em;
-  background: #193948;
+  background: #4d4d4d;
   border-radius: 4px;
   text-align: center;
   color: wheat;
@@ -74,6 +74,9 @@ export const HelpButton = styled.button`
   font-size: 0.9em;
   margin-right: 1%;
   font-weight: 600;
+  :hover {
+    background: #86a3b180;
+  }
 `;
 
 export const NoHelpButton = styled.button`
@@ -89,6 +92,10 @@ export const NoHelpButton = styled.button`
   font-size: 0.9em;
   margin-left: 1%;
   font-weight: 600;
+
+  :hover {
+    background: #d2b9bfb5;
+  }
 `;
 
 // export const AttendEventButton = styled.button`
