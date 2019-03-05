@@ -151,7 +151,8 @@ class MyEventsBase extends Component {
     //Code to test calculation of ETA - do not delete - being used by Nina
     return (
       <div>
-        <Geolocation bookingID="booking1" />
+        <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
+        <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
       </div>
     );
 

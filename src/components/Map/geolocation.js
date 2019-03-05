@@ -52,19 +52,22 @@ class GeolocationBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      browserCoords: null,
-      lastKnownCoords: null,
-      booking: null
+      startTime: null,
+      location: {
+        latitude: null,
+        longitude: null
+      },
+      invitees: {}
     };
   }
 
   getLastKnownPosition = (
     num,
-    user = this.props.authUser.uid,
+    userID = this.props.authUser.uid,
     callbackFunction
   ) => {
     this.props.firebase
-      .user(user)
+      .user(userID)
       .child("positions")
       .limitToLast(num)
       .on("value", snapshot => {
@@ -78,8 +81,6 @@ class GeolocationBase extends Component {
             })
           );
 
-          console.log("lastKnownPositions", lastKnownPositions);
-          // this.setState({ lastStoredPosition: lastKnownPositions });
           callbackFunction(lastKnownPositions);
         }
       });
@@ -96,26 +97,35 @@ class GeolocationBase extends Component {
     return roundMilliseconds(timeLeft); //milliseconds left to arrival
   };
 
-  getDataForETA = (userID, bookingID) => {
+  getDataForETA = bookingID => {
     let bookingStartTime; //Done
-    let startTimeETA = bookingStartTime - 3600000;
-    let bookingLocation = KYHLocation; //Done
-    let userName; //Done
-    let originLocation = null; //Done
-    let currentLocation = null; //Done
 
-    // Get bookingStartTime
-    this.props.firebase
-      .events()
-      .child(bookingID)
-      .child("time")
-      .limitToFirst(1)
-      .on("value", snapshot => {
-        const timeList = Object.keys(snapshot.val());
-        bookingStartTime = parseInt(timeList[0]);
+    let bookingLocation = KYHLocation; //Should in the future come from the db
 
-        // When bookingStartTime is recieved, get last 2 known positions
+    // Get booking object
+    this.props.firebase.event(bookingID).on("value", snapshot => {
+      const booking = snapshot.val();
+
+      const timeList = Object.keys(booking.time);
+      bookingStartTime = parseInt(timeList[0]);
+      let startTimeETA = bookingStartTime - 3600000;
+
+      this.setState({
+        startTime: bookingStartTime,
+        location: {
+          latitude: bookingLocation.latitude,
+          longitude: bookingLocation.longitude
+        },
+        invitees: {}
+      });
+
+      const acceptedUserList = Object.keys(booking.hasAcceptedUid);
+
+      acceptedUserList.forEach(userID => {
+        // Get last 2 known positions
         this.getLastKnownPosition(2, userID, positionList => {
+          let originLocation;
+          let currentLocation;
           // Get originLocation
           if (positionList[0].createdAt >= startTimeETA) {
             originLocation = positionList[0];
@@ -131,132 +141,39 @@ class GeolocationBase extends Component {
             .user(userID)
             .child("username")
             .on("value", snapshot => {
-              userName = snapshot.val();
+              const userName = snapshot.val();
 
               // Wen userName is recieved, update state
-              this.setState({
-                booking: {
-                  startTime: bookingStartTime,
-                  location: {
-                    latitude: bookingLocation.latitude,
-                    longitude: bookingLocation.longitude
+              this.setState(prevState => {
+                let invitees = {
+                  ...prevState.invitees
+                };
+
+                invitees[userID] = {
+                  userID: userID,
+                  userName: userName,
+                  origin: {
+                    latitude: originLocation.latitude,
+                    longitude: originLocation.longitude,
+                    timestamp: originLocation.createdAt
                   },
-                  invitees: {
-                    user1: {
-                      userID: userID,
-                      userName: userName,
-                      origin: {
-                        latitude: originLocation.latitude,
-                        longitude: originLocation.longitude,
-                        timestamp: originLocation.createdAt
-                      },
-                      current: {
-                        latitude: currentLocation.latitude,
-                        longitude: currentLocation,
-                        timestamp: currentLocation.createdAt
-                      }
-                    }
+                  current: {
+                    latitude: currentLocation.latitude,
+                    longitude: currentLocation.longitude,
+                    timestamp: currentLocation.createdAt
                   }
-                }
-              });
-            });
-        });
-      });
+                };
 
-    // const collection = [1, 2, { a: [12, 17, 15] }];
-    // const newCollection = update(collection, {
-    //   2: { a: { $merge: [[1, 1, 13, 14]] } }
-    // });
-    // => [1, 2, {a: [12, 13, 14, 15]}]
-
-    // const NewBookingStateObject = update(bookingStateObject, {
-    //   bookingID: {
-    //     invitees: {
-    //       $push: [
-    //         [
-    //           (userID: {
-    //             userID: userID,
-    //             userName: userName,
-    //             origin: {
-    //               latitude: originLocation.latitude,
-    //               longitude: originLocation.longitude,
-    //               timestamp: originLocation.createdAt
-    //             },
-    //             current: {
-    //               latitude: currentLocation.latitude,
-    //               longitude: currentLocation,
-    //               timestamp: currentLocation.createdAt
-    //             }
-    //           })
-    //         ]
-    //       ]
-    //     }
-    //   }
-    // });
-
-    // startingPositionID
-    // this.props.firebase
-    //   .user(userID)
-    //   .child("positions")
-    //   .orderByChild("createdAt")
-    //   .startAt(ETACalcStartTime)
-    //   .limitToFirst(1)
-    //   .on("child_added", function(snapshot) {
-    //     startingPositionID = snapshot.key;
-    //   });
-
-    // this.props.firebase
-    //   .user(userID)
-    //   .child(startingPositionID)
-    //   .child("longitude")
-    //   .on("value", snapshot => {
-    //     startLong = snapshot.val();
-    //     console.log(startLong);
-    //   });
-  };
+                return { invitees: invitees };
+              }); // Closing setState
+            }); // Closing firebase get userName
+        }); // Closing getLastKnownPosition
+      }); // Closing forEach
+    }); // CLosing firebase get booking
+  }; // Closing getDataForETA
 
   componentDidMount() {
-    this.setState({
-      booking: {
-        startTime: 1551686400000,
-        location: {
-          latitude: 58,
-          longitude: 16
-        },
-        invitees: {
-          user1: {
-            userID: "user1",
-            userName: "bob",
-            origin: {
-              latitude: 57,
-              longitude: 16,
-              timestamp: 1551683473000
-            },
-            current: {
-              latitude: 57.3,
-              longitude: 16.2,
-              timestamp: 1551684193000
-            }
-          },
-          user2: {
-            userID: "user2",
-            userName: "albert",
-            origin: {
-              latitude: 57,
-              longitude: 16,
-              timestamp: 1551683473000
-            },
-            current: {
-              latitude: 57.3,
-              longitude: 16.2,
-              timestamp: 1551694193000
-            }
-          }
-        }
-      }
-    });
-
-    this.getDataForETA("cWnydy3W8fSotFh3W56MOvAAY9M2", "-L_ECGgtNTC5No7wnJSA");
+    this.getDataForETA(this.props.bookingID);
   }
 
   componentWillUnmount() {
@@ -264,12 +181,13 @@ class GeolocationBase extends Component {
   }
 
   render() {
-    const { booking } = this.state;
-    if (!booking) {
+    const { startTime, invitees, location } = this.state;
+
+    if (!startTime) {
       return <p style={{ color: "white" }}>Loading...</p>;
     }
 
-    var allUserObjects = getObjectValues(booking.invitees);
+    var allUserObjects = getObjectValues(invitees);
     return (
       <div style={{ color: "white" }}>
         {allUserObjects.map(userObject => (
@@ -280,7 +198,7 @@ class GeolocationBase extends Component {
               {this.calculateETA(
                 userObject.origin,
                 userObject.current,
-                KYHLocation
+                location
               )}
             </span>{" "}
           </p>
