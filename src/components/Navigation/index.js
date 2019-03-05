@@ -66,7 +66,7 @@ class NavigationAuthBase extends Component {
     const { latitude: lat2, longitude: lng2 } = this.state.lastStoredPosition;
 
     const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
-    if (dist > 1) {
+    if (dist > 10) {
       this.writeUserPositionToDB(position.coords);
     }
   };
@@ -97,13 +97,23 @@ class NavigationAuthBase extends Component {
       });
   };
 
-  updateTotalInvites(total) {
-    this.setState({
-      totalInvites: total
-    });
-  }
-
   componentDidMount() {
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .on("value", snapshot => {
+        const inbj = snapshot.val();
+        if (snapshot.val()) {
+          const total = Object.keys(inbj).length;
+          this.setState({
+            totalInvites: total
+          });
+        } else {
+          this.setState({
+            totalInvites: 0
+          });
+        }
+      });
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
@@ -118,20 +128,6 @@ class NavigationAuthBase extends Component {
         distanceFilter: 1
       }
     );
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .on("value", snapshot => {
-        const inbj = snapshot.val();
-        if (snapshot.val()) {
-          const total = Object.keys(inbj).length;
-          this.updateTotalInvites(total);
-        } else {
-          this.setState({
-            totalInvites: 0
-          });
-        }
-      });
   }
 
   componentWillUnmount() {
