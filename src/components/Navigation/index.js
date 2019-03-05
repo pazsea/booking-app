@@ -98,15 +98,6 @@ class NavigationAuthBase extends Component {
       });
   };
 
-<<<<<<< HEAD
-  updateTotalInvites(total) {
-    this.setState({
-      totalInvites: total
-    });
-  }
-
-  componentDidMount() {
-=======
   componentDidMount() {
     this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
       const inbj = snapshot.val();
@@ -121,7 +112,6 @@ class NavigationAuthBase extends Component {
         });
       }
     });
->>>>>>> dev.paz
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
@@ -136,23 +126,6 @@ class NavigationAuthBase extends Component {
         distanceFilter: 1
       }
     );
-<<<<<<< HEAD
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .on("value", snapshot => {
-        const inbj = snapshot.val();
-        if (snapshot.val()) {
-          const total = Object.keys(inbj).length;
-          this.updateTotalInvites(total);
-        } else {
-          this.setState({
-            totalInvites: 0
-          });
-        }
-      });
-=======
->>>>>>> dev.paz
   }
 
   componentWillUnmount() {
