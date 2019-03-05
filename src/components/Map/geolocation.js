@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import update from "immutability-helper";
+// import update from "immutability-helper";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
@@ -14,6 +14,8 @@ const Geolocation = props => (
 );
 
 const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
+
+// const bookingStateObject = this.state.booking;
 
 function getObjectValues(dictionary) {
   var values = Object.keys(dictionary).map(function(key) {
@@ -52,11 +54,15 @@ class GeolocationBase extends Component {
     this.state = {
       browserCoords: null,
       lastKnownCoords: null,
-      booking: {}
+      booking: null
     };
   }
 
-  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
+  getLastKnownPosition = (
+    num,
+    user = this.props.authUser.uid,
+    callbackFunction
+  ) => {
     this.props.firebase
       .user(user)
       .child("positions")
@@ -65,19 +71,16 @@ class GeolocationBase extends Component {
         const lastKnownPositionObject = snapshot.val();
 
         if (lastKnownPositionObject) {
-          const positionsList = Object.keys(lastKnownPositionObject).map(
+          const lastKnownPositions = Object.keys(lastKnownPositionObject).map(
             key => ({
               ...lastKnownPositionObject[key],
               uid: key
             })
           );
-          let lastKnownPositions = {};
-          if (positionsList.length === 1) {
-            lastKnownPositions = Object.assign(positionsList[0]);
-          } else {
-            lastKnownPositions = Object.assign(positionsList);
-          }
-          this.setState({ lastStoredPosition: lastKnownPositions });
+
+          console.log("lastKnownPositions", lastKnownPositions);
+          // this.setState({ lastStoredPosition: lastKnownPositions });
+          callbackFunction(lastKnownPositions);
         }
       });
   };
@@ -95,9 +98,9 @@ class GeolocationBase extends Component {
 
   getDataForETA = (userID, bookingID) => {
     let bookingStartTime; //Done
+    let startTimeETA = bookingStartTime - 3600000;
     let bookingLocation = KYHLocation; //Done
     let userName; //Done
-    let lastTwoLocations; //Done
     let originLocation = null; //Done
     let currentLocation = null; //Done
 
@@ -108,60 +111,88 @@ class GeolocationBase extends Component {
       .child("time")
       .limitToFirst(1)
       .on("value", snapshot => {
-        bookingStartTime = Object.keys(snapshot.val());
+        const timeList = Object.keys(snapshot.val());
+        bookingStartTime = parseInt(timeList[0]);
+
+        // When bookingStartTime is recieved, get last 2 known positions
+        this.getLastKnownPosition(2, userID, positionList => {
+          // Get originLocation
+          if (positionList[0].createdAt >= startTimeETA) {
+            originLocation = positionList[0];
+          }
+
+          // Get currentLocation
+          if (positionList[1].createdAt >= startTimeETA) {
+            currentLocation = positionList[1];
+          }
+
+          // When data from getLastKnownPosition() is recieved, get userName
+          this.props.firebase
+            .user(userID)
+            .child("username")
+            .on("value", snapshot => {
+              userName = snapshot.val();
+
+              // Wen userName is recieved, update state
+              this.setState({
+                booking: {
+                  startTime: bookingStartTime,
+                  location: {
+                    latitude: bookingLocation.latitude,
+                    longitude: bookingLocation.longitude
+                  },
+                  invitees: {
+                    user1: {
+                      userID: userID,
+                      userName: userName,
+                      origin: {
+                        latitude: originLocation.latitude,
+                        longitude: originLocation.longitude,
+                        timestamp: originLocation.createdAt
+                      },
+                      current: {
+                        latitude: currentLocation.latitude,
+                        longitude: currentLocation,
+                        timestamp: currentLocation.createdAt
+                      }
+                    }
+                  }
+                }
+              });
+            });
+        });
       });
-
-    // Get userName
-    this.props.firebase
-      .user(userID)
-      .child("username")
-      .on("value", snapshot => {
-        userName = snapshot.value();
-      });
-
-    lastTwoLocations = this.getLastKnownPosition(2, userID);
-
-    // Get originLocation
-    if (lastTwoLocations[1].createdAt >= bookingStartTime) {
-      originLocation = lastTwoLocations[1];
-    }
-
-    // Get currentLocation
-    if (lastTwoLocations[0].createdAt >= bookingStartTime) {
-      currentLocation = lastTwoLocations[0];
-    }
 
     // const collection = [1, 2, { a: [12, 17, 15] }];
     // const newCollection = update(collection, {
-    //   2: { a: { $push: [[1, 1, 13, 14]] } }
+    //   2: { a: { $merge: [[1, 1, 13, 14]] } }
     // });
     // => [1, 2, {a: [12, 13, 14, 15]}]
 
-    this.setState({
-      booking: {
-        startTime: bookingStartTime,
-        location: {
-          latitude: bookingLocation.latitude,
-          longitude: bookingLocation.longitude
-        },
-        invitees: {
-          user1: {
-            userID: userID,
-            userName: userName,
-            origin: {
-              latitude: originLocation.latitude,
-              longitude: originLocation.longitude,
-              timestamp: originLocation.createdAt
-            },
-            current: {
-              latitude: currentLocation.latitude,
-              longitude: currentLocation,
-              timestamp: currentLocation.createdAt
-            }
-          }
-        }
-      }
-    });
+    // const NewBookingStateObject = update(bookingStateObject, {
+    //   bookingID: {
+    //     invitees: {
+    //       $push: [
+    //         [
+    //           (userID: {
+    //             userID: userID,
+    //             userName: userName,
+    //             origin: {
+    //               latitude: originLocation.latitude,
+    //               longitude: originLocation.longitude,
+    //               timestamp: originLocation.createdAt
+    //             },
+    //             current: {
+    //               latitude: currentLocation.latitude,
+    //               longitude: currentLocation,
+    //               timestamp: currentLocation.createdAt
+    //             }
+    //           })
+    //         ]
+    //       ]
+    //     }
+    //   }
+    // });
 
     // startingPositionID
     // this.props.firebase
@@ -225,7 +256,7 @@ class GeolocationBase extends Component {
       }
     });
 
-    // this.getDataForETA("cWnydy3W8fSotFh3W56MOvAAY9M2", "-L_CSYEERWBLlbbpZulp");
+    this.getDataForETA("cWnydy3W8fSotFh3W56MOvAAY9M2", "-L_ECGgtNTC5No7wnJSA");
   }
 
   componentWillUnmount() {
