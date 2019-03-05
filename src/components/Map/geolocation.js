@@ -131,10 +131,10 @@ class GeolocationBase extends Component {
       currentLocation = lastTwoLocations[0];
     }
 
-    const collection = [1, 2, { a: [12, 17, 15] }];
-    const newCollection = update(collection, {
-      2: { a: { $push: [[1, 1, 13, 14]] } }
-    });
+    // const collection = [1, 2, { a: [12, 17, 15] }];
+    // const newCollection = update(collection, {
+    //   2: { a: { $push: [[1, 1, 13, 14]] } }
+    // });
     // => [1, 2, {a: [12, 13, 14, 15]}]
 
     this.setState({
