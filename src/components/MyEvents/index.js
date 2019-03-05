@@ -147,11 +147,7 @@ class MyEventsBase extends Component {
 
   render() {
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
-<<<<<<< HEAD
     const noAccepted = "No one has accepted yet.";
-=======
-    const noAccepted = "";
->>>>>>> master
     const noInvited = "No one is invited.";
     const noDeclined = "";
     const noTimes = "You have no times? WTF?";

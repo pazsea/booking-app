@@ -120,20 +120,6 @@ class MapBase extends Component {
 
   render() {
     const { noUsers } = this.state;
-<<<<<<< HEAD
-    {
-      if (noUsers) {
-        return <div>No users has accepted in this event</div>;
-      } else {
-        return (
-          <div>
-            <Wrapper width="90vw" height="80vh" id="map" />
-            <Geolocation />
-            <button onClick={this.props.close}>CLOSE</button>
-          </div>
-        );
-      }
-=======
 
     if (noUsers) {
       return <div>No users has accepted in this event</div>;
@@ -145,7 +131,6 @@ class MapBase extends Component {
           <button onClick={this.props.close}>CLOSE</button>
         </div>
       );
->>>>>>> master
     }
   }
 }

@@ -193,28 +193,6 @@ class GeolocationBase extends Component {
       });
   };
 
-<<<<<<< HEAD
-  // componentDidMount() {
-  //   this.getStartingPositionForETA(
-  //     "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
-  //     "-LZyJ5kLF8iTqNLqigZW"
-  //   );
-  //   this.watchId = navigator.geolocation.watchPosition(
-  //     this.updatePosition,
-
-  //     error => {
-  //       console.log("error" + error);
-  //     },
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       maximumAge: 0,
-  //       distanceFilter: 1
-  //     }
-  //   );
-  //   this.getLastKnownPosition(1);
-  // }
-=======
   componentDidMount() {
     // this.getStartingPositionForETA(
     //   "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
@@ -235,17 +213,12 @@ class GeolocationBase extends Component {
     );
     this.getLastKnownPosition(1);
   }
->>>>>>> master
 
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
   render() {
-<<<<<<< HEAD
-    const whiteText = { color: "white" };
-=======
->>>>>>> master
     return <div />;
   }
 }
