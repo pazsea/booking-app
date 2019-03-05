@@ -107,6 +107,7 @@ class NavigationAuthBase extends Component {
   }
 
   componentDidMount() {
+    console.log("nav mpounted");
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
