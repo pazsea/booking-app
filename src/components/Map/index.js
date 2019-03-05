@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
+import { H3 } from "./styles";
 
 // import { userInfo } from "os";
 
@@ -114,7 +115,7 @@ class MapBase extends Component {
 
     L.marker([59.313448, 18.110614])
       .addTo(this.map)
-      .bindPopup("KYH, en märklig skola")
+      .bindPopup("KYH School")
       .openPopup();
   }
 
@@ -122,7 +123,7 @@ class MapBase extends Component {
     const { noUsers } = this.state;
 
     if (noUsers) {
-      return <div>No users has accepted in this event</div>;
+      return <H3>No users has accepted in this event</H3>;
     } else {
       return (
         <div>

@@ -86,7 +86,7 @@ class NavigationAuthBase extends Component {
         this.setState({
           totalInvites: total
         });
-      } else if (inbj.hasOwnProperty("invitedToEvents") === null) {
+      } else {
         this.setState({
           totalInvites: 0
         });
@@ -102,7 +102,7 @@ class NavigationAuthBase extends Component {
       },
       {
         enableHighAccuracy: true,
-        // timeout: 20000, STYR TIDEN DEN PUSHAR IN TILL FIREBASE
+        timeout: 20000,
         maximumAge: 0,
         distanceFilter: 10
       }
@@ -110,7 +110,7 @@ class NavigationAuthBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    this.props.firebase.user(this.props.authUser.uid).off();
     navigator.geolocation.clearWatch(this.watchId);
   }
 
@@ -118,11 +118,6 @@ class NavigationAuthBase extends Component {
     return (
       <React.Fragment>
         <ul className="main-nav">
-          <li>
-            <NavLink to={ROUTES.HOME} onClick={this.props.showNav}>
-              Home
-            </NavLink>
-          </li>
           <li>
             <NavLink to={ROUTES.UPCOMING_EVENTS} onClick={this.props.showNav}>
               Upcoming

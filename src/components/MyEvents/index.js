@@ -3,7 +3,13 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { InviteDiv, MyEventsButton, MyEventsDeleteButton, H3 } from "./styles";
+import {
+  InviteDiv,
+  MyEventsButton,
+  MyEventsDeleteButton,
+  H3,
+  TitleOfSection
+} from "./styles";
 import Map from "../Map";
 import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
 
@@ -158,9 +164,12 @@ class MyEventsBase extends Component {
 
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
     const noAccepted = "No one has accepted yet.";
-    const noInvited = "No one is invited.";
+    const noInvited = "";
     const noDeclined = "";
     const noTimes = "You have no times? WTF?";
+    const noAttendees = "No one is here yet or the event hasn't started";
+    const noPending = "No one is absent yet or the event hasn't started";
+
     if (noEvents) {
       return <H3>You have no events. </H3>;
     } else if (loading) {
@@ -180,24 +189,21 @@ class MyEventsBase extends Component {
     } else {
       return (
         <section>
+          <TitleOfSection>Your Bookings</TitleOfSection>
           {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
 
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
-              <p key={"Host paragraph: " + evt.eventUid}>
-                Host for this event: {evt.hostName}
-              </p>
-              <p key={"Date paragrah:" + evt.eventUid}>
+              <p key={"Date paragrah: " + evt.eventUid}>
+                {" "}
+                Date: &nbsp;
                 {new Date(evt.date).toLocaleDateString()}
               </p>
-              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
-
               <ul>
-                <li>Time: </li>
-
                 {evt.time ? (
                   Object.keys(evt.time).map((key, index) => (
                     <li key={index + evt.eventUid}>
+                      Time: &nbsp;
                       {new Date(Number(key)).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit"
@@ -213,6 +219,8 @@ class MyEventsBase extends Component {
                   <li>{noTimes}</li>
                 )}
               </ul>
+              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
+
               <ul>
                 <li>Invitees: </li>
                 {evt.isInvited ? (
@@ -239,6 +247,24 @@ class MyEventsBase extends Component {
                   ))
                 ) : (
                   <li>{noDeclined}</li>
+                )}
+              </ul>
+              <ul>
+                {evt.attendees ? (
+                  Object.keys(evt.attendees).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noAttendees}</li>
+                )}
+              </ul>
+              <ul>
+                {evt.pending ? (
+                  Object.keys(evt.pending).map((key, index) => (
+                    <li key={index + evt.eventUid}>{key}</li>
+                  ))
+                ) : (
+                  <li>{noPending}</li>
                 )}
               </ul>
 
