@@ -4,7 +4,12 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { MyEventsButton, MyEventsDeleteButton, H3 } from "../MyEvents/styles";
+import {
+  MyEventsButton,
+  MyEventsDeleteButton,
+  H3,
+  TitleOfSection
+} from "../MyEvents/styles";
 
 const Invites = () => (
   <AuthUserContext.Consumer>
@@ -206,6 +211,7 @@ class InvitesBase extends Component {
     } else {
       return (
         <section>
+          <TitleOfSection>Your Invitations</TitleOfSection>
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid}>

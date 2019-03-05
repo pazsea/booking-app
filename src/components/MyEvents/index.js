@@ -3,7 +3,13 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { InviteDiv, MyEventsButton, MyEventsDeleteButton, H3 } from "./styles";
+import {
+  InviteDiv,
+  MyEventsButton,
+  MyEventsDeleteButton,
+  H3,
+  TitleOfSection
+} from "./styles";
 import Map from "../Map";
 // import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
 
@@ -179,6 +185,7 @@ class MyEventsBase extends Component {
     } else {
       return (
         <section>
+          <TitleOfSection>Your Bookings</TitleOfSection>
           {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
 
           {myEvents.map((evt, index) => (
