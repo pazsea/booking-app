@@ -129,7 +129,7 @@ class NavigationAuthBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.users().off();
+    this.props.firebase.user(this.props.authUser.uid).off();
     navigator.geolocation.clearWatch(this.watchId);
   }
 
