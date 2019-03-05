@@ -26,6 +26,9 @@ class UpcomingBase extends Component {
   }
 
   componentDidMount() {
+    const schoolLong = 18.110656;
+    const schoolLat = 59.313215;
+
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("acceptedToEvents")
@@ -42,77 +45,87 @@ class UpcomingBase extends Component {
           });
 
           const snapKeys = Object.keys(snap);
-          snapKeys.forEach(key => {
+          snapKeys.forEach(eventUid => {
             this.props.firebase
               .events()
-              .child(key)
+              .child(eventUid)
               .child("time")
               .once("value", snapshot => {
                 const startTime = Number(Object.keys(snapshot.val()));
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
                 if (startTime < Date.now() && endTime > Date.now()) {
+                  // this.props.firebase
+                  //   .events()
+                  //   .child(eventUid)
+                  //   .child("hasAcceptedUid")
+                  //   .on("value", snapshot => {
+                  //     const acceptedUid = Object.keys(snapshot.val());
+
+                  //     acceptedUid.forEach(acceptUid => {
                   this.props.firebase
-                    .events()
-                    .child(key)
-                    .child("hasAcceptedUid")
+                    .users()
+                    .child(this.props.authUser.uid)
+                    .child("positions")
+                    .limitToLast(1)
                     .on("value", snapshot => {
-                      const acceptedUid = Object.keys(snapshot.val());
-                      acceptedUid.forEach(acceptUid => {
-                        this.props.firebase
-                          .users()
-                          .child(acceptUid)
-                          .child("positions")
-                          .limitToLast(1)
-                          .on("value", snapshot => {
-                            const lastKnownPositionObject = snapshot.val();
+                      const lastKnownPositionObject = snapshot.val();
 
-                            if (lastKnownPositionObject) {
-                              const positionsList = Object.keys(
-                                lastKnownPositionObject
-                              ).map(key => ({
-                                ...lastKnownPositionObject[key]
-                              }));
-                              let lastKnownPositions = {};
-                              if (positionsList.length === 1) {
-                                lastKnownPositions = Object.assign(
-                                  positionsList[0]
-                                );
-                              } else {
-                                lastKnownPositions = Object.assign(
-                                  positionsList
-                                );
-                              }
-                              const {
-                                latitude,
-                                longitude
-                              } = lastKnownPositions;
+                      if (lastKnownPositionObject) {
+                        const positionsList = Object.keys(
+                          lastKnownPositionObject
+                        ).map(positionsListKey => ({
+                          ...lastKnownPositionObject[positionsListKey]
+                        }));
+                        let lastKnownPositions = {};
+                        if (positionsList.length === 1) {
+                          lastKnownPositions = Object.assign(positionsList[0]);
+                        } else {
+                          lastKnownPositions = Object.assign(positionsList);
+                        }
+                        const { latitude, longitude } = lastKnownPositions;
 
-                              const schoolNorth = "59.313544";
-                              const schoolSouth = "59.312755";
+                        // const { latitude: lat1, longitude: lng1 } = position.coords;
+                        // const { latitude: lat2, longitude: lng2 } = this.state.dbCoords;
+                        const dist = this.calculateDistance(
+                          latitude,
+                          longitude,
+                          schoolLat,
+                          schoolLong
+                        );
+                        console.log(dist);
+                        if (dist < 100) {
+                          console.log(dist < 100);
 
-                              const schoolWest = "18.109941";
-                              const schoolEast = "18.111293";
-
-                              if (
-                                latitude > schoolSouth &&
-                                latitude < schoolNorth &&
-                                longitude > schoolWest &&
-                                longitude < schoolEast
-                              ) {
-                                this.props.firebase
-                                  .events()
-                                  .child(key)
-                                  .child("attendees")
-                                  .update({
-                                    [this.props.authUser.username]: true
-                                  });
-                              }
-                            }
-                          });
-                      });
+                          this.props.firebase
+                            .events()
+                            .child(eventUid)
+                            .child("attendees")
+                            .update({
+                              [this.props.authUser.username]: true
+                            });
+                          this.props.firebase
+                            .events()
+                            .child(eventUid)
+                            .child("pending")
+                            .update({
+                              [this.props.authUser.username]: null
+                            });
+                        }
+                        //   this.props.firebase
+                        //     .events()
+                        //     .child(key)
+                        //     .child("absentees")
+                        //     .update({
+                        //       [this.props.authUser.username]: true
+                        //     });
+                      }
                     });
-                }
+                  // });
+                  // });
+                } // else if (startTime > new Date()) {
+
+                // }
               });
           });
 
@@ -138,6 +151,22 @@ class UpcomingBase extends Component {
     this.props.firebase.users().off();
     this.props.firebase.events().off();
   }
+
+  calculateDistance = (lat1, lon1, lat2, lon2) => {
+    var R = 6371; // km (change this constant to get miles)
+    var dLat = ((lat2 - lat1) * Math.PI) / 180;
+    var dLon = ((lon2 - lon1) * Math.PI) / 180;
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+
+    return Math.round(d * 1000);
+  };
 
   toggleHelpQueue(evt) {
     const eventUid = evt.target.value;
