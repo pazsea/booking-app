@@ -128,7 +128,7 @@ class NavigationAuthBase extends Component {
       },
       {
         enableHighAccuracy: true,
-        // timeout: 20000, STYR TIDEN DEN PUSHAR IN TILL FIREBASE
+        timeout: 20000,
         maximumAge: 0,
         distanceFilter: 1
       }
