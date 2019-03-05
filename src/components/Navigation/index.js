@@ -67,6 +67,7 @@ class NavigationAuthBase extends Component {
 
     const dist = this.calculateDistance(lat1, lng1, lat2, lng2);
     if (dist > 10) {
+      // ÄNDRADE FRÅN 1 TILL 10 SÅ ATT DEN INTE PUSHAR TILL FIREBASE HELA TIDEN
       this.writeUserPositionToDB(position.coords);
     }
   };
@@ -98,22 +99,19 @@ class NavigationAuthBase extends Component {
   };
 
   componentDidMount() {
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .on("value", snapshot => {
-        const inbj = snapshot.val();
-        if (snapshot.val()) {
-          const total = Object.keys(inbj).length;
-          this.setState({
-            totalInvites: total
-          });
-        } else {
-          this.setState({
-            totalInvites: 0
-          });
-        }
-      });
+    this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
+      const inbj = snapshot.val();
+      if (inbj.hasOwnProperty("invitedToEvents")) {
+        const total = Object.keys(inbj.invitedToEvents).length;
+        this.setState({
+          totalInvites: total
+        });
+      } else {
+        this.setState({
+          totalInvites: 0
+        });
+      }
+    });
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
@@ -123,7 +121,7 @@ class NavigationAuthBase extends Component {
       },
       {
         enableHighAccuracy: true,
-        timeout: 20000,
+        // timeout: 20000, STYR TIDEN DEN PUSHAR IN TILL FIREBASE
         maximumAge: 0,
         distanceFilter: 1
       }
