@@ -22,7 +22,7 @@ export const TitleOfSection = styled.h1`
 `;
 
 export const InviteDiv = styled.div`
-  margin: 0 10%;
+  margin: 2% 10%;
   border: none;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -41,7 +41,7 @@ export const InviteDiv = styled.div`
   }
 
   ul li:nth-child(1) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 
   input {
@@ -61,7 +61,7 @@ export const InviteDiv = styled.div`
   }
 
   p:nth-child(1) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
   /* button {
     width: 50%;
@@ -92,7 +92,7 @@ export const InviteDiv = styled.div`
     }
 
     ul li:nth-child(1) {
-      font-size: 1.3em;
+      font-size: 1em;
     }
 
     input {
@@ -112,7 +112,7 @@ export const InviteDiv = styled.div`
     }
 
     p:nth-child(1) {
-      font-size: 1.3em;
+      font-size: 1em;
     }
     /* button {
     width: 50%;
@@ -129,7 +129,7 @@ export const MyEventsButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;
-  background-color: #86a3b1;
+  background-color: #97a7b9;
   width: 48%;
   border-radius: 20px;
   border: none;
@@ -140,7 +140,7 @@ export const MyEventsButton = styled.button`
   font-weight: 600;
 
   :hover {
-    background: #86a3b180;
+    background: #97a7b9a1;
   }
 `;
 

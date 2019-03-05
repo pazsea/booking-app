@@ -28,7 +28,7 @@ export const InviteDiv = styled.div`
   }
 
   ul li:nth-child(1) {
-    font-size: 1.5em;
+    font-size: 1em;
   }
 
   input {
@@ -48,7 +48,7 @@ export const InviteDiv = styled.div`
   }
 
   p:nth-child(1) {
-    font-size: 1.3em;
+    font-size: 1em;
   }
 
   * {
@@ -76,7 +76,7 @@ export const InviteDiv = styled.div`
     }
 
     ul li:nth-child(1) {
-      font-size: 1.5em;
+      font-size: 1em;
     }
 
     input {
@@ -96,7 +96,7 @@ export const InviteDiv = styled.div`
     }
 
     p:nth-child(1) {
-      font-size: 1.3em;
+      font-size: 1em;
     }
 
     * {
@@ -116,7 +116,7 @@ export const HelpButton = styled.button`
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  font-size: 1em;
+
   margin-right: 1%;
   font-weight: 600;
   :hover {
@@ -134,7 +134,7 @@ export const NoHelpButton = styled.button`
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  font-size: 1em;
+
   margin-left: 1%;
   font-weight: 600;
 

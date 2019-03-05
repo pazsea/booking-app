@@ -188,9 +188,9 @@ class InvitesBase extends Component {
     console.log("RENDER");
     const { loading, userEventObjects, noInvites } = this.state;
     const noAccepted = "";
-    const noInvited = "No one is invited.";
+    const noInvited = "No one is invited";
     const noDeclined = "";
-    const noTimes = "You have no times? WTF?";
+    const noTimes = "You have no times";
 
     if (noInvites) {
       return <H3>You have no invites. </H3>;
@@ -215,19 +215,15 @@ class InvitesBase extends Component {
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid}>
-                <p key={"Host paragraph: " + eventUid}>
-                  {hostName} has invited you to this event:
-                </p>
-                <p key={"Event UID: " + eventUid}>{grouproom}</p>
-                <p key={"Date paragrah:" + eventUid}>
+                <p key={"Date paragrah: " + eventUid}>
+                  Date: &nbsp;
                   {new Date(date).toLocaleDateString()}
                 </p>
                 <ul>
-                  <li>Time: </li>
-
                   {time ? (
                     Object.keys(time).map((key, index) => (
                       <li key={index + eventUid}>
+                        Time: &nbsp;
                         {new Date(Number(key)).toLocaleTimeString([], {
                           hour: "2-digit",
                           minute: "2-digit"
@@ -246,6 +242,10 @@ class InvitesBase extends Component {
                     <li>{noTimes}</li>
                   )}
                 </ul>
+                <p key={"Host paragraph: " + eventUid}>
+                  {hostName} has invited you to this event:
+                </p>
+                <p key={"Event UID: " + eventUid}>{grouproom}</p>
 
                 <ul>
                   <li>Invitees: </li>

@@ -175,7 +175,7 @@ class UpcomingBase extends Component {
 
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
-    const noTimes = "You have no times? WTF?";
+    const noTimes = "You have no times?";
 
     if (noUpcoming) {
       return <H3>You have no upcoming events at this time.</H3>;

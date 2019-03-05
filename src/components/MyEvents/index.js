@@ -163,7 +163,7 @@ class MyEventsBase extends Component {
 
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
     const noAccepted = "No one has accepted yet.";
-    const noInvited = "No one is invited.";
+    const noInvited = "";
     const noDeclined = "";
     const noTimes = "You have no times? WTF?";
     if (noEvents) {
@@ -190,20 +190,16 @@ class MyEventsBase extends Component {
 
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
-              <p key={"Host paragraph: " + evt.eventUid}>
-                Host for this event: {evt.hostName}
-              </p>
-              <p key={"Date paragrah:" + evt.eventUid}>
+              <p key={"Date paragrah: " + evt.eventUid}>
+                {" "}
+                Date: &nbsp;
                 {new Date(evt.date).toLocaleDateString()}
               </p>
-              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
-
               <ul>
-                <li>Time: </li>
-
                 {evt.time ? (
                   Object.keys(evt.time).map((key, index) => (
                     <li key={index + evt.eventUid}>
+                      Time: &nbsp;
                       {new Date(Number(key)).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit"
@@ -219,6 +215,8 @@ class MyEventsBase extends Component {
                   <li>{noTimes}</li>
                 )}
               </ul>
+              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
+
               <ul>
                 <li>Invitees: </li>
                 {evt.isInvited ? (

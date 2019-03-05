@@ -21,7 +21,7 @@ export const MenuItems = styled.div`
   i {
     color: #f1f1f1;
     z-index: 2;
-    margin: auto 0;
+    margin: auto 0.1em;
     &.active {
       color: wheat;
     }
@@ -36,10 +36,18 @@ export const MenuItems = styled.div`
     font-family: "Montserrat";
     font-size: 2.7em;
     margin: auto 0;
-    padding-left: 1em;
+    padding-left: 0.5em;
     color: #97a7b9;
     text-shadow: 0.03125em 0.03125em 0.15625em #111921;
     border-bottom: none;
     font-weight: 900;
+  }
+
+  @media screen and (min-width: 1024px) {
+    h1 {
+      font-size: 3.5em;
+      padding-left: 0.5em;
+      letter-spacing: 0.05em;
+    }
   }
 `;
