@@ -101,12 +101,10 @@ class BookTimeBase extends Component {
   }
 
   componentWillUnmount() {
-    const { firebase, groupRoom, bookDate } = this.props;
-
+    const { firebase, groupRoom } = this.props;
     firebase
       .bookedEventDateTimes()
       .child(groupRoom)
-      .child(bookDate)
       .off();
     firebase.users().off();
   }

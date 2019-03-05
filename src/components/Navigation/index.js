@@ -97,25 +97,13 @@ class NavigationAuthBase extends Component {
       });
   };
 
-  componentDidMount() {
-    // -------------- GET NUMBER OF INVITES -------------- //
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .on("value", snapshot => {
-        if (snapshot.val() !== null) {
-          const total = Object.keys(snapshot.val()).length;
-          console.log(total);
-          this.setState({
-            totalInvites: total
-          });
-        } else {
-          this.setState({
-            totalInvites: 0
-          });
-        }
-      });
+  updateTotalInvites(total) {
+    this.setState({
+      totalInvites: total
+    });
+  }
 
+  componentDidMount() {
     // --------------  STORE POSITION -------------- //
     this.watchId = navigator.geolocation.watchPosition(
       this.updatePosition,
@@ -130,13 +118,24 @@ class NavigationAuthBase extends Component {
         distanceFilter: 1
       }
     );
-  }
-
-  componentWillUnmount() {
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("invitedToEvents")
-      .off();
+      .on("value", snapshot => {
+        const inbj = snapshot.val();
+        if (snapshot.val()) {
+          const total = Object.keys(inbj).length;
+          this.updateTotalInvites(total);
+        } else {
+          this.setState({
+            totalInvites: 0
+          });
+        }
+      });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase.users().off();
     navigator.geolocation.clearWatch(this.watchId);
   }
 

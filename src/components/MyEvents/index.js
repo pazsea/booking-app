@@ -135,7 +135,7 @@ class MyEventsBase extends Component {
   displayMap = (event, evt) => {
     this.setState({
       mapEvent: evt.eventUid,
-      showMap: true
+      showMap: !this.state.showMap
     });
   };
 

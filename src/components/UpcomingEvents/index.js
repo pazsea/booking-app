@@ -3,8 +3,7 @@ import { Spinner } from "react-mdl";
 import { AuthUserContext } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
-import { HelpButton, NoHelpButton, AttendEventButton, H3 } from "./styles";
-import { hostname } from "os";
+import { HelpButton, NoHelpButton, H3 } from "./styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -20,8 +19,7 @@ class UpcomingBase extends Component {
       uid: [],
       loading: true,
       userEventObjects: [],
-      noUpcoming: false,
-      active: []
+      noUpcoming: false
     };
   }
 
@@ -135,8 +133,8 @@ class UpcomingBase extends Component {
   }
 
   componentWillUnmount() {
-    this.props.firebase.user().off();
-    this.props.firebase.event().off();
+    this.props.firebase.users().off();
+    this.props.firebase.events().off();
   }
 
   toggleHelpQueue(evt) {
@@ -187,7 +185,6 @@ class UpcomingBase extends Component {
         </div>
       );
     } else {
-      const { active } = this.state;
       return (
         <section>
           {userEventObjects.map(
@@ -227,7 +224,6 @@ class UpcomingBase extends Component {
                   key={"Help wanted: " + eventUid}
                   onClick={evt => this.toggleHelpQueue(evt)}
                   index={evt.index}
-                  onClick={this.helpMe}
                 >
                   Help queue
                 </HelpButton>
@@ -239,25 +235,6 @@ class UpcomingBase extends Component {
                 >
                   Cancel help queue
                 </NoHelpButton>
-
-                {/* <AttendEventButton
-                  className={
-                    Object.values(active).find(
-                      bookingId => bookingId === eventUid
-                    )
-                      ? "activeButton"
-                      : ""
-                    // active === eventUid ? "activeButton" : ""
-                  }
-                  value={eventUid}
-                  key={"Attend: " + eventUid}
-                  index={evt.index}
-                  onClick={evt =>
-                    eventUid === active ? this.attendEvent(evt) : null
-                  }
-                >
-                  ATTEND
-                </AttendEventButton> */}
               </InviteDiv>
             )
           )}
