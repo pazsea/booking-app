@@ -53,6 +53,9 @@ export const GroupRoomButton = styled.button`
   :focus {
     outline: 0;
   }
+  :hover {
+    background: #535d6980;
+  }
 `;
 export const ClassroomButton = styled.button`
   width: 100%;
@@ -74,5 +77,8 @@ export const ClassroomButton = styled.button`
 
   :focus {
     outline: 0;
+  }
+  :hover {
+    background: #c3d0dcd6;
   }
 `;

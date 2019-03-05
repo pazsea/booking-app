@@ -5,6 +5,7 @@ import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 import { compose } from "recompose";
 import { HelpButton, NoHelpButton, H3 } from "./styles";
+import { TitleOfSection } from "../MyEvents/styles";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -217,6 +218,7 @@ class UpcomingBase extends Component {
     } else {
       return (
         <section>
+          <TitleOfSection>Upcoming</TitleOfSection>
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid} {...this.state}>
