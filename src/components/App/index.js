@@ -11,7 +11,6 @@ import LandingPage from "../Landing";
 import SignUpPage from "../SignUp";
 import SignInPage from "../SignIn";
 import PasswordForgetPage from "../PasswordForget";
-import HomePage from "../Home";
 import AccountPage from "../Account";
 import AdminPage from "../Admin";
 
@@ -73,7 +72,6 @@ class App extends Component {
             path={ROUTES.PASSWORD_FORGET}
             component={PasswordForgetPage}
           />
-          <Route exact path={ROUTES.HOME} component={HomePage} />
           <Route
             exact
             path={ROUTES.UPCOMING_EVENTS}
