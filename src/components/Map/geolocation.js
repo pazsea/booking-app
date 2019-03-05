@@ -167,51 +167,50 @@ class GeolocationBase extends Component {
   };
 
   // FLYTTAD TILL NAVIGATION
-  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
-    this.props.firebase
-      .user(user)
-      .child("positions")
-      .limitToLast(num)
-      .on("value", snapshot => {
-        const lastKnownPositionObject = snapshot.val();
+  // getLastKnownPosition = (num, user = this.props.authUser.uid) => {
+  //   this.props.firebase
+  //     .user(user)
+  //     .child("positions")
+  //     .limitToLast(num)
+  //     .on("value", snapshot => {
+  //       const lastKnownPositionObject = snapshot.val();
 
-        if (lastKnownPositionObject) {
-          const positionsList = Object.keys(lastKnownPositionObject).map(
-            key => ({
-              ...lastKnownPositionObject[key],
-              uid: key
-            })
-          );
-          let lastKnownPositions = {};
-          if (positionsList.length === 1) {
-            lastKnownPositions = Object.assign(positionsList[0]);
-          } else {
-            lastKnownPositions = Object.assign(positionsList);
-          }
-          this.setState({ lastKnownCoords: lastKnownPositions });
-        }
-      });
-  };
+  //       if (lastKnownPositionObject) {
+  //         const positionsList = Object.keys(lastKnownPositionObject).map(
+  //           key => ({
+  //             ...lastKnownPositionObject[key],
+  //             uid: key
+  //           })
+  //         );
+  //         let lastKnownPositions = {};
+  //         if (positionsList.length === 1) {
+  //           lastKnownPositions = Object.assign(positionsList[0]);
+  //         } else {
+  //           lastKnownPositions = Object.assign(positionsList);
+  //         }
+  //         this.setState({ lastKnownCoords: lastKnownPositions });
+  //       }
+  //     });
+  // };
 
   componentDidMount() {
     // this.getStartingPositionForETA(
     //   "BCYJmNCULPb27ZoiNYvIJ9IBPY63",
     //   "-L_42-knG0FiHHjlC4dS"
     // );
-    this.watchId = navigator.geolocation.watchPosition(
-      this.updatePosition,
-
-      error => {
-        console.log("error" + error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 0,
-        distanceFilter: 1
-      }
-    );
-    this.getLastKnownPosition(1);
+    // this.watchId = navigator.geolocation.watchPosition(
+    //   this.updatePosition,
+    //   error => {
+    //     console.log("error" + error);
+    //   },
+    //   {
+    //     enableHighAccuracy: true,
+    //     timeout: 20000,
+    //     maximumAge: 0,
+    //     distanceFilter: 1
+    //   }
+    // );
+    // this.getLastKnownPosition(1);
   }
 
   componentWillUnmount() {

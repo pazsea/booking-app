@@ -135,7 +135,7 @@ class MyEventsBase extends Component {
   displayMap = (event, evt) => {
     this.setState({
       mapEvent: evt.eventUid,
-      showMap: true
+      showMap: !this.state.showMap
     });
   };
 
@@ -147,7 +147,7 @@ class MyEventsBase extends Component {
 
   render() {
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
-    const noAccepted = "";
+    const noAccepted = "No one has accepted yet.";
     const noInvited = "No one is invited.";
     const noDeclined = "";
     const noTimes = "You have no times? WTF?";

@@ -79,8 +79,7 @@ class SignUpFormBase extends Component {
             email,
             hostedEvents: {},
             class: classes,
-            roles,
-            position: { latitude: "0", longitude: "0" }
+            roles
           })
           .then(() => {
             this.setState({ ...INITIAL_STATE });

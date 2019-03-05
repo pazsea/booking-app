@@ -22,6 +22,7 @@ import { Menu, MenuItems } from "./styles";
 class App extends Component {
   state = {
     isOpen: true
+    // totalInvites: 0
   };
 
   navToggle = () => {
@@ -31,6 +32,27 @@ class App extends Component {
       };
     });
   };
+
+  // componentDidMount() {
+  //   // -------------- GET NUMBER OF INVITES -------------- //
+  // this.props.firebase
+  //   .user(this.props.authUser.uid)
+  //   .child("invitedToEvents")
+  //   .on("value", snapshot => {
+  //     const inbj = snapshot.val();
+  //     if (snapshot.val()) {
+  //       const total = Object.keys(inbj).length;
+  //       console.log(total);
+  //       this.setState({
+  //         totalInvites: total
+  //       });
+  //     } else {
+  //       this.setState({
+  //         totalInvites: 0
+  //       });
+  //     }
+  //   });
+  // }
 
   render() {
     return (
