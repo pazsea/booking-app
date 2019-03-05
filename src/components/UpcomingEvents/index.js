@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
-import { AuthUserContext } from "../Session";
+import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
+import { compose } from "recompose";
 import { HelpButton, NoHelpButton, H3 } from "./styles";
 
 const UpcomingEvents = () => (
@@ -246,4 +247,6 @@ class UpcomingBase extends Component {
 
 const UpcomingComplete = withFirebase(UpcomingBase);
 
-export default UpcomingEvents;
+const condition = authUser => !!authUser;
+
+export default compose(withAuthorization(condition))(UpcomingEvents);
