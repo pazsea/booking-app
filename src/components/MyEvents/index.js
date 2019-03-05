@@ -5,7 +5,7 @@ import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv, MyEventsButton, MyEventsDeleteButton, H3 } from "./styles";
 import Map from "../Map";
-// import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
+import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -149,11 +149,11 @@ class MyEventsBase extends Component {
 
   render() {
     //Code to test calculation of ETA - do not delete - being used by Nina
-    // return (
-    //   <div>
-    //     <Geolocation bookingID="booking1" />
-    //   </div>
-    // );
+    return (
+      <div>
+        <Geolocation bookingID="booking1" />
+      </div>
+    );
 
     const { loading, myEvents, noEvents, showMap, mapEvent } = this.state;
     const noAccepted = "No one has accepted yet.";

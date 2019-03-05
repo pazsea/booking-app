@@ -75,32 +75,6 @@ class NavigationAuthBase extends Component {
     }
   };
 
-  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
-    this.props.firebase
-      .user(user)
-      .child("positions")
-      .limitToLast(num)
-      .on("value", snapshot => {
-        const lastKnownPositionObject = snapshot.val();
-
-        if (lastKnownPositionObject) {
-          const positionsList = Object.keys(lastKnownPositionObject).map(
-            key => ({
-              ...lastKnownPositionObject[key],
-              uid: key
-            })
-          );
-          let lastKnownPositions = {};
-          if (positionsList.length === 1) {
-            lastKnownPositions = Object.assign(positionsList[0]);
-          } else {
-            lastKnownPositions = Object.assign(positionsList);
-          }
-          this.setState({ lastStoredPosition: lastKnownPositions });
-        }
-      });
-  };
-
   componentDidMount() {
     console.log("nav mpounted");
 
@@ -130,7 +104,7 @@ class NavigationAuthBase extends Component {
         enableHighAccuracy: true,
         // timeout: 20000, STYR TIDEN DEN PUSHAR IN TILL FIREBASE
         maximumAge: 0,
-        distanceFilter: 1
+        distanceFilter: 10
       }
     );
   }
