@@ -60,14 +60,17 @@ const UserList = ({ users }) => (
     {users.map(user => (
       <li key={user.uid}>
         <span>
-          <strong>ID: </strong> {user.uid}
+          <strong>ID: </strong> {user.uid}{" "}
         </span>
+        <br />
         <span>
-          <strong>E-Mail: </strong> {user.email}
+          <strong>E-Mail: </strong> {user.email}{" "}
         </span>
+        <br />
         <span>
-          <strong>Username: </strong> {user.username}
+          <strong>Username: </strong> {user.username}{" "}
         </span>
+        <br />
       </li>
     ))}
   </ul>
