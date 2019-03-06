@@ -235,10 +235,10 @@ class InvitesBase extends Component {
                     Date: &nbsp;
                     {new Date(date).toLocaleDateString()}
                   </p>
-                  <ul>
+                  <div>
                     {time ? (
                       Object.keys(time).map((key, index) => (
-                        <li key={index + eventUid}>
+                        <p key={index + eventUid}>
                           Time: &nbsp;
                           {new Date(Number(key)).toLocaleTimeString([], {
                             hour: "2-digit",
@@ -252,12 +252,12 @@ class InvitesBase extends Component {
                               minute: "2-digit"
                             }
                           )}
-                        </li>
+                        </p>
                       ))
                     ) : (
                       <li>{noTimes}</li>
                     )}
-                  </ul>
+                  </div>
                 </InfoDiv>
                 <InfoDiv2>
                   <p key={"Host paragraph: " + eventUid}>

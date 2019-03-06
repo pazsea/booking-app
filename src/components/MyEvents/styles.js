@@ -33,6 +33,13 @@ export const InviteDiv = styled.div`
   color: wheat;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+
+  p {
+    margin-bottom: 0;
+    letter-spacing: 0;
+    line-height: 1.8em;
+    font-size: 1em;
+  }
   ul {
     list-style: none;
     line-height: 2em;
@@ -56,12 +63,7 @@ export const InviteDiv = styled.div`
     padding: 0.5em;
     margin-bottom: 1em;
   }
-  p:nth-child(1) {
-    font-size: 1em;
-  }
-  /* button {
-    width: 50%;
-  } */
+
   * {
     margin: 0;
     font-family: "Montserrat", sans-serif;
@@ -79,14 +81,27 @@ export const InviteDiv = styled.div`
     color: wheat;
     box-shadow: 0.0625em 0.0625em 0.09375em #152029;
     text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+
+    .GroupRoom {
+      font-size: 1.5em;
+    }
+
+    p {
+      margin-bottom: 0;
+      letter-spacing: 0;
+      line-height: 1.8em;
+      font-size: 1em;
+    }
     ul {
       list-style: none;
       line-height: 2em;
-      padding: 0.8em;
+      margin: 0.5em 0;
+      font-size: 1.5em;
+      padding: 0;
     }
-    ul li:nth-child(1) {
+    /* ul li:nth-child(1) {
       font-size: 1em;
-    }
+    } */
     input {
       width: 100%;
       height: 4em;
@@ -102,12 +117,7 @@ export const InviteDiv = styled.div`
       padding: 0.5em;
       margin-bottom: 1em;
     }
-    p:nth-child(1) {
-      font-size: 1em;
-    }
-    /* button {
-    width: 50%;
-  } */
+
     * {
       margin: 0;
       font-family: "Montserrat", sans-serif;

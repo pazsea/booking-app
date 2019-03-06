@@ -5,7 +5,8 @@ import styled from "styled-components";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { compose } from "recompose";
-import { H3 } from "./styles";
+import { H3, LeafLetControl } from "./styles";
+import { CloseButton } from "../BookTime/styles";
 
 // import { userInfo } from "os";
 
@@ -19,6 +20,7 @@ const Wrapper = styled.div`
   width: ${props => props.width};
   height: ${props => props.height};
   margin: 1em auto;
+  border-radius: 4px;
 `;
 
 var PersonMarker = L.icon({
@@ -126,10 +128,10 @@ class MapBase extends Component {
       return <H3>No users has accepted in this event</H3>;
     } else {
       return (
-        <div>
+        <LeafLetControl>
           <Wrapper width="90vw" height="80vh" id="map" />
-          <button onClick={this.props.close}>CLOSE</button>
-        </div>
+          <CloseButton onClick={this.props.close}>Close</CloseButton>
+        </LeafLetControl>
       );
     }
   }

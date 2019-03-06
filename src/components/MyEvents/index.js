@@ -11,6 +11,7 @@ import {
   TitleOfSection
 } from "./styles";
 import Map from "../Map";
+import { InfoDiv } from "../Invites/styles";
 // import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
 
 const MyEvents = () => (
@@ -193,32 +194,39 @@ class MyEventsBase extends Component {
 
           {myEvents.map((evt, index) => (
             <InviteDiv key={"Div " + evt.eventUid}>
-              <p key={"Date paragrah: " + evt.eventUid}>
-                {" "}
-                Date: &nbsp;
-                {new Date(evt.date).toLocaleDateString()}
+              <InfoDiv>
+                <p key={"Date paragrah: " + evt.eventUid}>
+                  {" "}
+                  Date: &nbsp;
+                  {new Date(evt.date).toLocaleDateString()}
+                </p>
+                <div>
+                  {evt.time ? (
+                    Object.keys(evt.time).map((key, index) => (
+                      <p key={index + evt.eventUid}>
+                        Time: &nbsp;
+                        {new Date(Number(key)).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}{" "}
+                        -{" "}
+                        {new Date(Number(key) + 3600000).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }
+                        )}
+                      </p>
+                    ))
+                  ) : (
+                    <li>{noTimes}</li>
+                  )}
+                </div>
+              </InfoDiv>
+              <p className="GroupRoom" key={"Event UID: " + evt.eventUid}>
+                {evt.grouproom}
               </p>
-              <ul>
-                {evt.time ? (
-                  Object.keys(evt.time).map((key, index) => (
-                    <li key={index + evt.eventUid}>
-                      Time: &nbsp;
-                      {new Date(Number(key)).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}{" "}
-                      -{" "}
-                      {new Date(Number(key) + 3600000).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}
-                    </li>
-                  ))
-                ) : (
-                  <li>{noTimes}</li>
-                )}
-              </ul>
-              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
 
               <ul>
                 <li>Invitees: </li>

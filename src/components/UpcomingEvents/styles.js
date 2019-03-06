@@ -12,8 +12,13 @@ export const InfoDiv = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 0.5em;
-  ul {
+  /* ul {
     padding: 0 !important;
+  } */
+
+  @media screen and (min-width: 1024px) {
+    padding: 0 4.5em;
+    font-size: 1.5em;
   }
 `;
 
@@ -21,6 +26,11 @@ export const InfoDiv2 = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 0.5em;
+
+  @media screen and (min-width: 1024px) {
+    padding: 0 4.5em;
+    font-size: 1.5em;
+  }
 `;
 
 export const InviteDiv = styled.div`
@@ -36,22 +46,25 @@ export const InviteDiv = styled.div`
   color: wheat;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  font-family: "Montserrat";
 
   p {
     margin-bottom: 0;
     letter-spacing: 0;
     line-height: 1.8em;
-  }
-
-  p:nth-child(1) {
     font-size: 1em;
   }
 
   ul {
     list-style: none;
     font-size: 1em;
-    padding: 0.5em;
+    padding: 0;
+    margin: 0.5em 0;
   }
+  li:nth-child(1) {
+    margin: 0.5em 0;
+  }
+
   input {
     width: 100%;
     height: 4em;
@@ -68,12 +81,6 @@ export const InviteDiv = styled.div`
     margin-bottom: 1em;
   }
 
-  ul li:nth-child(1) {
-    font-size: 1em;
-  }
-
-  li {
-  }
   .fa-question {
     color: white;
     margin: auto 1em;
@@ -95,7 +102,7 @@ export const InviteDiv = styled.div`
     font-size: 1em;
   }
 
-  @media screen and (min-width: 1024) {
+  @media screen and (min-width: 1024px) {
     margin: 2% 15%;
     border: none;
     height: -webkit-fit-content;
@@ -113,16 +120,17 @@ export const InviteDiv = styled.div`
       margin-bottom: 0;
       letter-spacing: 0;
       line-height: 1.8em;
-    }
-
-    p:nth-child(1) {
       font-size: 1em;
     }
 
     ul {
       list-style: none;
-      font-size: 1em;
-      padding: 0.5em;
+      font-size: 1.5em;
+      padding: 0;
+      margin: 0.5em 0;
+    }
+    li:nth-child(1) {
+      margin: 0.5em 0;
     }
     input {
       width: 100%;
@@ -140,14 +148,6 @@ export const InviteDiv = styled.div`
       margin-bottom: 1em;
     }
 
-    ul li:nth-child(1) {
-      font-size: 1em;
-    }
-
-    li {
-      display: flex;
-      justify-content: space-evenly;
-    }
     .fa-question {
       color: white;
     }
