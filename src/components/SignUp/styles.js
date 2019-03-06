@@ -1,41 +1,40 @@
 import styled from "styled-components";
 
 export const Div = styled.div`
-  /*   margin-left: 30%;
-  margin-right: 10%;
-  margin-top: 8%;
-  display: flex;
-  background: grey;
   width: 50%;
-  height: 50vh;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column; */
-
-  width: 500px;
   margin: 10% auto;
-  font-size: 16px;
-  text-align: center;
-  border: 2px solid wheat;
+
+  border: 1.5px solid #97a7b9;
+  background: #121c24;
+  border-radius: 4px;
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #97a7b9;
+    font-family: "Montserrat";
+    text-align: center;
+  }
+
+  h1 {
+    letter-spacing: 0.1em;
+  }
 
   button {
     background: white;
     border-radius: 3px;
+    margin: 1em 0 0 0;
   }
 
-  h1 {
-    background: #535d69;
-    padding: 20px;
-    font-size: 1.4em;
-    font-weight: normal;
-    text-align: center;
-    text-transform: uppercase;
-    color: wheat;
+  input[type="submit"]:disabled {
+    background: red;
   }
 
   form {
-    background: #ebebeb;
-    padding: 12px;
+    background: #121c24;
+    padding: 1em;
   }
 
   input[type="text"],
@@ -43,6 +42,7 @@ export const Div = styled.div`
     background: #fff;
     border-color: #bbb;
     color: #555;
+    border-radius: 3px;
   }
 
   input[type="text"]:focus,
@@ -52,25 +52,29 @@ export const Div = styled.div`
 
   button[type="submit"] {
     width: 100%;
-    color: wheat;
-    padding: 12px;
+    color: black;
+    padding: 0.7em;
+    border: none;
+    border-radius: 4px;
+    box-sizing: border-box;
     text-decoration: none;
-    font-family: "Montserrat", sans-serif;
+
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 1.2em;
-    background-color: #535d69;
+    font-size: 1.5em;
+    background-color: #909fb1;
     position: relative;
+    box-shadow: 0.0625em 0.0625em 0.09375em #152029;
     cursor: pointer;
   }
 
   button[type="submit"]:hover {
-    background: #192530;
+    background: #909fb182;
   }
 
   /* Buttons' focus effect */
   button[type="submit"]:focus {
-    background: #192530;
+    background: #909fb182;
   }
 
   input {
