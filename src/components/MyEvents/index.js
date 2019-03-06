@@ -11,7 +11,7 @@ import {
   TitleOfSection
 } from "./styles";
 import Map from "../Map";
-import { isEmpty } from "../../utilities";
+import { calculateETA, isEmpty } from "../../utilities";
 
 const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
 
@@ -43,7 +43,6 @@ class MyEventsBase extends Component {
       .limitToLast(num)
       .on("value", snapshot => {
         const lastKnownPositionObject = snapshot.val();
-
         if (lastKnownPositionObject) {
           const lastKnownPositions = Object.keys(lastKnownPositionObject).map(
             key => ({
@@ -109,11 +108,15 @@ class MyEventsBase extends Component {
                   // Get originLocation
                   if (positionList[0].createdAt >= startTimeETA) {
                     originLocation = positionList[0];
+                  } else {
+                    return;
                   }
 
                   // Get currentLocation
                   if (positionList[1].createdAt >= startTimeETA) {
                     currentLocation = positionList[1];
+                  } else {
+                    return;
                   }
 
                   // When data from getLastKnownPosition() is recieved, get userName
@@ -233,14 +236,6 @@ class MyEventsBase extends Component {
   }
 
   render() {
-    //Code to test calculation of ETA - do not delete - being used by Nina
-    // return (
-    //   <div>
-    //     <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
-    //     <Geolocation bookingID="-L_ECGgtNTC5No7wnJSA" />
-    //   </div>
-    // );
-
     const { loading, myEvents, mapBookingID } = this.state;
     const noAccepted = "No one has accepted yet.";
     const noInvited = "";
@@ -321,14 +316,20 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
-                  {evt.hasAccepted ? (
-                    Object.keys(evt.hasAccepted).map(
-                      (hasAcceptedUserName, index) => (
-                        <li key={index + evt.eventUid}>
-                          {hasAcceptedUserName}
+                  {!isEmpty(evt.usersETA) ? (
+                    Object.keys(evt.usersETA).map(userID => {
+                      const user = evt.usersETA[userID];
+                      const ETA = calculateETA(
+                        user.origin,
+                        user.current,
+                        evt.location
+                      );
+                      return (
+                        <li key={userID}>
+                          {user.userName} ETA: {ETA}
                         </li>
-                      )
-                    )
+                      );
+                    })
                   ) : (
                     <li>{noAccepted}</li>
                   )}

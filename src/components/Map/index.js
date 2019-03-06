@@ -20,15 +20,6 @@ var PersonMarker = L.icon({
 });
 
 class Map extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     currentUsers: [],
-  //     mapEvent: this.props.mapEvent,
-  //     noUsers: false
-  //   };
-  // }
-
   updateMarkers = () => {
     const { booking } = this.props;
     let { usersETA } = booking;
@@ -49,6 +40,7 @@ class Map extends Component {
       });
     }
   };
+
   componentDidMount() {
     this.map = L.map("map", {
       center: [59.313448, 18.110614],
