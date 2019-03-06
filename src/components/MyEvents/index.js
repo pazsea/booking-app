@@ -261,7 +261,7 @@ class MyEventsBase extends Component {
       }
       return (
         <section>
-          <TitleOfSection> Your Bookings </TitleOfSection>
+          <TitleOfSection> My Bookings </TitleOfSection>
           {mapBooking ? (
             <Map booking={mapBooking} close={this.closeMap} />
           ) : null}
@@ -391,6 +391,7 @@ class MyEventsBase extends Component {
                         <li key={index + evt.eventUid}>
                           {attendeesUserName.charAt(0) +
                             attendeesUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-user-check" />
                         </li>
                       )
                     )
@@ -424,7 +425,7 @@ class MyEventsBase extends Component {
                   key={"Map EventID " + evt.eventUid}
                   onClick={event => this.displayMap(event, evt)}
                 >
-                  Show Map
+                  Show Map <i className="fas fa-map-marked-alt" />
                 </PositiveButton>
 
                 <NegativeButton

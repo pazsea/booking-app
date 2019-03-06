@@ -45,6 +45,7 @@ export const InviteDiv = styled.div`
     letter-spacing: 0;
     line-height: 1.8em;
     font-size: 1em;
+    padding: 0.2em 0;
   }
 
   ul {
@@ -76,6 +77,7 @@ export const InviteDiv = styled.div`
   .fa-question {
     color: white;
     margin: auto 1em;
+    font-size: 0.9em;
   }
   .fa-check {
     color: #599272;
@@ -84,7 +86,7 @@ export const InviteDiv = styled.div`
   .fa-times {
     color: #c5766b;
     margin: auto 1em;
-    font-size: 1.3em;
+    font-size: 1.2em;
   }
   h3 {
     color: wheat;
@@ -142,6 +144,7 @@ export const InviteDiv = styled.div`
 
     .fa-question {
       color: white;
+      font-size: 0.9em;
     }
     .fa-check {
       color: #599272;
