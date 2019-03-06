@@ -14,7 +14,7 @@ import {
   TitleOfSection
 } from "./styles";
 
-const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
+export const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
