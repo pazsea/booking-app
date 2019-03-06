@@ -44,7 +44,7 @@ export const InviteDiv = styled.div`
   ul {
     list-style: none;
     line-height: 2em;
-    padding: 0.8em;
+    /* padding: 0.8em; */
   }
   ul li:nth-child(1) {
     font-size: 1em;
@@ -62,13 +62,29 @@ export const InviteDiv = styled.div`
     border-style: none;
     border-radius: 8px;
     padding: 0.5em;
-    margin-bottom: 1em;
+    margin: 1em 0;
     font-family: "Montserrat";
   }
 
   .fa-map-marked-alt {
-    margin: auto 0.1em;
+    margin: auto 0.5em;
     color: black;
+  }
+
+  .fa-user-slash {
+    margin: auto 0.5em;
+    color: #c5766b;
+  }
+
+  .fa-question {
+    color: white;
+    margin: auto 0.5em;
+    font-size: 0.9em;
+  }
+
+  .fa-user-check {
+    color: #599272;
+    margin: auto 0.5em;
   }
 
   * {
@@ -128,7 +144,6 @@ export const InviteDiv = styled.div`
       margin: auto 1em;
       color: black;
     }
-
     * {
       margin: 0;
     }
@@ -144,12 +159,15 @@ export const PositiveButton = styled.button`
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  font-size: 1.2em;
+  font-size: 1em;
   margin-right: 1%;
   font-weight: 600;
-  cursor: pointer;
   :hover {
     background: #97a7b9a1;
+  }
+
+  @media screen and (min-width: 1024px) {
+    font-size: 1.2em;
   }
 `;
 
@@ -162,11 +180,14 @@ export const NegativeButton = styled.button`
   border: none;
   color: black;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
-  font-size: 1.2em;
+  font-size: 1em;
   margin-left: 1%;
   font-weight: 600;
-  cursor: pointer;
   :hover {
     background: #d2b9bfb5;
+  }
+
+  @media screen and (min-width: 1024px) {
+    font-size: 1.2em;
   }
 `;
