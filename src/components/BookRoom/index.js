@@ -14,7 +14,7 @@ import { withFirebase } from "../Firebase";
 
 const BookRoom = () => (
   <Div>
-    <h1>Book a room</h1>
+    <h1>Book A Room</h1>
     <AuthUserContext.Consumer>
       {authUser => <BookRoomForm authUser={authUser} />}
     </AuthUserContext.Consumer>

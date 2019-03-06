@@ -254,6 +254,9 @@ class MyEventsBase extends Component {
     var attendees = {
       color: "#7bcd9f"
     };
+    var accept = {
+      color: "#7bcd9f"
+    };
 
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
@@ -336,9 +339,10 @@ class MyEventsBase extends Component {
                   {evt.hasAccepted ? (
                     Object.keys(evt.hasAccepted).map(
                       (hasAcceptedUserName, index) => (
-                        <li key={index + evt.eventUid}>
+                        <li style={accept} key={index + evt.eventUid}>
                           {hasAcceptedUserName.charAt(0) +
                             hasAcceptedUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-check" />
                         </li>
                       )
                     )
@@ -370,6 +374,7 @@ class MyEventsBase extends Component {
                         <li style={attendees} key={index + evt.eventUid}>
                           {attendeesUserName.charAt(0) +
                             attendeesUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-user-check" />
                         </li>
                       )
                     )
@@ -390,7 +395,7 @@ class MyEventsBase extends Component {
                   key={"Map EventID " + evt.eventUid}
                   onClick={event => this.displayMap(event, evt)}
                 >
-                  Show Map
+                  Show Map <i className="fas fa-map-marked-alt" />
                 </PositiveButton>
 
                 <NegativeButton
