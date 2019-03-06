@@ -77,7 +77,7 @@ class MyEventsBase extends Component {
           hosBookingKeyList.forEach(bookingID => {
             this.props.firebase.event(bookingID).once("value", snapshot => {
               const booking = snapshot.val();
-
+              console.log(booking);
               this.setState(prevState => {
                 const newMyEvents = { ...prevState.myEvents };
                 newMyEvents[bookingID] = booking;
@@ -107,6 +107,7 @@ class MyEventsBase extends Component {
                   let originLocation;
                   let currentLocation;
                   // Get originLocation
+                  console.log(positionList);
                   if (positionList[0].createdAt >= startTimeETA) {
                     originLocation = positionList[0];
                   } else {
@@ -124,7 +125,7 @@ class MyEventsBase extends Component {
                   this.props.firebase
                     .user(userID)
                     .child("username")
-                    .on("value", snapshot => {
+                    .once("value", snapshot => {
                       const userName = snapshot.val();
 
                       // Wen userName is recieved, update state
@@ -143,6 +144,7 @@ class MyEventsBase extends Component {
                           timestamp: currentLocation.createdAt
                         }
                       };
+                      this.forceUpdate();
                     }); // Closing firebase get userName
                 }); // Closing getLastKnownPosition
               }); // Closing forEach
@@ -244,6 +246,7 @@ class MyEventsBase extends Component {
     const noTimes = "You have no times? WTF?";
     const noAttendees = "No one is here yet or the event hasn't started";
     const noPending = "No one is absent yet or the event hasn't started";
+    console.log("mapBookingID", mapBookingID);
 
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
@@ -258,6 +261,7 @@ class MyEventsBase extends Component {
       let mapBooking = null;
       if (mapBookingID) {
         mapBooking = myEvents[mapBookingID];
+        console.log("mapBookingID", mapBookingID);
       }
       return (
         <section>
@@ -327,7 +331,7 @@ class MyEventsBase extends Component {
                   {console.log("evt", evt)}
                   {console.log("evt.usersETA", evt.usersETA)}
                   {console.log("evt.hasAcceptedUid", evt.hasAcceptedUid)}
-                  {evt.usersETA ? ( // If anyone has accepted event
+                  {!isEmpty(evt.usersETA) ? ( // If anyone has accepted event
                     Object.keys(evt.usersETA).map(userID => {
                       const user = evt.usersETA[userID];
                       console.log("now", new Date());

@@ -112,11 +112,12 @@ class BookTimeBase extends Component {
   onClickTimeSlot = name => {
     const { chosenTimeSlots } = this.state;
     if (chosenTimeSlots[name]) {
-      this.setState({
+      this.setState(prevState => ({
         chosenTimeSlots: {
+          ...prevState.chosenTimeSlots,
           [name]: null
         }
-      });
+      }));
     } else {
       this.setState(prevState => ({
         chosenTimeSlots: {
