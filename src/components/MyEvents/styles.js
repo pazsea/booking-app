@@ -34,7 +34,6 @@ export const InviteDiv = styled.div`
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
   font-family: "Montserrat";
-
   p {
     margin-bottom: 0;
     letter-spacing: 0;
@@ -65,23 +64,19 @@ export const InviteDiv = styled.div`
     margin: 1em 0;
     font-family: "Montserrat";
   }
-
   .fa-map-marked-alt {
     margin: auto 0.5em;
     color: black;
   }
-
   .fa-user-slash {
     margin: auto 0.5em;
     color: #c5766b;
   }
-
   .fa-question {
     color: white;
     margin: auto 0.5em;
     font-size: 0.8em;
   }
-
   .fa-user-check {
     color: #599272;
     margin: auto 0.5em;
@@ -106,11 +101,9 @@ export const InviteDiv = styled.div`
     color: wheat;
     box-shadow: 0.0625em 0.0625em 0.09375em #152029;
     text-shadow: 0.03125em 0.03125em 0.09355em #152029;
-
     .GroupRoom {
       font-size: 1.5em;
     }
-
     p {
       margin-bottom: 0;
       letter-spacing: 0;
@@ -142,7 +135,6 @@ export const InviteDiv = styled.div`
       padding: 0.5em;
       margin-bottom: 1em;
     }
-
     .fa-map-marked-alt {
       margin: auto 1em;
       color: black;
@@ -169,7 +161,6 @@ export const PositiveButton = styled.button`
   :hover {
     background: #97a7b9a1;
   }
-
   @media screen and (min-width: 1024px) {
     font-size: 1.2em;
   }
@@ -191,7 +182,6 @@ export const NegativeButton = styled.button`
   :hover {
     background: #d2b9bfb5;
   }
-
   @media screen and (min-width: 1024px) {
     font-size: 1.2em;
   }
