@@ -8,6 +8,7 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Session";
 import * as ROLES from "../../constants/roles";
+import { calculateDistance } from "../../utilities";
 
 const Navigation = props => (
   <Nav stateNav={props.stateNav}>
@@ -22,25 +23,6 @@ const Navigation = props => (
     </AuthUserContext.Consumer>
   </Nav>
 );
-
-export const calculateDistance = (position1, position2) => {
-  const { latitude: lat1, longitude: lon1 } = position1;
-  const { latitude: lat2, longitude: lon2 } = position2;
-
-  var R = 6371; // km (change this constant to get miles)
-  var dLat = ((lat2 - lat1) * Math.PI) / 180;
-  var dLon = ((lon2 - lon1) * Math.PI) / 180;
-  var a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c;
-
-  return Math.round(d * 1000);
-};
 
 class NavigationAuthBase extends Component {
   constructor(props) {

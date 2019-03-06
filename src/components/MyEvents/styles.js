@@ -125,7 +125,7 @@ export const InviteDiv = styled.div`
   }
 `;
 
-export const ShowMapButton = styled.button`
+export const PositiveButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;
@@ -144,7 +144,7 @@ export const ShowMapButton = styled.button`
   }
 `;
 
-export const MyEventsDeleteButton = styled.button`
+export const NegativeButton = styled.button`
   font-family: "Montserrat", sans-serif;
 
   padding: 10px;

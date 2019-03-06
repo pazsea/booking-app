@@ -5,26 +5,21 @@ import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import {
   InviteDiv,
-  ShowMapButton,
-  DeleteEventButton,
+  PositiveButton,
+  NegativeButton,
   H3,
   TitleOfSection
 } from "./styles";
 import Map from "../Map";
-import Geolocation from "../Map/geolocation"; //Code to test calculation of ETA - do not delete - being used by Nina
+import { isEmpty } from "../../utilities";
+
+const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
     {authUser => <MyEventsComplete authUser={authUser} />}
   </AuthUserContext.Consumer>
 );
-
-function isEmpty(obj) {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) return false;
-  }
-  return true;
-}
 
 class MyEventsBase extends Component {
   constructor(props) {
@@ -33,18 +28,42 @@ class MyEventsBase extends Component {
     this.state = {
       myEvents: null,
       loading: true,
-      showMap: false,
-      mapEvent: []
+      mapBookingID: null
     };
   }
+
+  getLastKnownPosition = (
+    num,
+    userID = this.props.authUser.uid,
+    callbackFunction
+  ) => {
+    this.props.firebase
+      .user(userID)
+      .child("positions")
+      .limitToLast(num)
+      .on("value", snapshot => {
+        const lastKnownPositionObject = snapshot.val();
+
+        if (lastKnownPositionObject) {
+          const lastKnownPositions = Object.keys(lastKnownPositionObject).map(
+            key => ({
+              ...lastKnownPositionObject[key],
+              uid: key
+            })
+          );
+
+          callbackFunction(lastKnownPositions);
+        }
+      });
+  };
 
   updateEvents() {
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("hostedEvents")
       .on("value", snapshot => {
-        const snap = snapshot.val();
-        if (snap == null) {
+        const hostBookingKeyDict = snapshot.val();
+        if (hostBookingKeyDict === null) {
           this.setState({
             myEvents: null
           });
@@ -53,15 +72,78 @@ class MyEventsBase extends Component {
             myEvents: {}
           });
 
-          const snapKeys = Object.keys(snap);
-          snapKeys.forEach(key => {
-            this.props.firebase.event(key).once("value", snapshot => {
-              const eventSnaps = snapshot.val();
-              this.setState({
-                myEvents: [...this.state.myEvents, { ...eventSnaps }]
-              });
-            });
-          }); // CLosing forEach hosted eventID
+          const hosBookingKeyList = Object.keys(hostBookingKeyDict);
+
+          hosBookingKeyList.forEach(bookingID => {
+            this.props.firebase.event(bookingID).once("value", snapshot => {
+              const booking = snapshot.val();
+
+              this.setState(prevState => {
+                const newMyEvents = { ...prevState.myEvents };
+                newMyEvents[bookingID] = booking;
+                return {
+                  myEvents: newMyEvents
+                };
+              }); // Closing setState
+
+              const timeList = Object.keys(booking.time);
+              let bookingStartTime = parseInt(timeList[0]);
+              let startTimeETA = bookingStartTime - 3600000;
+
+              booking["startTime"] = bookingStartTime;
+              booking["location"] = KYHLocation;
+              const usersETA = {};
+              booking["usersETA"] = usersETA;
+
+              if (isEmpty(booking.hasAcceptedUid)) {
+                return;
+              }
+
+              const acceptedUserList = Object.keys(booking.hasAcceptedUid);
+
+              acceptedUserList.forEach(userID => {
+                // Get last 2 known positions
+                this.getLastKnownPosition(2, userID, positionList => {
+                  let originLocation;
+                  let currentLocation;
+                  // Get originLocation
+                  if (positionList[0].createdAt >= startTimeETA) {
+                    originLocation = positionList[0];
+                  }
+
+                  // Get currentLocation
+                  if (positionList[1].createdAt >= startTimeETA) {
+                    currentLocation = positionList[1];
+                  }
+
+                  // When data from getLastKnownPosition() is recieved, get userName
+                  this.props.firebase
+                    .user(userID)
+                    .child("username")
+                    .on("value", snapshot => {
+                      const userName = snapshot.val();
+
+                      // Wen userName is recieved, update state
+
+                      usersETA[userID] = {
+                        userID: userID,
+                        userName: userName,
+                        origin: {
+                          latitude: originLocation.latitude,
+                          longitude: originLocation.longitude,
+                          timestamp: originLocation.createdAt
+                        },
+                        current: {
+                          latitude: currentLocation.latitude,
+                          longitude: currentLocation.longitude,
+                          timestamp: currentLocation.createdAt
+                        }
+                      };
+                    }); // Closing firebase get userName
+                }); // Closing getLastKnownPosition
+              }); // Closing forEach
+            }); // Closing firebase get booking
+          }); // Closing forEach hosted eventID
         }
         this.setState({
           loading: false
@@ -76,7 +158,7 @@ class MyEventsBase extends Component {
       .off();
 
     this.setState({
-      myEvents: []
+      myEvents: {}
     });
 
     this.props.firebase
@@ -127,14 +209,13 @@ class MyEventsBase extends Component {
 
   displayMap = (event, evt) => {
     this.setState({
-      mapEvent: evt.eventUid,
-      showMap: !this.state.showMap
+      mapBookingID: evt.eventUid
     });
   };
 
   closeMap = () => {
     this.setState({
-      showMap: false
+      mapBookingID: null
     });
   };
 
@@ -160,7 +241,7 @@ class MyEventsBase extends Component {
     //   </div>
     // );
 
-    const { loading, myEvents, showMap, mapEvent } = this.state;
+    const { loading, myEvents, mapBookingID } = this.state;
     const noAccepted = "No one has accepted yet.";
     const noInvited = "";
     const noDeclined = "";
@@ -173,131 +254,146 @@ class MyEventsBase extends Component {
     } else if (loading) {
       return (
         <div>
-          Loading....
+          Loading...
           <Spinner />
         </div>
       );
-
-      //NEEDED??
-      // } else if (myEvents === null) {
-      //   return (
-      //     <div>
-      //       Fetching invites....
-      //       <Spinner />
-      //     </div>
-      //   );
     } else {
+      let mapBooking = null;
+      if (mapBookingID) {
+        mapBooking = myEvents[mapBookingID];
+      }
       return (
         <section>
           <TitleOfSection> Your Bookings </TitleOfSection>
-          {showMap ? <Map mapEvent={mapEvent} close={this.closeMap} /> : null}
+          {mapBooking ? (
+            <Map booking={mapBooking} close={this.closeMap} />
+          ) : null}
 
-          {myEvents.map((evt, index) => (
-            <InviteDiv key={"Div " + evt.eventUid}>
-              <p key={"Date paragrah: " + evt.eventUid}>
-                {" "}
-                Date: &nbsp;
-                {new Date(evt.date).toLocaleDateString()}
-              </p>
+          {Object.keys(myEvents).map(bookingID => {
+            const evt = myEvents[bookingID];
 
-              <ul>
-                {evt.time ? (
-                  Object.keys(evt.time).map((key, index) => (
-                    <li key={index + evt.eventUid}>
-                      Time: &nbsp;
-                      {new Date(Number(key)).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}{" "}
-                      -{" "}
-                      {new Date(Number(key) + 3600000).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                      })}
-                    </li>
-                  ))
-                ) : (
-                  <li>{noTimes}</li>
-                )}
-              </ul>
+            return (
+              <InviteDiv key={"Div " + evt.eventUid}>
+                <p key={"Date paragrah: " + evt.eventUid}>
+                  {" "}
+                  Date: &nbsp;
+                  {new Date(evt.date).toLocaleDateString()}
+                </p>
 
-              <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
+                <ul>
+                  {evt.time ? (
+                    Object.keys(evt.time).map((key, index) => (
+                      <li key={index + evt.eventUid}>
+                        Time: &nbsp;
+                        {new Date(Number(key)).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })}{" "}
+                        -{" "}
+                        {new Date(Number(key) + 3600000).toLocaleTimeString(
+                          [],
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit"
+                          }
+                        )}
+                      </li>
+                    ))
+                  ) : (
+                    <li>{noTimes}</li>
+                  )}
+                </ul>
 
-              <ul>
-                <li>Invitees: </li>
-                {evt.isInvited ? (
-                  Object.keys(evt.isInvited).map((isInvitedUserName, index) => (
-                    <li key={index + evt.eventUid}>{isInvitedUserName}</li>
-                  ))
-                ) : (
-                  <li>{noInvited}</li>
-                )}
-              </ul>
-              <ul>
-                {evt.hasAccepted ? (
-                  Object.keys(evt.hasAccepted).map(
-                    (hasAcceptedUserName, index) => (
-                      <li key={index + evt.eventUid}>{hasAcceptedUserName}</li>
+                <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
+
+                <ul>
+                  <li>Invitees: </li>
+                  {evt.isInvited ? (
+                    Object.keys(evt.isInvited).map(
+                      (isInvitedUserName, index) => (
+                        <li key={index + evt.eventUid}>{isInvitedUserName}</li>
+                      )
                     )
-                  )
-                ) : (
-                  <li>{noAccepted}</li>
-                )}
-              </ul>
-              <ul>
-                {evt.hasDeclined ? (
-                  Object.keys(evt.hasDeclined).map(
-                    (hasDeclinedUserName, index) => (
-                      <li key={index + evt.eventUid}>{hasDeclinedUserName}</li>
+                  ) : (
+                    <li>{noInvited}</li>
+                  )}
+                </ul>
+
+                <ul>
+                  {evt.hasAccepted ? (
+                    Object.keys(evt.hasAccepted).map(
+                      (hasAcceptedUserName, index) => (
+                        <li key={index + evt.eventUid}>
+                          {hasAcceptedUserName}
+                        </li>
+                      )
                     )
-                  )
-                ) : (
-                  <li>{noDeclined}</li>
-                )}
-              </ul>
-              <ul>
-                {evt.attendees ? (
-                  Object.keys(evt.attendees).map((attendeesUserName, index) => (
-                    <li key={index + evt.eventUid}>{attendeesUserName}</li>
-                  ))
-                ) : (
-                  <li>{noAttendees}</li>
-                )}
-              </ul>
-              <ul>
-                {evt.pending ? (
-                  Object.keys(evt.pending).map((pendingUserName, index) => (
-                    <li key={index + evt.eventUid}>{pendingUserName}</li>
-                  ))
-                ) : (
-                  <li>{noPending}</li>
-                )}
-              </ul>
+                  ) : (
+                    <li>{noAccepted}</li>
+                  )}
+                </ul>
 
-              <input
-                type="textarea"
-                placeholder="Description"
-                value={evt.description}
-                key={"Description event: " + evt.eventUid}
-                readOnly
-              />
-              <ShowMapButton
-                key={"Map EventID " + evt.eventUid}
-                onClick={event => this.displayMap(event, evt)}
-              >
-                Show Map
-              </ShowMapButton>
+                <ul>
+                  {evt.hasDeclined ? (
+                    Object.keys(evt.hasDeclined).map(
+                      (hasDeclinedUserName, index) => (
+                        <li key={index + evt.eventUid}>
+                          {hasDeclinedUserName}
+                        </li>
+                      )
+                    )
+                  ) : (
+                    <li>{noDeclined}</li>
+                  )}
+                </ul>
 
-              <DeleteEventButton
-                key={"Delete event" + evt.eventUid}
-                value={evt.eventUid}
-                index={evt.index}
-                onClick={event => this.deleteEvent(event, evt)}
-              >
-                Delete event
-              </DeleteEventButton>
-            </InviteDiv>
-          ))}
+                <ul>
+                  {evt.attendees ? (
+                    Object.keys(evt.attendees).map(
+                      (attendeesUserName, index) => (
+                        <li key={index + evt.eventUid}>{attendeesUserName}</li>
+                      )
+                    )
+                  ) : (
+                    <li>{noAttendees}</li>
+                  )}
+                </ul>
+                <ul>
+                  {evt.pending ? (
+                    Object.keys(evt.pending).map((pendingUserName, index) => (
+                      <li key={index + evt.eventUid}>{pendingUserName}</li>
+                    ))
+                  ) : (
+                    <li>{noPending}</li>
+                  )}
+                </ul>
+
+                <input
+                  type="textarea"
+                  placeholder="Description"
+                  value={evt.description}
+                  key={"Description event: " + evt.eventUid}
+                  readOnly
+                />
+                <PositiveButton
+                  key={"Map EventID " + evt.eventUid}
+                  onClick={event => this.displayMap(event, evt)}
+                >
+                  Show Map
+                </PositiveButton>
+
+                <NegativeButton
+                  key={"Delete event" + evt.eventUid}
+                  value={evt.eventUid}
+                  index={evt.index}
+                  onClick={event => this.deleteEvent(event, evt)}
+                >
+                  Delete event
+                </NegativeButton>
+              </InviteDiv>
+            );
+          })}
         </section>
       );
     }

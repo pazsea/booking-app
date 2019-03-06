@@ -5,10 +5,10 @@ import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import { InviteDiv } from "./styles";
 import {
-  MyEventsButton,
-  MyEventsDeleteButton,
+  NegativeButton,
   H3,
-  TitleOfSection
+  TitleOfSection,
+  PositiveButton
 } from "../MyEvents/styles";
 
 const Invites = () => (
@@ -27,51 +27,6 @@ class InvitesBase extends Component {
       userEventObjects: [],
       noInvites: false
     };
-  }
-
-  componentDidMount() {
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .on("value", snapshot => {
-        const snap = snapshot.val();
-        if (snap == null) {
-          this.setState({
-            noInvites: true
-          });
-        } else {
-          this.setState({
-            userEventObjects: [],
-            noInvites: false
-          });
-
-          const snapKeys = Object.keys(snap);
-          snapKeys.forEach(key => {
-            this.props.firebase.event(key).on("value", snapshot => {
-              const eventObject = snapshot.val();
-              this.setState({
-                userEventObjects: [
-                  ...this.state.userEventObjects,
-                  { ...eventObject, uid: key }
-                ]
-              });
-            });
-            return snap;
-          });
-        }
-        this.setState({
-          loading: false
-        });
-      });
-  }
-
-  componentWillUnmount() {
-    this.props.firebase
-      .user(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .off();
-    this.props.firebase.users().off();
-    this.props.firebase.events().off();
   }
 
   //TO DO:
@@ -190,6 +145,50 @@ class InvitesBase extends Component {
     delete userEventObjects[index];
     this.setState({ userEventObjects });
   };
+  componentDidMount() {
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .on("value", snapshot => {
+        const snap = snapshot.val();
+        if (snap == null) {
+          this.setState({
+            noInvites: true
+          });
+        } else {
+          this.setState({
+            userEventObjects: [],
+            noInvites: false
+          });
+
+          const snapKeys = Object.keys(snap);
+          snapKeys.forEach(key => {
+            this.props.firebase.event(key).on("value", snapshot => {
+              const eventObject = snapshot.val();
+              this.setState({
+                userEventObjects: [
+                  ...this.state.userEventObjects,
+                  { ...eventObject, uid: key }
+                ]
+              });
+            });
+            return snap;
+          });
+        }
+        this.setState({
+          loading: false
+        });
+      });
+  }
+
+  componentWillUnmount() {
+    this.props.firebase
+      .user(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .off();
+    this.props.firebase.users().off();
+    this.props.firebase.events().off();
+  }
 
   render() {
     console.log("RENDER");
@@ -296,22 +295,22 @@ class InvitesBase extends Component {
                   key={"Description event: " + eventUid}
                   readOnly
                 />
-                <MyEventsButton
+                <PositiveButton
                   value={eventUid}
                   key={"Button accept: " + eventUid}
                   index={evt.index}
                   onClick={event => this.acceptInvite(event, index)}
                 >
                   Accept
-                </MyEventsButton>
-                <MyEventsDeleteButton
+                </PositiveButton>
+                <NegativeButton
                   value={eventUid}
                   key={"Button decline: " + eventUid}
                   index={evt.index}
                   onClick={event => this.declineInvite(event, index)}
                 >
                   Decline
-                </MyEventsDeleteButton>
+                </NegativeButton>
               </InviteDiv>
             )
           )}
