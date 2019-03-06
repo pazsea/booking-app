@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import Map from "../Map";
-import { calculateETA, isEmpty } from "../../utilities";
+import { isEmpty } from "../../utilities";
 import { InfoDiv } from "../Invites/styles";
 import {
   InviteDiv,
@@ -244,7 +244,6 @@ class MyEventsBase extends Component {
     const noDeclined = "";
     const noTimes = "You have no times";
     const noAttendees = "";
-    const noPending = "";
     var pending = {
       color: "white"
     };
@@ -336,33 +335,16 @@ class MyEventsBase extends Component {
                   )}
                 </ul>
                 <ul>
-                  {!isEmpty(evt.usersETA) ? (
-                    Object.keys(evt.usersETA).map(userID => {
-                      const user = evt.usersETA[userID];
-
-                      if (new Date() >= evt.startTime - 3600000) {
-                        const ETA = calculateETA(
-                          user.origin,
-                          user.current,
-                          evt.location
-                        );
-                        return (
-                          <li key={userID}>
-                            {user.userName.charAt(0) +
-                              user.userName.slice(1).toLowerCase()}{" "}
-                            ETA: {ETA}
-                          </li>
-                        );
-                      } else {
-                        return (
-                          <li key={userID}>
-                            {user.userName.charAt(0) +
-                              user.userName.slice(1).toLowerCase()}{" "}
-                            <i className="fas fa-check" />
-                          </li>
-                        );
-                      }
-                    })
+                  {evt.hasAccepted ? (
+                    Object.keys(evt.hasAccepted).map(
+                      (hasAcceptedUserName, index) => (
+                        <li style={accept} key={index + evt.eventUid}>
+                          {hasAcceptedUserName.charAt(0) +
+                            hasAcceptedUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-check" />
+                        </li>
+                      )
+                    )
                   ) : (
                     <li>{noAccepted}</li>
                   )}
