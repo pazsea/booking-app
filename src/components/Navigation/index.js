@@ -8,6 +8,7 @@ import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Session";
 import * as ROLES from "../../constants/roles";
+import { calculateDistance } from "../../utilities";
 
 const Navigation = props => (
   <Nav stateNav={props.stateNav}>
@@ -22,25 +23,6 @@ const Navigation = props => (
     </AuthUserContext.Consumer>
   </Nav>
 );
-
-export const calculateDistance = (position1, position2) => {
-  const { latitude: lat1, longitude: lon1 } = position1;
-  const { latitude: lat2, longitude: lon2 } = position2;
-
-  var R = 6371; // km (change this constant to get miles)
-  var dLat = ((lat2 - lat1) * Math.PI) / 180;
-  var dLon = ((lon2 - lon1) * Math.PI) / 180;
-  var a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = R * c;
-
-  return Math.round(d * 1000);
-};
 
 class NavigationAuthBase extends Component {
   constructor(props) {
@@ -75,35 +57,7 @@ class NavigationAuthBase extends Component {
     }
   };
 
-  getLastKnownPosition = (num, user = this.props.authUser.uid) => {
-    this.props.firebase
-      .user(user)
-      .child("positions")
-      .limitToLast(num)
-      .on("value", snapshot => {
-        const lastKnownPositionObject = snapshot.val();
-
-        if (lastKnownPositionObject) {
-          const positionsList = Object.keys(lastKnownPositionObject).map(
-            key => ({
-              ...lastKnownPositionObject[key],
-              uid: key
-            })
-          );
-          let lastKnownPositions = {};
-          if (positionsList.length === 1) {
-            lastKnownPositions = Object.assign(positionsList[0]);
-          } else {
-            lastKnownPositions = Object.assign(positionsList);
-          }
-          this.setState({ lastStoredPosition: lastKnownPositions });
-        }
-      });
-  };
-
   componentDidMount() {
-    console.log("nav mpounted");
-
     // --------------  UPDATE AMOUNT OF INVITES -------------- //
     this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
       const inbj = snapshot.val();
@@ -112,7 +66,7 @@ class NavigationAuthBase extends Component {
         this.setState({
           totalInvites: total
         });
-      } else if (inbj.hasOwnProperty("invitedToEvents") === null) {
+      } else {
         this.setState({
           totalInvites: 0
         });
@@ -128,9 +82,9 @@ class NavigationAuthBase extends Component {
       },
       {
         enableHighAccuracy: true,
-        // timeout: 20000, STYR TIDEN DEN PUSHAR IN TILL FIREBASE
+        timeout: 20000,
         maximumAge: 0,
-        distanceFilter: 1
+        distanceFilter: 10
       }
     );
   }

@@ -17,6 +17,7 @@ export const Div = styled.div`
   font-size: 16px;
   text-align: center;
   border: 2px solid wheat;
+  word-break: break-word;
 
   button {
     background: white;
