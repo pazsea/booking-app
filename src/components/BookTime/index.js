@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Spinner } from "react-mdl";
 import { animateScroll as scroll } from "react-scroll";
-
+import "./module.css";
+import "react-mdl/extra/material.css";
+import "react-mdl/extra/material.js";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
@@ -16,10 +18,6 @@ import {
   CloseButton,
   TopButton
 } from "./styles";
-import "./module.css";
-
-import "react-mdl/extra/material.css";
-import "react-mdl/extra/material.js";
 
 const scrollToTop = scroll.scrollToTop;
 

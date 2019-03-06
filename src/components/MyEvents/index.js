@@ -124,7 +124,7 @@ class MyEventsBase extends Component {
                   this.props.firebase
                     .user(userID)
                     .child("username")
-                    .on("value", snapshot => {
+                    .once("value", snapshot => {
                       const userName = snapshot.val();
 
                       // Wen userName is recieved, update state
@@ -143,6 +143,7 @@ class MyEventsBase extends Component {
                           timestamp: currentLocation.createdAt
                         }
                       };
+                      this.setState({ [booking.eventUid]: usersETA });
                     }); // Closing firebase get userName
                 }); // Closing getLastKnownPosition
               }); // Closing forEach
@@ -323,21 +324,32 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
+                  <li>Accepted: </li>
                   {!isEmpty(evt.usersETA) ? (
                     Object.keys(evt.usersETA).map(userID => {
                       const user = evt.usersETA[userID];
-                      const ETA = calculateETA(
-                        user.origin,
-                        user.current,
-                        evt.location
-                      );
-                      return (
-                        <li key={userID}>
-                          {user.userName.charAt(0) +
-                            user.userName.slice(1).toLowerCase()}{" "}
-                          ETA: {ETA}
-                        </li>
-                      );
+
+                      if (new Date() >= evt.startTime - 3600000) {
+                        const ETA = calculateETA(
+                          user.origin,
+                          user.current,
+                          evt.location
+                        );
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                            ETA: {ETA}
+                          </li>
+                        );
+                      } else {
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                          </li>
+                        );
+                      }
                     })
                   ) : (
                     <li>{noAccepted}</li>
