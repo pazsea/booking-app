@@ -334,7 +334,6 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Accepted: </li>
                   {!isEmpty(evt.usersETA) ? (
                     Object.keys(evt.usersETA).map(userID => {
                       const user = evt.usersETA[userID];
