@@ -20,7 +20,9 @@ class UpcomingBase extends Component {
       uid: [],
       loading: true,
       userEventObjects: [],
-      noUpcoming: false
+      noUpcoming: false,
+      inQueue: false,
+      queuePos: -1
     };
   }
 
@@ -153,8 +155,9 @@ class UpcomingBase extends Component {
             .events()
             .child(eventUid)
             .child("helpQueue")
-            .update({ [this.props.authUser.username]: true });
+            .update({ [this.props.authUser.username]: Number(Date.now()) });
         } else {
+          console.log(snap);
           const snapKeys = Object.keys(snap);
 
           snapKeys.find(name => name === this.props.authUser.username)
@@ -167,7 +170,7 @@ class UpcomingBase extends Component {
                 .events()
                 .child(eventUid)
                 .child("helpQueue")
-                .update({ [this.props.authUser.username]: true });
+                .update({ [this.props.authUser.username]: Number(Date.now()) });
         }
       });
   }
