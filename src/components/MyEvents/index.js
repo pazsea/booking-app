@@ -239,12 +239,21 @@ class MyEventsBase extends Component {
 
   render() {
     const { loading, myEvents, mapBookingID } = this.state;
-    const noAccepted = "No one has accepted yet.";
+    const noAccepted = "";
     const noInvited = "";
     const noDeclined = "";
-    const noTimes = "You have no times? WTF?";
-    const noAttendees = "No one is here yet or the event hasn't started";
-    const noPending = "No one is absent yet or the event hasn't started";
+    const noTimes = "You have no times";
+    const noAttendees = "";
+    const noPending = "";
+    var pending = {
+      color: "white"
+    };
+    var declined = {
+      color: "#ee8d80"
+    };
+    var attendees = {
+      color: "#7bcd9f"
+    };
 
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
@@ -312,9 +321,10 @@ class MyEventsBase extends Component {
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map(
                       (isInvitedUserName, index) => (
-                        <li key={index + evt.eventUid}>
+                        <li style={pending} key={index + evt.eventUid}>
                           {isInvitedUserName.charAt(0) +
                             isInvitedUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-question" />
                         </li>
                       )
                     )
@@ -360,9 +370,10 @@ class MyEventsBase extends Component {
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map(
                       (hasDeclinedUserName, index) => (
-                        <li key={index + evt.eventUid}>
+                        <li style={declined} key={index + evt.eventUid}>
                           {hasDeclinedUserName.charAt(0) +
                             hasDeclinedUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-user-slash" />
                         </li>
                       )
                     )
@@ -375,7 +386,7 @@ class MyEventsBase extends Component {
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(
                       (attendeesUserName, index) => (
-                        <li key={index + evt.eventUid}>
+                        <li style={attendees} key={index + evt.eventUid}>
                           {attendeesUserName.charAt(0) +
                             attendeesUserName.slice(1).toLowerCase()}
                           <i className="fas fa-user-check" />

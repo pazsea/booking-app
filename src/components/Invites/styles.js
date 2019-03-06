@@ -53,6 +53,10 @@ export const InviteDiv = styled.div`
     font-size: 1em;
     padding: 0.5em;
   }
+
+  li {
+    margin: 0.2em 0;
+  }
   input {
     width: 100%;
     height: 4em;

@@ -44,10 +44,13 @@ export const MenuItems = styled.div`
   }
 
   @media screen and (min-width: 1024px) {
+    border-bottom: 1px solid #c3d0d9;
+
     h1 {
       font-size: 3.5em;
       padding-left: 0.5em;
       letter-spacing: 0.05em;
+      font-weight: 400;
     }
   }
 `;
