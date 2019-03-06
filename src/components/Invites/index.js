@@ -200,7 +200,7 @@ class InvitesBase extends Component {
       color: "#ee8d80"
     };
     if (noInvites) {
-      return <H3>You have no invites. </H3>;
+      return <H3>You have no invites </H3>;
     } else if (loading) {
       return (
         <div>

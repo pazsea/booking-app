@@ -203,7 +203,7 @@ class UpcomingBase extends Component {
       color: "#ee8d80"
     };
     if (noUpcoming) {
-      return <H3>You have no upcoming events at this time.</H3>;
+      return <H3>You have no upcoming events at this time</H3>;
     } else if (loading) {
       return (
         <div>

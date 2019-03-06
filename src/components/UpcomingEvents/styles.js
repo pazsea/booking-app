@@ -4,7 +4,7 @@ export const H3 = styled.h3`
   color: wheat;
   text-align: center;
   font-family: "Montserrat";
-  font-weight: 600;
+  font-weight: 400;
   margin: 10%;
 `;
 
@@ -12,9 +12,6 @@ export const InfoDiv = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 0.5em;
-  /* ul {
-    padding: 0 !important;
-  } */
 
   @media screen and (min-width: 1024px) {
     padding: 0 4.5em;
