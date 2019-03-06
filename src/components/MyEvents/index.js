@@ -14,7 +14,7 @@ import {
   TitleOfSection
 } from "./styles";
 
-const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
+export const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -336,16 +336,33 @@ class MyEventsBase extends Component {
                   )}
                 </ul>
                 <ul>
-                  {evt.hasAccepted ? (
-                    Object.keys(evt.hasAccepted).map(
-                      (hasAcceptedUserName, index) => (
-                        <li style={accept} key={index + evt.eventUid}>
-                          {hasAcceptedUserName.charAt(0) +
-                            hasAcceptedUserName.slice(1).toLowerCase()}
-                          <i className="fas fa-check" />
-                        </li>
-                      )
-                    )
+                  {!isEmpty(evt.usersETA) ? (
+                    Object.keys(evt.usersETA).map(userID => {
+                      const user = evt.usersETA[userID];
+
+                      if (new Date() >= evt.startTime - 3600000) {
+                        const ETA = calculateETA(
+                          user.origin,
+                          user.current,
+                          evt.location
+                        );
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                            ETA: {ETA}
+                          </li>
+                        );
+                      } else {
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                            <i className="fas fa-check" />
+                          </li>
+                        );
+                      }
+                    })
                   ) : (
                     <li>{noAccepted}</li>
                   )}
