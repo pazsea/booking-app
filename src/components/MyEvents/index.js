@@ -357,8 +357,6 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Declined: </li>
-
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map(
                       (hasDeclinedUserName, index) => (
@@ -374,8 +372,6 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
-                  <li>Attendees: </li>
-
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(
                       (attendeesUserName, index) => (
