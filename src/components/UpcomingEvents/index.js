@@ -207,6 +207,7 @@ class UpcomingBase extends Component {
 
   render() {
     const { loading, userEventObjects, noUpcoming } = this.state;
+
     const noAccepted = "";
     const noInvited = "";
     const noDeclined = "";
@@ -234,7 +235,10 @@ class UpcomingBase extends Component {
         <section>
           <TitleOfSection>Upcoming</TitleOfSection>
           {userEventObjects.map(
-            ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
+            (
+              { eventUid, grouproom, date, hostName, time, helpQueue, ...evt },
+              index
+            ) => (
               <InviteDiv key={"Div " + eventUid}>
                 <InfoDiv>
                   <p key={"Date paragrah: " + eventUid}>
@@ -308,16 +312,7 @@ class UpcomingBase extends Component {
                     <li>{noDeclined}</li>
                   )}
                 </ul>
-                {evt.helpQueue &&
-                Object.keys(evt.helpQueue).findIndex(
-                  name => name === this.props.authUser.username
-                )
-                  ? this.setState({
-                      [evt.eventUid]: Object.keys(evt.helpQueue).findIndex(
-                        name => name === this.props.authUser.username
-                      )
-                    })
-                  : this.setState({ myHelpQueuePosition: "" })}
+
                 <HelpButton
                   value={eventUid}
                   key={"Help wanted: " + eventUid}
@@ -331,9 +326,7 @@ class UpcomingBase extends Component {
                   key={"Dont need help: " + eventUid}
                   onClick={this.notNeeded}
                   index={evt.index}
-                >
-                  {this.state.evt.eventUid}
-                </NoHelpButton>
+                />
               </InviteDiv>
             )
           )}
