@@ -395,7 +395,7 @@ class MyEventsBase extends Component {
                   key={"Map EventID " + evt.eventUid}
                   onClick={event => this.displayMap(event, evt)}
                 >
-                  Show Map
+                  Show Map <i className="fas fa-map-marked-alt" />
                 </PositiveButton>
 
                 <NegativeButton
