@@ -107,9 +107,16 @@ class UpcomingBase extends Component {
                           this.props.firebase
                             .events()
                             .child(eventUid)
-                            .child("pending")
+                            .child("hasAccepted")
                             .update({
                               [this.props.authUser.username]: null
+                            });
+                          this.props.firebase
+                            .events()
+                            .child(eventUid)
+                            .child("hasAcceptedUid")
+                            .update({
+                              [this.props.authUser.uid]: null
                             });
                         }
                         //   this.props.firebase

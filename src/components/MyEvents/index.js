@@ -323,21 +323,42 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
-                  {!isEmpty(evt.usersETA) ? (
+                  <li>Has accepted/ETA: </li>
+                  {console.log("evt", evt)}
+                  {console.log("evt.usersETA", evt.usersETA)}
+                  {console.log("evt.hasAcceptedUid", evt.hasAcceptedUid)}
+                  {evt.usersETA ? ( // If anyone has accepted event
                     Object.keys(evt.usersETA).map(userID => {
                       const user = evt.usersETA[userID];
-                      const ETA = calculateETA(
-                        user.origin,
-                        user.current,
-                        evt.location
-                      );
-                      return (
-                        <li key={userID}>
-                          {user.userName.charAt(0) +
-                            user.userName.slice(1).toLowerCase()}{" "}
-                          ETA: {ETA}
-                        </li>
-                      );
+                      console.log("now", new Date());
+                      console.log("ETA starttime", evt.startTime - 3600000);
+
+                      console.log("userID", userID);
+                      console.log("userName", userID.userName);
+                      if (new Date() >= evt.startTime - 3600000) {
+                        console.log("inside if");
+
+                        const ETA = calculateETA(
+                          user.origin,
+                          user.current,
+                          evt.location
+                        );
+                        console.log("ETA", ETA);
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                            ETA: {ETA}
+                          </li>
+                        );
+                      } else {
+                        return (
+                          <li key={userID}>
+                            {user.userName.charAt(0) +
+                              user.userName.slice(1).toLowerCase()}{" "}
+                          </li>
+                        );
+                      }
                     })
                   ) : (
                     <li>{noAccepted}</li>
@@ -345,6 +366,8 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
+                  <li>Declined: </li>
+
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map(
                       (hasDeclinedUserName, index) => (
@@ -360,6 +383,8 @@ class MyEventsBase extends Component {
                 </ul>
 
                 <ul>
+                  <li>Attendees: </li>
+
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(
                       (attendeesUserName, index) => (
