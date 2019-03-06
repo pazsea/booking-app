@@ -33,6 +33,7 @@ export const InviteDiv = styled.div`
   color: wheat;
   box-shadow: 0.0625em 0.0625em 0.09375em #152029;
   text-shadow: 0.03125em 0.03125em 0.09355em #152029;
+  font-family: "Montserrat";
 
   p {
     margin-bottom: 0;
@@ -62,11 +63,16 @@ export const InviteDiv = styled.div`
     border-radius: 8px;
     padding: 0.5em;
     margin-bottom: 1em;
+    font-family: "Montserrat";
+  }
+
+  .fa-map-marked-alt {
+    margin: auto 1em;
+    color: black;
   }
 
   * {
     margin: 0;
-    font-family: "Montserrat", sans-serif;
   }
   @media screen and (min-width: 1024px) {
     margin: 2% 15%;
@@ -120,7 +126,6 @@ export const InviteDiv = styled.div`
 
     * {
       margin: 0;
-      font-family: "Montserrat", sans-serif;
     }
   }
 `;

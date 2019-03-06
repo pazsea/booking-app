@@ -232,7 +232,9 @@ class MyEventsBase extends Component {
                 <li>Invitees: </li>
                 {evt.isInvited ? (
                   Object.keys(evt.isInvited).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                    <li key={index + evt.eventUid}>
+                      {key.charAt(0) + key.slice(1).toLowerCase()}
+                    </li>
                   ))
                 ) : (
                   <li>{noInvited}</li>
@@ -241,7 +243,9 @@ class MyEventsBase extends Component {
               <ul>
                 {evt.hasAccepted ? (
                   Object.keys(evt.hasAccepted).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                    <li key={index + evt.eventUid}>
+                      {key.charAt(0) + key.slice(1).toLowerCase()}
+                    </li>
                   ))
                 ) : (
                   <li>{noAccepted}</li>
@@ -250,7 +254,9 @@ class MyEventsBase extends Component {
               <ul>
                 {evt.hasDeclined ? (
                   Object.keys(evt.hasDeclined).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                    <li key={index + evt.eventUid}>
+                      {key.charAt(0) + key.slice(1).toLowerCase()}
+                    </li>
                   ))
                 ) : (
                   <li>{noDeclined}</li>
@@ -259,7 +265,9 @@ class MyEventsBase extends Component {
               <ul>
                 {evt.attendees ? (
                   Object.keys(evt.attendees).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                    <li key={index + evt.eventUid}>
+                      {key.charAt(0) + key.slice(1).toLowerCase()}
+                    </li>
                   ))
                 ) : (
                   <li>{noAttendees}</li>
@@ -268,7 +276,9 @@ class MyEventsBase extends Component {
               <ul>
                 {evt.pending ? (
                   Object.keys(evt.pending).map((key, index) => (
-                    <li key={index + evt.eventUid}>{key}</li>
+                    <li key={index + evt.eventUid}>
+                      {key.charAt(0) + key.slice(1).toLowerCase()}
+                    </li>
                   ))
                 ) : (
                   <li>{noPending}</li>
@@ -286,7 +296,7 @@ class MyEventsBase extends Component {
                 key={"Map Event " + evt.eventUid}
                 onClick={event => this.displayMap(event, evt)}
               >
-                Show Map
+                Show Map <i class="fas fa-map-marked-alt" />
               </MyEventsButton>
               <MyEventsDeleteButton
                 key={"Delete event" + evt.eventUid}
