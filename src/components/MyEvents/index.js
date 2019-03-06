@@ -124,7 +124,7 @@ class MyEventsBase extends Component {
                   this.props.firebase
                     .user(userID)
                     .child("username")
-                    .on("value", snapshot => {
+                    .once("value", snapshot => {
                       const userName = snapshot.val();
 
                       // Wen userName is recieved, update state
@@ -143,6 +143,7 @@ class MyEventsBase extends Component {
                           timestamp: currentLocation.createdAt
                         }
                       };
+                      this.setState({ [booking.eventUid]: usersETA });
                     }); // Closing firebase get userName
                 }); // Closing getLastKnownPosition
               }); // Closing forEach
@@ -253,6 +254,9 @@ class MyEventsBase extends Component {
     var attendees = {
       color: "#7bcd9f"
     };
+    var accept = {
+      color: "#7bcd9f"
+    };
 
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
@@ -270,7 +274,7 @@ class MyEventsBase extends Component {
       }
       return (
         <section>
-          <TitleOfSection> My Bookings </TitleOfSection>
+          <TitleOfSection> Your Bookings </TitleOfSection>
           {mapBooking ? (
             <Map booking={mapBooking} close={this.closeMap} />
           ) : null}
@@ -331,45 +335,17 @@ class MyEventsBase extends Component {
                     <li>{noInvited}</li>
                   )}
                 </ul>
-
                 <ul>
-                  <li>Has accepted/ETA: </li>
-                  {console.log("evt", evt)}
-                  {console.log("evt.usersETA", evt.usersETA)}
-                  {console.log("evt.hasAcceptedUid", evt.hasAcceptedUid)}
-                  {evt.usersETA ? ( // If anyone has accepted event
-                    Object.keys(evt.usersETA).map(userID => {
-                      const user = evt.usersETA[userID];
-                      console.log("now", new Date());
-                      console.log("ETA starttime", evt.startTime - 3600000);
-
-                      console.log("userID", userID);
-                      console.log("userName", userID.userName);
-                      if (new Date() >= evt.startTime - 3600000) {
-                        console.log("inside if");
-
-                        const ETA = calculateETA(
-                          user.origin,
-                          user.current,
-                          evt.location
-                        );
-                        console.log("ETA", ETA);
-                        return (
-                          <li key={userID}>
-                            {user.userName.charAt(0) +
-                              user.userName.slice(1).toLowerCase()}{" "}
-                            ETA: {ETA}
-                          </li>
-                        );
-                      } else {
-                        return (
-                          <li key={userID}>
-                            {user.userName.charAt(0) +
-                              user.userName.slice(1).toLowerCase()}{" "}
-                          </li>
-                        );
-                      }
-                    })
+                  {evt.hasAccepted ? (
+                    Object.keys(evt.hasAccepted).map(
+                      (hasAcceptedUserName, index) => (
+                        <li style={accept} key={index + evt.eventUid}>
+                          {hasAcceptedUserName.charAt(0) +
+                            hasAcceptedUserName.slice(1).toLowerCase()}
+                          <i className="fas fa-check" />
+                        </li>
+                      )
+                    )
                   ) : (
                     <li>{noAccepted}</li>
                   )}
@@ -407,19 +383,6 @@ class MyEventsBase extends Component {
                   )}
                 </ul>
 
-                <ul>
-                  {evt.pending ? (
-                    Object.keys(evt.pending).map((pendingUserName, index) => (
-                      <li key={index + evt.eventUid}>
-                        {pendingUserName.charAt(0) +
-                          pendingUserName.slice(1).toLowerCase()}
-                      </li>
-                    ))
-                  ) : (
-                    <li>{noPending}</li>
-                  )}
-                </ul>
-
                 <input
                   type="textarea"
                   placeholder="Description"
@@ -432,7 +395,7 @@ class MyEventsBase extends Component {
                   key={"Map EventID " + evt.eventUid}
                   onClick={event => this.displayMap(event, evt)}
                 >
-                  Show Map <i className="fas fa-map-marked-alt" />
+                  Show Map
                 </PositiveButton>
 
                 <NegativeButton
