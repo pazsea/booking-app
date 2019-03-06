@@ -3,6 +3,9 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
+import Map from "../Map";
+import { calculateETA, isEmpty } from "../../utilities";
+import { InfoDiv } from "../Invites/styles";
 import {
   InviteDiv,
   PositiveButton,
@@ -10,11 +13,8 @@ import {
   H3,
   TitleOfSection
 } from "./styles";
-import Map from "../Map";
-import { calculateETA, isEmpty } from "../../utilities";
 
 const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
-import { InfoDiv } from "../Invites/styles";
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
