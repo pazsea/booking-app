@@ -254,6 +254,9 @@ class MyEventsBase extends Component {
     var attendees = {
       color: "#7bcd9f"
     };
+    var accept = {
+      color: "#7bcd9f"
+    };
 
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
@@ -271,7 +274,7 @@ class MyEventsBase extends Component {
       }
       return (
         <section>
-          <TitleOfSection> My Bookings </TitleOfSection>
+          <TitleOfSection> Your Bookings </TitleOfSection>
           {mapBooking ? (
             <Map booking={mapBooking} close={this.closeMap} />
           ) : null}
@@ -332,7 +335,6 @@ class MyEventsBase extends Component {
                     <li>{noInvited}</li>
                   )}
                 </ul>
-
                 <ul>
                   {!isEmpty(evt.usersETA) ? (
                     Object.keys(evt.usersETA).map(userID => {
@@ -356,6 +358,7 @@ class MyEventsBase extends Component {
                           <li key={userID}>
                             {user.userName.charAt(0) +
                               user.userName.slice(1).toLowerCase()}{" "}
+                            <i className="fas fa-check" />
                           </li>
                         );
                       }
@@ -394,19 +397,6 @@ class MyEventsBase extends Component {
                     )
                   ) : (
                     <li>{noAttendees}</li>
-                  )}
-                </ul>
-
-                <ul>
-                  {evt.pending ? (
-                    Object.keys(evt.pending).map((pendingUserName, index) => (
-                      <li key={index + evt.eventUid}>
-                        {pendingUserName.charAt(0) +
-                          pendingUserName.slice(1).toLowerCase()}
-                      </li>
-                    ))
-                  ) : (
-                    <li>{noPending}</li>
                   )}
                 </ul>
 

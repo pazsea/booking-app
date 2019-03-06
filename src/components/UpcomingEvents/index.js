@@ -55,14 +55,6 @@ class UpcomingBase extends Component {
                 const endTime = Number(Object.keys(snapshot.val())) + 3600000;
 
                 if (startTime < Date.now() && endTime > Date.now()) {
-                  // this.props.firebase
-                  //   .events()
-                  //   .child(eventUid)
-                  //   .child("hasAcceptedUid")
-                  //   .on("value", snapshot => {
-                  //     const acceptedUid = Object.keys(snapshot.val());
-
-                  //     acceptedUid.forEach(acceptUid => {
                   this.props.firebase
                     .users()
                     .child(this.props.authUser.uid)
@@ -84,9 +76,6 @@ class UpcomingBase extends Component {
                           lastKnownPositions = Object.assign(positionsList);
                         }
                         const { latitude, longitude } = lastKnownPositions;
-
-                        // const { latitude: lat1, longitude: lng1 } = position.coords;
-                        // const { latitude: lat2, longitude: lng2 } = this.state.dbCoords;
                         const dist = this.calculateDistance(
                           latitude,
                           longitude,
@@ -119,20 +108,9 @@ class UpcomingBase extends Component {
                               [this.props.authUser.uid]: null
                             });
                         }
-                        //   this.props.firebase
-                        //     .events()
-                        //     .child(key)
-                        //     .child("absentees")
-                        //     .update({
-                        //       [this.props.authUser.username]: true
-                        //     });
                       }
                     });
-                  // });
-                  // });
-                } // else if (startTime > new Date()) {
-
-                // }
+                }
               });
           });
 
