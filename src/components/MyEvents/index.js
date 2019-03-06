@@ -14,6 +14,7 @@ import Map from "../Map";
 import { calculateETA, isEmpty } from "../../utilities";
 
 const KYHLocation = { latitude: 59.313437, longitude: 18.110645 };
+import { InfoDiv } from "../Invites/styles";
 
 const MyEvents = () => (
   <AuthUserContext.Consumer>
@@ -270,44 +271,50 @@ class MyEventsBase extends Component {
 
             return (
               <InviteDiv key={"Div " + evt.eventUid}>
-                <p key={"Date paragrah: " + evt.eventUid}>
-                  {" "}
-                  Date: &nbsp;
-                  {new Date(evt.date).toLocaleDateString()}
-                </p>
-
-                <ul>
-                  {evt.time ? (
-                    Object.keys(evt.time).map((key, index) => (
-                      <li key={index + evt.eventUid}>
-                        Time: &nbsp;
-                        {new Date(Number(key)).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })}{" "}
-                        -{" "}
-                        {new Date(Number(key) + 3600000).toLocaleTimeString(
-                          [],
-                          {
+                <InfoDiv>
+                  <p key={"Date paragrah: " + evt.eventUid}>
+                    {" "}
+                    Date: &nbsp;
+                    {new Date(evt.date).toLocaleDateString()}
+                  </p>
+                  <div>
+                    {evt.time ? (
+                      Object.keys(evt.time).map((key, index) => (
+                        <p key={index + evt.eventUid}>
+                          Time: &nbsp;
+                          {new Date(Number(key)).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit"
-                          }
-                        )}
-                      </li>
-                    ))
-                  ) : (
-                    <li>{noTimes}</li>
-                  )}
-                </ul>
+                          })}{" "}
+                          -{" "}
+                          {new Date(Number(key) + 3600000).toLocaleTimeString(
+                            [],
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit"
+                            }
+                          )}
+                        </p>
+                      ))
+                    ) : (
+                      <li>{noTimes}</li>
+                    )}
+                  </div>
+                </InfoDiv>
 
-                <p key={"Event UID: " + evt.eventUid}>{evt.grouproom}</p>
+                <p className="GroupRoom" key={"Event UID: " + evt.eventUid}>
+                  {evt.grouproom}
+                </p>
 
                 <ul>
                   <li>Invitees: </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map(
                       (isInvitedUserName, index) => (
-                        <li key={index + evt.eventUid}>{isInvitedUserName}</li>
+                        <li key={index + evt.eventUid}>
+                          {isInvitedUserName.charAt(0) +
+                            isInvitedUserName.slice(1).toLowerCase()}
+                        </li>
                       )
                     )
                   ) : (
@@ -326,7 +333,9 @@ class MyEventsBase extends Component {
                       );
                       return (
                         <li key={userID}>
-                          {user.userName} ETA: {ETA}
+                          {user.userName.charAt(0) +
+                            user.userName.slice(1).toLowerCase()}{" "}
+                          ETA: {ETA}
                         </li>
                       );
                     })
@@ -340,7 +349,8 @@ class MyEventsBase extends Component {
                     Object.keys(evt.hasDeclined).map(
                       (hasDeclinedUserName, index) => (
                         <li key={index + evt.eventUid}>
-                          {hasDeclinedUserName}
+                          {hasDeclinedUserName.charAt(0) +
+                            hasDeclinedUserName.slice(1).toLowerCase()}
                         </li>
                       )
                     )
@@ -353,17 +363,24 @@ class MyEventsBase extends Component {
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(
                       (attendeesUserName, index) => (
-                        <li key={index + evt.eventUid}>{attendeesUserName}</li>
+                        <li key={index + evt.eventUid}>
+                          {attendeesUserName.charAt(0) +
+                            attendeesUserName.slice(1).toLowerCase()}
+                        </li>
                       )
                     )
                   ) : (
                     <li>{noAttendees}</li>
                   )}
                 </ul>
+
                 <ul>
                   {evt.pending ? (
                     Object.keys(evt.pending).map((pendingUserName, index) => (
-                      <li key={index + evt.eventUid}>{pendingUserName}</li>
+                      <li key={index + evt.eventUid}>
+                        {pendingUserName.charAt(0) +
+                          pendingUserName.slice(1).toLowerCase()}
+                      </li>
                     ))
                   ) : (
                     <li>{noPending}</li>
@@ -377,6 +394,7 @@ class MyEventsBase extends Component {
                   key={"Description event: " + evt.eventUid}
                   readOnly
                 />
+
                 <PositiveButton
                   key={"Map EventID " + evt.eventUid}
                   onClick={event => this.displayMap(event, evt)}

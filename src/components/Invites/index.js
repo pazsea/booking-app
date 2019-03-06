@@ -3,7 +3,7 @@ import { Spinner } from "react-mdl";
 import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
-import { InviteDiv } from "./styles";
+import { InviteDiv, InfoDiv, InfoDiv2 } from "./styles";
 import {
   NegativeButton,
   H3,
@@ -197,7 +197,15 @@ class InvitesBase extends Component {
     const noInvited = "No one is invited";
     const noDeclined = "";
     const noTimes = "You have no times";
-
+    var pending = {
+      color: "white"
+    };
+    var accept = {
+      color: "#7bcd9f"
+    };
+    var decline = {
+      color: "#ee8d80"
+    };
     if (noInvites) {
       return <H3>You have no invites. </H3>;
     } else if (loading) {
@@ -221,44 +229,48 @@ class InvitesBase extends Component {
           {userEventObjects.map(
             ({ eventUid, grouproom, date, hostName, time, ...evt }, index) => (
               <InviteDiv key={"Div " + eventUid}>
-                <p key={"Date paragrah: " + eventUid}>
-                  Date: &nbsp;
-                  {new Date(date).toLocaleDateString()}
-                </p>
-                <ul>
-                  {time ? (
-                    Object.keys(time).map((key, index) => (
-                      <li key={index + eventUid}>
-                        Time: &nbsp;
-                        {new Date(Number(key)).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })}{" "}
-                        {"- "}
-                        {new Date(Number(key) + 3600000).toLocaleTimeString(
-                          [],
-                          {
+                <InfoDiv>
+                  <p key={"Date paragrah: " + eventUid}>
+                    Date: &nbsp;
+                    {new Date(date).toLocaleDateString()}
+                  </p>
+                  <div>
+                    {time ? (
+                      Object.keys(time).map((key, index) => (
+                        <p key={index + eventUid}>
+                          Time: &nbsp;
+                          {new Date(Number(key)).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit"
-                          }
-                        )}
-                      </li>
-                    ))
-                  ) : (
-                    <li>{noTimes}</li>
-                  )}
-                </ul>
-                <p key={"Host paragraph: " + eventUid}>
-                  {hostName} has invited you to this event:
-                </p>
-                <p key={"Event UID: " + eventUid}>{grouproom}</p>
-
+                          })}{" "}
+                          {"- "}
+                          {new Date(Number(key) + 3600000).toLocaleTimeString(
+                            [],
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit"
+                            }
+                          )}
+                        </p>
+                      ))
+                    ) : (
+                      <li>{noTimes}</li>
+                    )}
+                  </div>
+                </InfoDiv>
+                <InfoDiv2>
+                  <p key={"Host paragraph: " + eventUid}>
+                    Host: {hostName.charAt(0) + hostName.slice(1).toLowerCase()}
+                  </p>
+                  <p key={"Event UID: " + eventUid}>{grouproom}</p>
+                </InfoDiv2>
                 <ul>
                   <li>Invitees: </li>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map((key, index) => (
-                      <li key={index + eventUid}>
-                        {key} <i className="fas fa-question" />
+                      <li style={pending} key={index + eventUid}>
+                        {key.charAt(0) + key.slice(1).toLowerCase()}
+                        <i className="fas fa-question" />
                       </li>
                     ))
                   ) : (
@@ -268,8 +280,9 @@ class InvitesBase extends Component {
                 <ul>
                   {evt.hasAccepted ? (
                     Object.keys(evt.hasAccepted).map((key, index) => (
-                      <li key={index + eventUid}>
-                        {key} <i className="fas fa-check" />{" "}
+                      <li style={accept} key={index + eventUid}>
+                        {key.charAt(0) + key.slice(1).toLowerCase()}
+                        <i className="fas fa-check" />
                       </li>
                     ))
                   ) : (
@@ -279,8 +292,9 @@ class InvitesBase extends Component {
                 <ul>
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map((key, index) => (
-                      <li key={index + eventUid}>
-                        {key} <i className="fas fa-times" />
+                      <li style={decline} key={index + eventUid}>
+                        {key.charAt(0) + key.slice(1).toLowerCase()}{" "}
+                        <i className="fas fa-times" />
                       </li>
                     ))
                   ) : (
