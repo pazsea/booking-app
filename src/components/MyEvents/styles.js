@@ -67,7 +67,7 @@ export const InviteDiv = styled.div`
   }
 
   .fa-map-marked-alt {
-    margin: auto 1em;
+    margin: auto 0.1em;
     color: black;
   }
 
@@ -124,6 +124,11 @@ export const InviteDiv = styled.div`
       margin-bottom: 1em;
     }
 
+    .fa-map-marked-alt {
+      margin: auto 1em;
+      color: black;
+    }
+
     * {
       margin: 0;
     }
@@ -142,6 +147,7 @@ export const PositiveButton = styled.button`
   font-size: 1.2em;
   margin-right: 1%;
   font-weight: 600;
+  cursor: pointer;
   :hover {
     background: #97a7b9a1;
   }
@@ -159,6 +165,7 @@ export const NegativeButton = styled.button`
   font-size: 1.2em;
   margin-left: 1%;
   font-weight: 600;
+  cursor: pointer;
   :hover {
     background: #d2b9bfb5;
   }
