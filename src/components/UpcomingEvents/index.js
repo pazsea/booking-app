@@ -308,7 +308,16 @@ class UpcomingBase extends Component {
                     <li>{noDeclined}</li>
                   )}
                 </ul>
-
+                {evt.helpQueue &&
+                Object.keys(evt.helpQueue).findIndex(
+                  name => name === this.props.authUser.username
+                )
+                  ? this.setState({
+                      [evt.eventUid]: Object.keys(evt.helpQueue).findIndex(
+                        name => name === this.props.authUser.username
+                      )
+                    })
+                  : this.setState({ myHelpQueuePosition: "" })}
                 <HelpButton
                   value={eventUid}
                   key={"Help wanted: " + eventUid}
@@ -323,7 +332,7 @@ class UpcomingBase extends Component {
                   onClick={this.notNeeded}
                   index={evt.index}
                 >
-                  Cancel help queue
+                  {this.state.evt.eventUid}
                 </NoHelpButton>
               </InviteDiv>
             )
