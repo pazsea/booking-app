@@ -10,7 +10,6 @@ import { Div } from "./styles";
 
 const SignInPage = () => (
   <Div>
-    <h2>Sign in</h2>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />

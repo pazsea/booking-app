@@ -53,6 +53,7 @@ export const Nav = styled.nav`
     font-weight: 600;
     font-size: 2rem;
     color: wheat;
+
     &.active {
       background-color: #050506a8;
     }
@@ -91,6 +92,7 @@ export const Nav = styled.nav`
       font-weight: 600;
       color: wheat;
       font-size: 1em;
+      border-top: none;
       &.active {
         background-color: #050506a8;
       }

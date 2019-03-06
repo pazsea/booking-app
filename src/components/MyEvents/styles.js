@@ -162,6 +162,7 @@ export const PositiveButton = styled.button`
   font-size: 1em;
   margin-right: 1%;
   font-weight: 600;
+  cursor: pointer;
   :hover {
     background: #97a7b9a1;
   }
@@ -183,6 +184,7 @@ export const NegativeButton = styled.button`
   font-size: 1em;
   margin-left: 1%;
   font-weight: 600;
+  cursor: pointer;
   :hover {
     background: #d2b9bfb5;
   }
