@@ -9,6 +9,8 @@ export const Div = styled.div`
 
   h1 {
     color: wheat;
+    font-family: "Montserrat";
+    font-size: 3.5em;
   }
   p {
     color: #97a7b9;
@@ -24,10 +26,16 @@ export const Div = styled.div`
     padding: 10px;
     text-align: center;
     cursor: pointer;
+    font-family: "Montserrat";
 
     input:first-child:focus {
       box-shadow: 0 0 10px white;
       border: 5px solid white;
+    }
+  }
+  @media screen and (min-width: 1024px) {
+    h1 {
+      font-size: 4.5em;
     }
   }
 `;
