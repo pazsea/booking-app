@@ -79,14 +79,17 @@ export const InviteDiv = styled.div`
   .fa-question {
     color: white;
     margin: auto 0.5em;
-    font-size: 0.9em;
+    font-size: 0.8em;
   }
 
   .fa-user-check {
     color: #599272;
     margin: auto 0.5em;
   }
-
+  .fa-check {
+    color: #599272;
+    margin: auto 0.5em;
+  }
   * {
     margin: 0;
   }
