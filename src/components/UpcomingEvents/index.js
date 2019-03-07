@@ -312,6 +312,13 @@ class UpcomingBase extends Component {
                     <li>{noDeclined}</li>
                   )}
                 </ul>
+                <input
+                  type="textarea"
+                  placeholder="Description"
+                  value={evt.description}
+                  key={"Description event: " + evt.eventUid}
+                  readOnly
+                />
 
                 <HelpButton
                   value={eventUid}
