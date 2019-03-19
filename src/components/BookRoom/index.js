@@ -20,6 +20,13 @@ const BookRoom = () => (
     </AuthUserContext.Consumer>
   </Div>
 );
+
+/*
+const bookableClassRooms:
+
+Here we have variables for the classrooms and grouprooms that KYH school has available for booking.
+*/
+
 const bookableClassRooms = [
   "Classroom 510",
   "Classroom 511",
@@ -52,21 +59,11 @@ class BookRoomBase extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  onSubmit = event => {
-    const { groupRoom, date, time } = this.state;
+  /* 
+  handleChange(day):
 
-    this.props.firebase
-      .groupRoom(this.props.authUser.uid)
-      .set({
-        groupRoom,
-        date,
-        time
-      })
-      .catch(error => {
-        this.setState({ error });
-      });
-    event.preventDefault();
-  };
+  Selected date in daypicker get set to state as hours.
+  */
 
   handleChange(day) {
     this.setState({
@@ -77,6 +74,12 @@ class BookRoomBase extends Component {
       currentDate: day
     });
   }
+
+  /*
+  onChangeDisplayClassroom(evt):
+
+  Function that sets the specific classroom to state.
+  */
 
   onChangeDisplayClassroom(evt) {
     const { showGroupRoomComponent } = this.state;
@@ -92,6 +95,12 @@ class BookRoomBase extends Component {
     }
   }
 
+  /* 
+  onChangeDisplayGroupRoom(evt):
+  
+  Function that sets the specific grouproom to state.
+  */
+
   onChangeDisplayGroupRoom(evt) {
     const { showClassroomComponent } = this.state;
     const showKey = evt.target.value;
@@ -105,6 +114,12 @@ class BookRoomBase extends Component {
       }));
     }
   }
+
+  /*
+  closeTime():
+
+  closes the booktime component if open.
+  */
 
   closeTime = () => {
     this.setState(prevState => ({
@@ -123,11 +138,13 @@ class BookRoomBase extends Component {
     });
   };
 
-  // TO DO:
-  // Gör om de två knapparna till "Group Room" och "Classroom" med en onClick function som ändrar state .tex.
-  // Classroom: true om man trycker på det samt Group Room: true  om man trycker på det.
-  // Två knappar som är två komponenter.
-  // Sedan passera props till komponenten.
+  /*
+  render():
+
+  Our render has an condition that need to be meet. If the user inhabit the role of TEACHER or ADMIN, 
+  it will show some buttons available for admins and teachers. But if you are STUDENT or just a plain Auth User, 
+  you only will only see the grouproom buttons. 
+  */
 
   render() {
     const { authUser } = this.props;
