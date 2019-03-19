@@ -61,6 +61,13 @@ class UpcomingBase extends Component {
       });
   }
 
+  /*
+  componentDidMount():
+  
+  In this lifecycle we get all events that we the signed in user has accepted and display them in this component. 
+  This is so the signed in user can see events that he/she has accepted earlier.
+  */
+
   componentDidMount() {
     this.props.firebase
       .user(this.props.authUser.uid)
