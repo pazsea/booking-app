@@ -29,115 +29,13 @@ class InvitesBase extends Component {
     };
   }
 
-  //TO DO:
-  //the times must come in the right way. Right now its only Object Keys after Map..
-  //ACCEPT FUNCTION:
-  //events/eventUID/isInvited => currentUsername null
-  //events/eventUID/hasAccepted => currentUsername true
-  //users/authuserUid/acceptedToEvent/ => currenteventID = true
+  /*
+componentDidMount:
 
-  acceptInvite = (event, index) => {
-    const currentEvent = event.target.value;
-    const { userEventObjects } = this.state;
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("hasAccepted")
-      .update({
-        [this.props.authUser.username]: true
-      });
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("hasAcceptedUid")
-      .update({
-        [this.props.authUser.uid]: true
-      });
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("isInvited")
-      .update({
-        [this.props.authUser.username]: null
-      });
-    this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .update({
-        [currentEvent]: null
-      });
+The componentDidMount takes in current invitations from the current signed in user. From that I mean it takes invitations from firebase and 
+sets it to an local state.
+*/
 
-    this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("acceptedToEvents")
-      .update({
-        [currentEvent]: true
-      });
-
-    this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .equalTo(currentEvent)
-      .once("value", snapshot => {
-        if (snapshot.val() === null) {
-          delete userEventObjects[currentEvent];
-          this.setState({ userEventObjects });
-        } else {
-          this.setState({
-            loading: true
-          });
-        }
-      });
-
-    delete userEventObjects[index];
-    this.setState({ userEventObjects });
-  };
-
-  //TO DO:
-  //DECLINE FUNCTION:
-  //events/eventUID/isInvited => currentUsername null
-  //events/eventUID/hasDeclined
-  //*REMOVE* users/authuser.uid/invitedToEvents => currentEvent = null
-
-  declineInvite = (event, index) => {
-    const currentEvent = event.target.value;
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("hasDeclined")
-      .update({
-        [this.props.authUser.username]: true
-      });
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("isInvited")
-      .update({
-        [this.props.authUser.username]: null
-      });
-
-    this.props.firebase
-      .events()
-      .child(currentEvent)
-      .child("isInvitedUid")
-      .update({
-        [this.props.authUser.uid]: null
-      });
-
-    this.props.firebase
-      .users()
-      .child(this.props.authUser.uid)
-      .child("invitedToEvents")
-      .update({
-        [currentEvent]: null
-      });
-    const { userEventObjects } = this.state;
-    delete userEventObjects[index];
-    this.setState({ userEventObjects });
-  };
   componentDidMount() {
     this.props.firebase
       .user(this.props.authUser.uid)
@@ -182,6 +80,167 @@ class InvitesBase extends Component {
     this.props.firebase.users().off();
     this.props.firebase.events().off();
   }
+
+  /*
+  acceptInvite():
+
+  Lets say the signed in username is "MIMMI". When she accepts and invite we update firebase accordingly:
+
+  -events
+  --eventForTheInvitation UID
+  ---hasAccepted:
+  ----MIMMI: TRUE
+
+  ---hasAcceptedUid:
+  ----MIMMI's UID: True
+
+  ---isInvited:
+  ----MIMMI: null (disappears from firebase)
+
+
+  -user
+  --child(MIMMI UID)
+  ---inviteToEvents:
+  ----eventForTheInvitation UID: null
+
+  ---hasAcceptedevents:
+  ----eventForTheInvitation UID: true
+
+  The event has Mimmi as accepted and Mimmi knows which event she has accepted.
+
+  Hopefully it get clear of what this function actually does.
+    
+  */
+
+  acceptInvite = (event, index) => {
+    const currentEvent = event.target.value;
+    const { userEventObjects } = this.state;
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("hasAccepted")
+      .update({
+        [this.props.authUser.username]: true
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("hasAcceptedUid")
+      .update({
+        [this.props.authUser.uid]: true
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("isInvited")
+      .update({
+        [this.props.authUser.username]: null
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("isInvitedUid")
+      .update({
+        [this.props.authUser.username]: null
+      });
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .update({
+        [currentEvent]: null
+      });
+
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("acceptedToEvents")
+      .update({
+        [currentEvent]: true
+      });
+
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .equalTo(currentEvent)
+      .once("value", snapshot => {
+        if (snapshot.val() === null) {
+          delete userEventObjects[currentEvent];
+          this.setState({ userEventObjects });
+        } else {
+          this.setState({
+            loading: true
+          });
+        }
+      });
+
+    delete userEventObjects[index];
+    this.setState({ userEventObjects });
+  };
+
+  /*
+  declineInvite():
+
+  This is the opposite of acceptInvite function but doesn somethings similar. Lets take the MIMMI approach from earlier.
+  Lets say the signed in username is "MIMMI". When she declines an invite we update firebase accordingly:
+
+  -events
+  --eventForTheInvitation UID
+  ---hasDeclined:
+  ----MIMMI: TRUE
+
+  ---isInvited:
+  ----MIMMI: null (disappears from firebase)
+
+  ---isInvitedUid:
+  ----MIMMI's UID: null (disappears from firebase)
+
+
+  -user
+  --child(MIMMI UID)
+  ---invitedToEvents:
+  ----eventForTheInvitation UID: null (disappears from firebase)
+
+  The event has Mimmi as declined and Mimmi dont need to know which event she has declined so we make it disappear from firebase.
+  */
+
+  declineInvite = (event, index) => {
+    const currentEvent = event.target.value;
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("hasDeclined")
+      .update({
+        [this.props.authUser.username]: true
+      });
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("isInvited")
+      .update({
+        [this.props.authUser.username]: null
+      });
+
+    this.props.firebase
+      .events()
+      .child(currentEvent)
+      .child("isInvitedUid")
+      .update({
+        [this.props.authUser.uid]: null
+      });
+
+    this.props.firebase
+      .users()
+      .child(this.props.authUser.uid)
+      .child("invitedToEvents")
+      .update({
+        [currentEvent]: null
+      });
+    const { userEventObjects } = this.state;
+    delete userEventObjects[index];
+    this.setState({ userEventObjects });
+  };
 
   render() {
     console.log("RENDER");

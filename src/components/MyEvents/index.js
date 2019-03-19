@@ -33,6 +33,12 @@ class MyEventsBase extends Component {
     };
   }
 
+  /*
+  getLastKnownPosition():
+
+  This function looks in firebase on the last know position of the signed in user.
+  */
+
   getLastKnownPosition = (
     num,
     userID = this.props.authUser.uid,
@@ -155,6 +161,13 @@ class MyEventsBase extends Component {
         }); // Closing setState
       }); // Closing firebase get all hosted eventIDs
   } // Closing UpdateEvents()
+
+  /* 
+  deleteEvent:
+
+  This function does just that. It deletes the event from firebase. Even the invitations to this specific event that hasnt been accepted or declined yet.
+  It erases it from Firebase completely.
+  */
 
   deleteEvent(event, { eventUid, grouproom, time, isInvitedUid }) {
     this.props.firebase
