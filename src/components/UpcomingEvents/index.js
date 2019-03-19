@@ -31,7 +31,7 @@ class UpcomingBase extends Component {
     const eventUid = evt.target.value;
 
     this.props.firebase
-      .bookings()
+      .events()
       .child(eventUid)
       .child("helpQueue")
       .once("value", snapshot => {
@@ -39,7 +39,7 @@ class UpcomingBase extends Component {
         if (snap === null) {
           console.log("snap was null");
           this.props.firebase
-            .bookings()
+            .events()
             .child(eventUid)
             .child("helpQueue")
             .update({ [this.props.authUser.username]: true });
@@ -48,12 +48,12 @@ class UpcomingBase extends Component {
 
           snapKeys.find(name => name === this.props.authUser.username)
             ? this.props.firebase
-                .bookings()
+                .events()
                 .child(eventUid)
                 .child("helpQueue")
                 .update({ [this.props.authUser.username]: null })
             : this.props.firebase
-                .bookings()
+                .events()
                 .child(eventUid)
                 .child("helpQueue")
                 .update({ [this.props.authUser.username]: true });
@@ -71,7 +71,7 @@ class UpcomingBase extends Component {
   componentDidMount() {
     this.props.firebase
       .user(this.props.authUser.uid)
-      .child("acceptedTobookings")
+      .child("acceptedToEvents")
       .once("value", snapshot => {
         const snap = snapshot.val();
         if (snap == null) {
@@ -87,7 +87,7 @@ class UpcomingBase extends Component {
           const snapKeys = Object.keys(snap);
           snapKeys.forEach(eventUid => {
             this.props.firebase
-              .bookings()
+              .events()
               .child(eventUid)
               .child("time")
               .once("value", snapshot => {
@@ -112,21 +112,21 @@ class UpcomingBase extends Component {
                         console.log(dist < 100);
 
                         this.props.firebase
-                          .bookings()
+                          .events()
                           .child(eventUid)
                           .child("attendees")
                           .update({
                             [this.props.authUser.username]: true
                           });
                         this.props.firebase
-                          .bookings()
+                          .events()
                           .child(eventUid)
                           .child("hasAccepted")
                           .update({
                             [this.props.authUser.username]: null
                           });
                         this.props.firebase
-                          .bookings()
+                          .events()
                           .child(eventUid)
                           .child("hasAcceptedUid")
                           .update({
@@ -158,7 +158,7 @@ class UpcomingBase extends Component {
 
   componentWillUnmount() {
     this.props.firebase.users().off();
-    this.props.firebase.bookings().off();
+    this.props.firebase.events().off();
   }
 
   render() {
@@ -177,11 +177,11 @@ class UpcomingBase extends Component {
       color: "#ee8d80"
     };
     if (noUpcoming) {
-      return <H3>You have no upcoming bookings at this time.</H3>;
+      return <H3>You have no upcoming events at this time.</H3>;
     } else if (loading) {
       return (
         <div>
-          Fetching upcoming bookings...
+          Fetching upcoming events...
           <Spinner />
         </div>
       );
