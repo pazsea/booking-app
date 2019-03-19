@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { AuthUserContext, withAuthorization } from "../Session";
 import { withFirebase } from "../Firebase";
 import Map from "../Map";
-import { calculateETA, isEmpty } from "../../utilities";
+import { isEmpty } from "../../utilities";
 import { InfoDiv } from "../Invites/styles";
 import {
   InviteDiv,
@@ -257,7 +257,6 @@ class MyEventsBase extends Component {
     const noDeclined = "";
     const noTimes = "You have no times";
     const noAttendees = "";
-    const noPending = "";
     var pending = {
       color: "white"
     };
