@@ -17,6 +17,12 @@ class AdminPage extends Component {
     };
   }
 
+  /*
+  componendDidMount():
+
+  When this lifecycle triggers it takes in all registered users. This page is only seen by users that have an ADMIN role.
+  */
+
   componentDidMount() {
     this.setState({ loading: true });
 
