@@ -55,13 +55,13 @@ If they are in school when the event starts they will automatically show up as "
 ## Getting Started
 Project Grex uses React and Firebase. To install dependencies simply run `npm install`.
 
-## For developers.
+## For developers
 The tricky parts in our Javascript functions have explanations in comment form above the functions.
 
-## Links.
+## Links
 <a href="https://trello.com/b/SlaV9KjP/project-grex">Team Coffee Trello Board</a>
 
-## Authors.
+## Authors
 Gustav Bergman <a href="https://github.com/Aarux">@Aarux</a> <br>
 Jesper Risell <a href="https://github.com/jesris">@jesris</a><br>
 Nina Hedman <a href="https://github.com/Naicah">@Naicah</a> <br>
