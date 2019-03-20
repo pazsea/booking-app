@@ -1,12 +1,45 @@
-# Project Grex - By Team Coffee :coffee:
-## About
-![Landing Page](http://url/to/img.png)
+# Booking App - By Team Coffee :coffee:
+![landing](/readme/signin.png "Our KYH Booking App")
 
-Project Grex (working title!) is an booking app intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
+## About
+
+This booking app is intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
 
 Our current scope is to only support our local school, but there is the possibility to adapt the current structure to fit other schools and expand in the future.
 
 Thank you for your interest!
+
+## Key Functions
+
+Our app is connected to firebase. Here you can sign up a new user, sign in existing user, change password, reset password. Standard stuff. 
+
+When you sign up you can do so with different roles: ADMIN, TEACHER, STUDENT or no role. Depending on the different roles you will get different access. ADMIN and TEACHER is the only role that gets full access. 
+
+Let's check out the different key functions.
+
+
+
+### Book Room
+![bookroom](/readme/bookroom.gif "Book Room function")
+<br>
+Here you can choose the date and timeslot for the room that you want to book. Also you can invite other users that have registered.
+
+### Invitations
+![invitations](/readme/invite.gif "Invitations function")
+<br>
+Every user that is invited to the event gets a notification in the app and can view it here. You can either accept or decline.
+
+### Upcoming
+![invitations](/readme/upcoming.gif "Upcoming Events function")
+<br>
+When you have accepted an event, it shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to see your upcoming events.
+
+### My Bookings
+![invitations](/readme/myevents.gif "My Bookings function")
+<br>
+If you created an event, you can see it in the my bookings page. Here you have an overview on all the users that accepted, decline or have yet to answer. One hour before the event you can open a map to watch where the accepted users are located. 
+If they are in school when the event starts they will automatically show up as "attendees" for that event. Neat, huh?
+
 
 **Note: This project is no longer being actively developed!**
 ## Features
@@ -21,3 +54,16 @@ Thank you for your interest!
 - **Invite by group** to save time when creating your events, like inviting a particular class.
 ## Getting Started
 Project Grex uses React and Firebase. To install dependencies simply run `npm install`.
+
+## For developers
+The tricky parts in our Javascript functions have explanations in comment form above the functions.
+
+## Links
+<a href="https://trello.com/b/SlaV9KjP/project-grex">Team Coffee Trello Board</a>
+
+## Authors
+Gustav Bergman <a href="https://github.com/Aarux">@Aarux</a> <br>
+Jesper Risell <a href="https://github.com/jesris">@jesris</a><br>
+Nina Hedman <a href="https://github.com/Naicah">@Naicah</a> <br>
+Oliver Vasquez <a href="https://github.com/OliverBrian">@OliverBrian</a> <br>
+Patrick Sjöberg <a href="https://github.com/pazsea">@pazsea</a> 
