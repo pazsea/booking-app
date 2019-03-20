@@ -3,7 +3,7 @@
 
 ## About
 
-Project Grex (working title!) is an booking app intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
+Project Grex (working title!) is a booking app intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
 
 Our current scope is to only support our local school, but there is the possibility to adapt the current structure to fit other schools and expand in the future.
 
