@@ -32,7 +32,7 @@ Every user that is invited to the event gets a notification in the app and can v
 ### Upcoming
 ![invitations](/readme/upcoming.gif "Upcoming Events function")
 <br>
-When you accepted a event. It shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to se your upcoming events.
+When you have accepted an event. It shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to se your upcoming events.
 
 ### My Bookings
 ![invitations](/readme/myevents.gif "My Bookings function")
