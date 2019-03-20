@@ -72,7 +72,6 @@ export const Div = styled.div`
     background: #909fb182;
   }
 
-  /* Buttons' focus effect */
   button[type="submit"]:focus {
     background: #909fb182;
   }

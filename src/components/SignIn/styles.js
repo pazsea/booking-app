@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Div = styled.div`
   width: 50%;
   margin: 10% auto;
-
   border: 1.5px solid #97a7b9;
   background: #121c24;
   border-radius: 4px;
@@ -68,7 +67,6 @@ export const Div = styled.div`
     background: #909fb182;
   }
 
-  /* Buttons' focus effect */
   button[type="submit"]:focus {
     background: #909fb182;
   }

@@ -43,7 +43,6 @@ export const InviteDiv = styled.div`
   ul {
     list-style: none;
     line-height: 2em;
-    /* padding: 0.8em; */
   }
   ul li:nth-child(1) {
     font-size: 1em;
@@ -117,9 +116,7 @@ export const InviteDiv = styled.div`
       font-size: 1.5em;
       padding: 0;
     }
-    /* ul li:nth-child(1) {
-      font-size: 1em;
-    } */
+
     input {
       width: 100%;
       height: 4em;
