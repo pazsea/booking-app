@@ -1,4 +1,4 @@
-# Project Grex - By Team Coffee :coffee:
+# Booking App - By Team Coffee :coffee:
 ![landing](/readme/signin.png "Our KYH Booking App")
 
 ## About
@@ -54,3 +54,16 @@ If they are in school when the event starts they will automatically show up as "
 - **Invite by group** to save time when creating your events, like inviting a particular class.
 ## Getting Started
 Project Grex uses React and Firebase. To install dependencies simply run `npm install`.
+
+### For developers.
+The tricky parts in our Javascript functions have explanations in comment form above the functions.
+
+### Links.
+<a href="https://trello.com/b/SlaV9KjP/project-grex">Team Coffee Trello Board</a>
+
+### Authors.
+Gustav Bergman <a href="https://github.com/Aarux">@Aarux</a> <br>
+Jesper Risell <a href="https://github.com/jesris">@jesris</a><br>
+Nina Hedman <a href="https://github.com/Naicah">@Naicah</a> <br>
+Oliver Vasquez <a href="https://github.com/OliverBrian">@OliverBrian</a> <br>
+Patrick Sjöberg <a href="https://github.com/pazsea">@pazsea</a> 
