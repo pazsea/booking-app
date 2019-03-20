@@ -1,6 +1,6 @@
 # Project Grex - By Team Coffee :coffee:
 ## About
-![login](/readme/login.png "Our Quire Notepad")
+![landing](/readme/signin.png "Our Quire Notepad")
 
 Project Grex (working title!) is an booking app intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
 
