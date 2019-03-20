@@ -1,9 +1,9 @@
-# Project Grex - By Team Coffee :coffee:
+# Booking App - By Team Coffee :coffee:
 ![landing](/readme/signin.png "Our KYH Booking App")
 
 ## About
 
-Project Grex (working title!) is an booking app intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
+This booking app is intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
 
 Our current scope is to only support our local school, but there is the possibility to adapt the current structure to fit other schools and expand in the future.
 
@@ -32,7 +32,7 @@ Every user that is invited to the event gets a notification in the app and can v
 ### Upcoming
 ![invitations](/readme/upcoming.gif "Upcoming Events function")
 <br>
-When you accepted a event. It shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to se your upcoming events.
+When you have accepted an event, it shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to see your upcoming events.
 
 ### My Bookings
 ![invitations](/readme/myevents.gif "My Bookings function")
@@ -54,3 +54,16 @@ If they are in school when the event starts they will automatically show up as "
 - **Invite by group** to save time when creating your events, like inviting a particular class.
 ## Getting Started
 Project Grex uses React and Firebase. To install dependencies simply run `npm install`.
+
+## For developers
+The tricky parts in our Javascript functions have explanations in comment form above the functions.
+
+## Links
+<a href="https://trello.com/b/SlaV9KjP/project-grex">Team Coffee Trello Board</a>
+
+## Authors
+Gustav Bergman <a href="https://github.com/Aarux">@Aarux</a> <br>
+Jesper Risell <a href="https://github.com/jesris">@jesris</a><br>
+Nina Hedman <a href="https://github.com/Naicah">@Naicah</a> <br>
+Oliver Vasquez <a href="https://github.com/OliverBrian">@OliverBrian</a> <br>
+Patrick Sjöberg <a href="https://github.com/pazsea">@pazsea</a> 

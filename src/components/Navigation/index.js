@@ -57,6 +57,13 @@ class NavigationAuthBase extends Component {
     }
   };
 
+  /*
+componendDidMount():
+
+When this lifecycle triggers we update the users position (langitud and latitud) and we count how many invites the user have and display it with
+a notifications icon in the navigation.
+*/
+
   componentDidMount() {
     // --------------  UPDATE AMOUNT OF INVITES -------------- //
     this.props.firebase.user(this.props.authUser.uid).on("value", snapshot => {
