@@ -21,8 +21,10 @@ var PersonMarker = L.icon({
   popupAnchor: [0, -50] // point from which the popup should open relative to the iconAnchor
 });
 
+var personsLayerGroup = L.layerGroup();
+
 class Map extends Component {
-  updateMarkers = () => {
+  addPersonMarkers = () => {
     const { booking } = this.props;
     let { usersETA } = booking;
     if (!isEmpty(usersETA)) {
@@ -37,9 +39,10 @@ class Map extends Component {
         L.marker([currentPos.latitude, currentPos.longitude], {
           icon: PersonMarker
         })
-          .addTo(this.map)
+          .addTo(personsLayerGroup)
           .bindPopup(`${userLocationInfo.userName} <br>ETA: ${ETA}`);
       });
+      personsLayerGroup.addTo(this.map);
     }
   };
 
@@ -67,12 +70,15 @@ class Map extends Component {
       .addTo(this.map)
       .bindPopup("KYH School");
 
-    this.updateMarkers();
+    this.addPersonMarkers();
     console.log("componentDidMount");
   }
-  componentDidUpdate(x, y) {
-    console.log("componentDidUpdate");
-    this.updateMarkers();
+  // One or more persons moved, redraw markers
+  componentDidUpdate() {
+    // Remove all previous people markers
+    personsLayerGroup.clearLayers();
+    // Add updated people markers
+    this.addPersonMarkers();
   }
 
   render() {

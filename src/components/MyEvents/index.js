@@ -35,12 +35,7 @@ class MyEventsBase extends Component {
     };
   }
 
-  /*
-  getLastKnownPosition():
-
-  This function looks in firebase on the last know position of the signed in user.
-  */
-
+  // Returns last known given number of positions for logged in user or given user
   getLastKnownPosition = (
     num,
     userID = this.props.authUser.uid,

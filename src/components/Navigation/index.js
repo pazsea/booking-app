@@ -50,7 +50,6 @@ class NavigationAuthBase extends Component {
       this.state.lastStoredPosition
     );
     if (dist > 10) {
-      // ÄNDRADE FRÅN 1 TILL 10 SÅ ATT DEN INTE PUSHAR TILL FIREBASE HELA TIDEN
       this.writeUserPositionToDB(position.coords);
     }
   };

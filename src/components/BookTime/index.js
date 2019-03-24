@@ -67,7 +67,7 @@ class BookTimeBase extends Component {
   /* 
   updateBookedTimeSlots = ():
   
-  This function updates Book Time component to display all time slots that isn't booked.
+  This function updates Book Time component to display all time slots that aren't booked.
   This functions runs in ComponendDidMount lifecycle. 
   */
 

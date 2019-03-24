@@ -243,7 +243,6 @@ sets it to an local state.
   };
 
   render() {
-    console.log("RENDER");
     const { loading, userEventObjects, noInvites } = this.state;
     const noAccepted = "";
     const noInvited = "No one is invited";

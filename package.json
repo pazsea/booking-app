@@ -6,6 +6,7 @@
     "@trendmicro/react-sidenav": "^0.4.5",
     "firebase": "^5.8.0",
     "leaflet": "^1.4.0",
+    "leaflet.markercluster": "^1.4.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.3",
     "react-alert": "^5.1.0",
