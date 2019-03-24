@@ -453,6 +453,7 @@ class MyEventsBase extends Component {
                   readOnly
                 />
 
+                {/* Show button to show map only if event is within time slot for ETA*/}
                 {showMap ? (
                   <PositiveButton
                     key={"Map EventID " + evt.eventUid}

@@ -76,18 +76,12 @@ class Map extends Component {
   }
 
   render() {
-    const { booking } = this.props;
-
-    if (isEmpty(booking.usersETA)) {
-      return <H3>No users has accepted in this event</H3>;
-    } else {
-      return (
-        <LeafLetControl>
-          <Wrapper width="90vw" height="80vh" id="map" />
-          <CloseButton onClick={this.props.close}>Close</CloseButton>
-        </LeafLetControl>
-      );
-    }
+    return (
+      <LeafLetControl>
+        <Wrapper width="90vw" height="80vh" id="map" />
+        <CloseButton onClick={this.props.close}>Close</CloseButton>
+      </LeafLetControl>
+    );
   }
 }
 const condition = authUser => !!authUser;
