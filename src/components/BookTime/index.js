@@ -299,13 +299,10 @@ class BookTimeBase extends Component {
           .update({ [eventKey]: true })
       );
 
-      mapInviteUid.map(inviteUid =>
-        firebase
-          .events()
-          .child(eventKey)
-          .child("isInvitedUid")
-          .update({ [inviteUid]: true })
-      );
+      const timeList = Object.keys(chosenTimeSlots);
+      let bookingStartTime = parseInt(timeList[0]);
+      let bookingStartTimeETA = bookingStartTime - 3600000;
+      let bookingEndTime = bookingStartTime + 3600000;
 
       firebase
         .events()
@@ -316,10 +313,21 @@ class BookTimeBase extends Component {
           hostID: authUser.uid,
           hostName: authUser.username,
           time: { ...chosenTimeSlots },
+          startTime: bookingStartTime,
+          startTimeETA: bookingStartTimeETA,
+          endTime: bookingEndTime,
           isInvited: { ...isInvited },
           description: description,
           eventUid: eventKey
         });
+
+      mapInviteUid.map(inviteUid =>
+        firebase
+          .events()
+          .child(eventKey)
+          .child("isInvitedUid")
+          .update({ [inviteUid]: true })
+      );
 
       firebase
         .users()

@@ -72,15 +72,11 @@ class MyEventsBase extends Component {
             myEvents: null // User doesn't have any hosted bookings
           });
         } else {
-          this.setState({
-            myEvents: {} // All hosted booking objects
-          });
-
           const hostBookingIDList = Object.keys(hostBookingKeyDict); // List of IDs of all hosted bokings
 
           hostBookingIDList.forEach(bookingID => {
             // For each bookingID
-            this.props.firebase.event(bookingID).on("value", snapshot => {
+            this.props.firebase.event(bookingID).once("value", snapshot => {
               const booking = snapshot.val(); // Booking object
 
               // Update MyEvents state with current hosts bookings
@@ -92,15 +88,7 @@ class MyEventsBase extends Component {
                 };
               }); // Closing setState
 
-              const timeList = Object.keys(booking.time);
-              let bookingStartTime = parseInt(timeList[0]);
-              let bookingStartTimeETA = bookingStartTime - 3600000; // Start time to calculate ETA = 1h before start time of booking
-              let bookingEndTime = bookingStartTime + 3600000;
-
               // Add data to MyEvents state
-              booking["startTime"] = bookingStartTime;
-              booking["bookingStartTimeETA"] = bookingStartTimeETA;
-              booking["bookingEndTime"] = bookingEndTime;
               booking["location"] = KYHLocation;
               const usersETA = {};
               booking["usersETA"] = usersETA;
@@ -119,14 +107,14 @@ class MyEventsBase extends Component {
                   let originLocation;
                   let currentLocation;
                   // Get originLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[0].timestamp >= bookingStartTimeETA) {
+                  if (positionList[0].timestamp >= booking.startTimeETA) {
                     originLocation = positionList[0];
                   } else {
                     return;
                   }
 
                   // Get currentLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[1].timestamp >= bookingStartTimeETA) {
+                  if (positionList[1].timestamp >= booking.startTimeETA) {
                     currentLocation = positionList[1];
                   } else {
                     return;
@@ -228,7 +216,7 @@ class MyEventsBase extends Component {
       .update({
         [eventUid]: null
       });
-
+    this.updateEvents();
     const times = Object.keys(time);
 
     times.forEach(slot => {
@@ -309,7 +297,6 @@ class MyEventsBase extends Component {
     var accept = {
       color: "#7bcd9f"
     };
-
     if (isEmpty(myEvents)) {
       return <H3> You have no events </H3>;
     } else if (loading) {
@@ -336,13 +323,9 @@ class MyEventsBase extends Component {
 
             let showMap = false;
 
-            if (
-              evt.bookingStartTimeETA < Date.now() &&
-              evt.bookingEndTime > Date.now()
-            ) {
+            if (evt.startTimeETA < Date.now() && evt.endTime > Date.now()) {
               showMap = true;
             }
-
             return (
               <InviteDiv key={"Div " + evt.eventUid}>
                 <InfoDiv>
@@ -439,10 +422,6 @@ class MyEventsBase extends Component {
                   key={"Description event: " + evt.eventUid}
                   readOnly
                 />
-
-                {}
-
-                {/* Show button to show map only if event is within time slot for ETA*/}
                 {showMap ? (
                   <PositiveButton
                     key={"Map EventID " + evt.eventUid}
@@ -456,7 +435,6 @@ class MyEventsBase extends Component {
                 ) : (
                   <span />
                 )}
-
                 <NegativeButton
                   key={"Delete event" + evt.eventUid}
                   value={evt.eventUid}

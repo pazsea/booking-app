@@ -71,7 +71,6 @@ class Map extends Component {
       .bindPopup("KYH School");
 
     this.addPersonMarkers();
-    console.log("componentDidMount");
   }
   // One or more persons moved, redraw markers
   componentDidUpdate() {
