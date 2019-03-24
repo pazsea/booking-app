@@ -6,7 +6,7 @@ import { withFirebase } from "../Firebase";
 import Map from "../Map";
 import { isEmpty } from "../../utilities";
 import { InfoDiv } from "../Invites/styles";
-import { calculateDistance } from "../../utilities";
+import { calculateDistance, calculateETA } from "../../utilities";
 import { animateScroll as scroll } from "react-scroll";
 import {
   InviteDiv,
@@ -83,7 +83,7 @@ class MyEventsBase extends Component {
             this.props.firebase.event(bookingID).on("value", snapshot => {
               const booking = snapshot.val(); // Booking object
 
-              // Update MyEvents state with current hoste bookings
+              // Update MyEvents state with current hosts bookings
               this.setState(prevState => {
                 const newMyEvents = { ...prevState.myEvents };
                 newMyEvents[bookingID] = booking;
@@ -109,29 +109,34 @@ class MyEventsBase extends Component {
               if (isEmpty(booking.hasAcceptedUid)) {
                 return;
               }
+              // List of all accepted users
+              const acceptedUserList = Object.keys(booking.hasAcceptedUid);
 
-              const acceptedUserList = Object.keys(booking.hasAcceptedUid); // List of all accepted users
-
+              // For each user that has accepted
               acceptedUserList.forEach(userID => {
-                // For each user
-
                 // Get last 2 known positions
                 this.getLastKnownPosition(2, userID, positionList => {
                   let originLocation;
                   let currentLocation;
                   // Get originLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[0].createdAt >= bookingStartTimeETA) {
+                  if (positionList[0].timestamp >= bookingStartTimeETA) {
                     originLocation = positionList[0];
                   } else {
                     return;
                   }
 
                   // Get currentLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[1].createdAt >= bookingStartTimeETA) {
+                  if (positionList[1].timestamp >= bookingStartTimeETA) {
                     currentLocation = positionList[1];
                   } else {
                     return;
                   }
+
+                  let ETA = calculateETA(
+                    originLocation,
+                    currentLocation,
+                    KYHLocation
+                  );
 
                   // Get username of user
                   this.props.firebase
@@ -166,27 +171,27 @@ class MyEventsBase extends Component {
                           .update({
                             [userID]: null
                           });
-                      } else {
-                        // If not within area of booking, update state with users ID, name and 2 last known positions
+                      }
+                      // Update state with users ID, name, 2 last known positions and ETA
 
-                        usersETA[userID] = {
-                          userID: userID,
-                          userName: userName,
-                          origin: {
-                            latitude: originLocation.latitude,
-                            longitude: originLocation.longitude,
-                            timestamp: originLocation.createdAt
-                          },
-                          current: {
-                            latitude: currentLocation.latitude,
-                            longitude: currentLocation.longitude,
-                            timestamp: currentLocation.createdAt
-                          }
-                        };
-                        this.setState({
-                          [booking.eventUid]: usersETA
-                        });
-                      } // Closing if withing school area
+                      usersETA[userID] = {
+                        userID: userID,
+                        userName: userName,
+                        origin: {
+                          latitude: originLocation.latitude,
+                          longitude: originLocation.longitude,
+                          timestamp: originLocation.timestamp
+                        },
+                        current: {
+                          latitude: currentLocation.latitude,
+                          longitude: currentLocation.longitude,
+                          timestamp: currentLocation.timestamp
+                        },
+                        ETA: ETA
+                      };
+                      this.setState({
+                        [booking.eventUid]: usersETA
+                      });
                     }); // Closing getLastKnownPosition
                 }); // Closing firebase get userName
               }); // Closing forEach
@@ -258,8 +263,6 @@ class MyEventsBase extends Component {
           });
       });
     }
-
-    this.updateEvents();
   }
 
   displayMap = (event, evt) => {
@@ -350,8 +353,8 @@ class MyEventsBase extends Component {
                   </p>
                   <div>
                     {evt.time ? (
-                      Object.keys(evt.time).map((key, index) => (
-                        <p key={index + evt.eventUid}>
+                      Object.keys(evt.time).map(key => (
+                        <p key={evt.eventUid}>
                           Time: &nbsp;
                           {new Date(Number(key)).toLocaleTimeString([], {
                             hour: "2-digit",
@@ -376,17 +379,14 @@ class MyEventsBase extends Component {
                   {evt.grouproom}
                 </p>
                 <ul>
-                  <li>Invitees: </li>
                   {evt.isInvited ? (
-                    Object.keys(evt.isInvited).map(
-                      (isInvitedUserName, index) => (
-                        <li style={pending} key={index + evt.eventUid}>
-                          {isInvitedUserName.charAt(0) +
-                            isInvitedUserName.slice(1).toLowerCase()}
-                          <i className="fas fa-question" />
-                        </li>
-                      )
-                    )
+                    Object.keys(evt.isInvited).map(isInvitedUserName => (
+                      <li style={pending} key={evt.eventUid}>
+                        {isInvitedUserName.charAt(0) +
+                          isInvitedUserName.slice(1).toLowerCase()}
+                        <i className="fas fa-question" />
+                      </li>
+                    ))
                   ) : (
                     <li>{noInvited}</li>
                   )}
@@ -408,30 +408,26 @@ class MyEventsBase extends Component {
                 </ul>
                 <ul>
                   {evt.hasDeclined ? (
-                    Object.keys(evt.hasDeclined).map(
-                      (hasDeclinedUserName, index) => (
-                        <li style={declined} key={index + evt.eventUid}>
-                          {hasDeclinedUserName.charAt(0) +
-                            hasDeclinedUserName.slice(1).toLowerCase()}
-                          <i className="fas fa-user-slash" />
-                        </li>
-                      )
-                    )
+                    Object.keys(evt.hasDeclined).map(hasDeclinedUserName => (
+                      <li style={declined} key={evt.eventUid}>
+                        {hasDeclinedUserName.charAt(0) +
+                          hasDeclinedUserName.slice(1).toLowerCase()}
+                        <i className="fas fa-user-slash" />
+                      </li>
+                    ))
                   ) : (
                     <li>{noDeclined}</li>
                   )}
                 </ul>
                 <ul>
                   {evt.attendees ? (
-                    Object.keys(evt.attendees).map(
-                      (attendeesUserName, index) => (
-                        <li style={attendees} key={index + evt.eventUid}>
-                          {attendeesUserName.charAt(0) +
-                            attendeesUserName.slice(1).toLowerCase()}
-                          <i className="fas fa-user-check" />
-                        </li>
-                      )
-                    )
+                    Object.keys(evt.attendees).map(attendeesUserName => (
+                      <li style={attendees} key={evt.eventUid}>
+                        {attendeesUserName.charAt(0) +
+                          attendeesUserName.slice(1).toLowerCase()}
+                        <i className="fas fa-user-check" />
+                      </li>
+                    ))
                   ) : (
                     <li>{noAttendees}</li>
                   )}

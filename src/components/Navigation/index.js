@@ -39,7 +39,7 @@ class NavigationAuthBase extends Component {
       .push({
         latitude: latitude,
         longitude: longitude,
-        createdAt: Date.now()
+        timestamp: Date.now()
       });
     this.setState({ lastStoredPosition: position });
   };
