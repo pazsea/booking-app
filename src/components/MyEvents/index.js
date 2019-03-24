@@ -98,10 +98,13 @@ class MyEventsBase extends Component {
 
               const timeList = Object.keys(booking.time);
               let bookingStartTime = parseInt(timeList[0]);
-              let startTimeETA = bookingStartTime - 3600000; // Start time to calculate ETA = 1h before start time of booking
+              let bookingStartTimeETA = bookingStartTime - 3600000; // Start time to calculate ETA = 1h before start time of booking
+              let bookingEndTime = bookingStartTime + 3600000;
 
               // Add data to MyEvents state
               booking["startTime"] = bookingStartTime;
+              booking["bookingStartTimeETA"] = bookingStartTimeETA;
+              booking["bookingEndTime"] = bookingEndTime;
               booking["location"] = KYHLocation;
               const usersETA = {};
               booking["usersETA"] = usersETA;
@@ -121,14 +124,14 @@ class MyEventsBase extends Component {
                   let originLocation;
                   let currentLocation;
                   // Get originLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[0].createdAt >= startTimeETA) {
+                  if (positionList[0].createdAt >= bookingStartTimeETA) {
                     originLocation = positionList[0];
                   } else {
                     return;
                   }
 
                   // Get currentLocation, only if position is registered within the time slot for calculating ETA
-                  if (positionList[1].createdAt >= startTimeETA) {
+                  if (positionList[1].createdAt >= bookingStartTimeETA) {
                     currentLocation = positionList[1];
                   } else {
                     return;
@@ -332,6 +335,15 @@ class MyEventsBase extends Component {
           {Object.keys(myEvents).map(bookingID => {
             const evt = myEvents[bookingID];
 
+            let showMap = false;
+
+            if (
+              evt.bookingStartTimeETA < Date.now() &&
+              evt.bookingEndTime > Date.now()
+            ) {
+              showMap = true;
+            }
+
             return (
               <InviteDiv key={"Div " + evt.eventUid}>
                 <InfoDiv>
@@ -441,12 +453,16 @@ class MyEventsBase extends Component {
                   readOnly
                 />
 
-                <PositiveButton
-                  key={"Map EventID " + evt.eventUid}
-                  onClick={event => this.displayMap(event, evt)}
-                >
-                  Show Map <i className="fas fa-map-marked-alt" />
-                </PositiveButton>
+                {showMap ? (
+                  <PositiveButton
+                    key={"Map EventID " + evt.eventUid}
+                    onClick={event => this.displayMap(event, evt)}
+                  >
+                    Show Map <i className="fas fa-map-marked-alt" />
+                  </PositiveButton>
+                ) : (
+                  <span />
+                )}
 
                 <NegativeButton
                   key={"Delete event" + evt.eventUid}
