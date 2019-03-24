@@ -207,16 +207,3 @@ export const NoHelpButton = styled.button`
     font-size: 1em;
   }
 `;
-
-// export const AttendEventButton = styled.button`
-//   font-family: "Montserrat", sans-serif;
-//   padding: 10px;
-//   background-color: grey;
-//   width: 50%;
-//   border-radius: 8px;
-//   border: 2px solid #ced8ec;
-//   color: black;
-//   &.activeButton {
-//     background: green;
-//   }
-// `;

@@ -42,9 +42,6 @@
   user-select: none;
 }
 
-.DayPicker-NavBar {
-}
-
 .DayPicker-NavButton {
   position: absolute;
   top: 1em;
@@ -175,7 +172,6 @@
 .DayPicker-Day--disabled {
   color: #dce0e0;
   cursor: default;
-  /* background-color: #eff1f1; */
 }
 
 /* Example modifiers */

@@ -1,17 +1,6 @@
 import styled from "styled-components";
 
 export const Div = styled.div`
-  /*   margin-left: 30%;
-  margin-right: 10%;
-  margin-top: 8%;
-  display: flex;
-  background: grey;
-  width: 50%;
-  height: 50vh;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column; */
-
   width: 500px;
   margin-left: 30%;
   margin-right: 10%;
@@ -65,7 +54,6 @@ export const Div = styled.div`
     background: #17c;
   }
 
-  /* Buttons' focus effect */
   button[type="submit"]:focus {
     border-color: #05a;
   }

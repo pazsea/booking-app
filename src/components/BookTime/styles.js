@@ -95,7 +95,7 @@ export const CloseButton = styled.div`
   justify-content: center;
   font-family: "Montserrat", sans-serif;
   width: 4em;
-  /* background-color: #535d69; */
+
   border-bottom: solid 1px;
   color: wheat;
   border-radius: 4px;
@@ -111,7 +111,7 @@ export const TopButton = styled.div`
   justify-content: center;
   font-family: "Montserrat", sans-serif;
   width: 6em;
-  /* background-color: #535d69; */
+
   border-bottom: solid 1px;
   color: wheat;
   border-radius: 4px;
