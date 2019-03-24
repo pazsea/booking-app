@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { withAuthorization } from "../Session";
 import { compose } from "recompose";
 import { calculateETA, isEmpty } from "../../utilities";
-import { H3, LeafLetControl } from "./styles";
+import { LeafLetControl } from "./styles";
 import { CloseButton } from "../BookTime/styles";
 
 const Wrapper = styled.div`

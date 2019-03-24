@@ -7,6 +7,7 @@ import Map from "../Map";
 import { isEmpty } from "../../utilities";
 import { InfoDiv } from "../Invites/styles";
 import { calculateDistance } from "../../utilities";
+import { animateScroll as scroll } from "react-scroll";
 import {
   InviteDiv,
   PositiveButton,
@@ -376,11 +377,9 @@ class MyEventsBase extends Component {
                     )}
                   </div>
                 </InfoDiv>
-
                 <p className="GroupRoom" key={"Event UID: " + evt.eventUid}>
                   {evt.grouproom}
                 </p>
-
                 <ul>
                   <li>Invitees: </li>
                   {evt.isInvited ? (
@@ -412,7 +411,6 @@ class MyEventsBase extends Component {
                     <li>{noAccepted}</li>
                   )}
                 </ul>
-
                 <ul>
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map(
@@ -428,7 +426,6 @@ class MyEventsBase extends Component {
                     <li>{noDeclined}</li>
                   )}
                 </ul>
-
                 <ul>
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(
@@ -444,7 +441,6 @@ class MyEventsBase extends Component {
                     <li>{noAttendees}</li>
                   )}
                 </ul>
-
                 <input
                   type="textarea"
                   placeholder="Description"
@@ -453,11 +449,16 @@ class MyEventsBase extends Component {
                   readOnly
                 />
 
+                {}
+
                 {/* Show button to show map only if event is within time slot for ETA*/}
                 {showMap ? (
                   <PositiveButton
                     key={"Map EventID " + evt.eventUid}
-                    onClick={event => this.displayMap(event, evt)}
+                    onClick={event => {
+                      this.displayMap(event, evt);
+                      scroll.scrollToTop();
+                    }}
                   >
                     Show Map <i className="fas fa-map-marked-alt" />
                   </PositiveButton>
