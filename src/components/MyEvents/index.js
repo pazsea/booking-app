@@ -337,7 +337,7 @@ class MyEventsBase extends Component {
                   <div>
                     {evt.time ? (
                       Object.keys(evt.time).map(key => (
-                        <p key={evt.eventUid}>
+                        <p key={"Time: " + evt.eventUid}>
                           Time: &nbsp;
                           {new Date(Number(key)).toLocaleTimeString([], {
                             hour: "2-digit",
@@ -364,7 +364,10 @@ class MyEventsBase extends Component {
                 <ul>
                   {evt.isInvited ? (
                     Object.keys(evt.isInvited).map(isInvitedUserName => (
-                      <li style={pending} key={evt.eventUid}>
+                      <li
+                        style={pending}
+                        key={isInvitedUserName + evt.eventUid}
+                      >
                         {isInvitedUserName.charAt(0) +
                           isInvitedUserName.slice(1).toLowerCase()}
                         <i className="fas fa-question" />
@@ -376,15 +379,16 @@ class MyEventsBase extends Component {
                 </ul>
                 <ul>
                   {evt.hasAccepted ? (
-                    Object.keys(evt.hasAccepted).map(
-                      (hasAcceptedUserName, index) => (
-                        <li style={accept} key={index + evt.eventUid}>
-                          {hasAcceptedUserName.charAt(0) +
-                            hasAcceptedUserName.slice(1).toLowerCase()}
-                          <i className="fas fa-check" />
-                        </li>
-                      )
-                    )
+                    Object.keys(evt.hasAccepted).map(hasAcceptedUserName => (
+                      <li
+                        style={accept}
+                        key={hasAcceptedUserName + evt.eventUid}
+                      >
+                        {hasAcceptedUserName.charAt(0) +
+                          hasAcceptedUserName.slice(1).toLowerCase()}
+                        <i className="fas fa-check" />
+                      </li>
+                    ))
                   ) : (
                     <li>{noAccepted}</li>
                   )}
@@ -392,7 +396,10 @@ class MyEventsBase extends Component {
                 <ul>
                   {evt.hasDeclined ? (
                     Object.keys(evt.hasDeclined).map(hasDeclinedUserName => (
-                      <li style={declined} key={evt.eventUid}>
+                      <li
+                        style={declined}
+                        key={hasDeclinedUserName + evt.eventUid}
+                      >
                         {hasDeclinedUserName.charAt(0) +
                           hasDeclinedUserName.slice(1).toLowerCase()}
                         <i className="fas fa-user-slash" />
@@ -405,7 +412,10 @@ class MyEventsBase extends Component {
                 <ul>
                   {evt.attendees ? (
                     Object.keys(evt.attendees).map(attendeesUserName => (
-                      <li style={attendees} key={evt.eventUid}>
+                      <li
+                        style={attendees}
+                        key={attendeesUserName + evt.eventUid}
+                      >
                         {attendeesUserName.charAt(0) +
                           attendeesUserName.slice(1).toLowerCase()}
                         <i className="fas fa-user-check" />
