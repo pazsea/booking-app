@@ -6,6 +6,7 @@ import { withFirebase } from "../Firebase";
 import Map from "../Map";
 import { isEmpty } from "../../utilities";
 import { InfoDiv } from "../Invites/styles";
+import { calculateDistance } from "../../utilities";
 import {
   InviteDiv,
   PositiveButton,
@@ -64,26 +65,29 @@ class MyEventsBase extends Component {
   };
 
   updateEvents() {
+    // Get all hosted events for logged in user
     this.props.firebase
       .user(this.props.authUser.uid)
       .child("hostedEvents")
       .on("value", snapshot => {
-        const hostBookingKeyDict = snapshot.val();
+        const hostBookingKeyDict = snapshot.val(); // Dictionary of all hosted booking objects
         if (hostBookingKeyDict === null) {
           this.setState({
-            myEvents: null
+            myEvents: null // User doesn't have any hosted bookings
           });
         } else {
           this.setState({
-            myEvents: {}
+            myEvents: {} // All hosted booking objects
           });
 
-          const hosBookingKeyList = Object.keys(hostBookingKeyDict);
+          const hostBookingIDList = Object.keys(hostBookingKeyDict); // List of IDs of all hosted bokings
 
-          hosBookingKeyList.forEach(bookingID => {
-            this.props.firebase.event(bookingID).once("value", snapshot => {
-              const booking = snapshot.val();
+          hostBookingIDList.forEach(bookingID => {
+            // For each bookingID
+            this.props.firebase.event(bookingID).on("value", snapshot => {
+              const booking = snapshot.val(); // Booking object
 
+              // Update MyEvents state with current hoste bookings
               this.setState(prevState => {
                 const newMyEvents = { ...prevState.myEvents };
                 newMyEvents[bookingID] = booking;
@@ -94,64 +98,98 @@ class MyEventsBase extends Component {
 
               const timeList = Object.keys(booking.time);
               let bookingStartTime = parseInt(timeList[0]);
-              let startTimeETA = bookingStartTime - 3600000;
+              let startTimeETA = bookingStartTime - 3600000; // Start time to calculate ETA = 1h before start time of booking
 
+              // Add data to MyEvents state
               booking["startTime"] = bookingStartTime;
               booking["location"] = KYHLocation;
               const usersETA = {};
               booking["usersETA"] = usersETA;
 
+              // No one has accepted the booking, return
               if (isEmpty(booking.hasAcceptedUid)) {
                 return;
               }
 
-              const acceptedUserList = Object.keys(booking.hasAcceptedUid);
+              const acceptedUserList = Object.keys(booking.hasAcceptedUid); // List of all accepted users
 
               acceptedUserList.forEach(userID => {
+                // For each user
+
                 // Get last 2 known positions
                 this.getLastKnownPosition(2, userID, positionList => {
                   let originLocation;
                   let currentLocation;
-                  // Get originLocation
+                  // Get originLocation, only if position is registered within the time slot for calculating ETA
                   if (positionList[0].createdAt >= startTimeETA) {
                     originLocation = positionList[0];
                   } else {
                     return;
                   }
 
-                  // Get currentLocation
+                  // Get currentLocation, only if position is registered within the time slot for calculating ETA
                   if (positionList[1].createdAt >= startTimeETA) {
                     currentLocation = positionList[1];
                   } else {
                     return;
                   }
 
-                  // When data from getLastKnownPosition() is recieved, get userName
+                  // Get username of user
                   this.props.firebase
                     .user(userID)
                     .child("username")
                     .once("value", snapshot => {
                       const userName = snapshot.val();
 
-                      // Wen userName is recieved, update state
+                      // Get distance between users current position and the destination (position of booking)
+                      const dist = calculateDistance(
+                        currentLocation,
+                        KYHLocation
+                      );
 
-                      usersETA[userID] = {
-                        userID: userID,
-                        userName: userName,
-                        origin: {
-                          latitude: originLocation.latitude,
-                          longitude: originLocation.longitude,
-                          timestamp: originLocation.createdAt
-                        },
-                        current: {
-                          latitude: currentLocation.latitude,
-                          longitude: currentLocation.longitude,
-                          timestamp: currentLocation.createdAt
-                        }
-                      };
-                      this.setState({ [booking.eventUid]: usersETA });
-                    }); // Closing firebase get userName
-                }); // Closing getLastKnownPosition
+                      if (dist < 100) {
+                        // If within area of destination, add user to attendees and remove from hasAccepted & hasAcceptedUid
+                        this.props.firebase
+                          .event(bookingID)
+                          .child("attendees")
+                          .update({
+                            [userName]: true
+                          });
+                        this.props.firebase
+                          .event(bookingID)
+                          .child("hasAccepted")
+                          .update({
+                            [userName]: null
+                          });
+                        this.props.firebase
+                          .event(bookingID)
+                          .child("hasAcceptedUid")
+                          .update({
+                            [userID]: null
+                          });
+                      } else {
+                        // If not within area of booking, update state with users ID, name and 2 last known positions
+
+                        usersETA[userID] = {
+                          userID: userID,
+                          userName: userName,
+                          origin: {
+                            latitude: originLocation.latitude,
+                            longitude: originLocation.longitude,
+                            timestamp: originLocation.createdAt
+                          },
+                          current: {
+                            latitude: currentLocation.latitude,
+                            longitude: currentLocation.longitude,
+                            timestamp: currentLocation.createdAt
+                          }
+                        };
+                        this.setState({
+                          [booking.eventUid]: usersETA
+                        });
+                      } // Closing if withing school area
+                    }); // Closing getLastKnownPosition
+                }); // Closing firebase get userName
               }); // Closing forEach
             }); // Closing firebase get booking
           }); // Closing forEach hosted eventID

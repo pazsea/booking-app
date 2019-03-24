@@ -6,8 +6,6 @@ import { InviteDiv, InfoDiv, InfoDiv2 } from "./styles";
 import { compose } from "recompose";
 import { HelpButton, NoHelpButton, H3 } from "./styles";
 import { TitleOfSection } from "../MyEvents/styles";
-import { KYHLocation } from "../MyEvents";
-import { calculateDistance } from "../../utilities";
 
 const UpcomingEvents = () => (
   <AuthUserContext.Consumer>
@@ -37,7 +35,6 @@ class UpcomingBase extends Component {
       .once("value", snapshot => {
         const snap = snapshot.val();
         if (snap === null) {
-          console.log("snap was null");
           this.props.firebase
             .events()
             .child(eventUid)
@@ -83,61 +80,7 @@ class UpcomingBase extends Component {
             userEventObjects: [],
             noUpcoming: false
           });
-
           const snapKeys = Object.keys(snap);
-          snapKeys.forEach(eventUid => {
-            this.props.firebase
-              .events()
-              .child(eventUid)
-              .child("time")
-              .once("value", snapshot => {
-                const startTime = Number(Object.keys(snapshot.val()));
-                const endTime = Number(Object.keys(snapshot.val())) + 3600000;
-
-                if (startTime < Date.now() && endTime > Date.now()) {
-                  this.props.firebase
-                    .users()
-                    .child(this.props.authUser.uid)
-                    .child("positions")
-                    .limitToLast(1)
-                    .on("value", snapshot => {
-                      const lastKnownPosition = snapshot.val();
-
-                      const dist = calculateDistance(
-                        lastKnownPosition,
-                        KYHLocation
-                      );
-
-                      if (dist < 100) {
-                        console.log(dist < 100);
-
-                        this.props.firebase
-                          .events()
-                          .child(eventUid)
-                          .child("attendees")
-                          .update({
-                            [this.props.authUser.username]: true
-                          });
-                        this.props.firebase
-                          .events()
-                          .child(eventUid)
-                          .child("hasAccepted")
-                          .update({
-                            [this.props.authUser.username]: null
-                          });
-                        this.props.firebase
-                          .events()
-                          .child(eventUid)
-                          .child("hasAcceptedUid")
-                          .update({
-                            [this.props.authUser.uid]: null
-                          });
-                      }
-                    });
-                }
-              });
-          });
-
           snapKeys.forEach(key => {
             this.props.firebase.event(key).once("value", snapshot => {
               const eventObject = snapshot.val();

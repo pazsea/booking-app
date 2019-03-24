@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-
 import { Nav, InvCounter } from "./styles";
 import SignOutButton from "../SignOut";
-
 import * as ROUTES from "../../constants/routes";
 import { withFirebase } from "../Firebase";
 import { AuthUserContext } from "../Session";
