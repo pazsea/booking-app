@@ -1,9 +1,7 @@
 <p align="center">
-<a href=# >
-❮img src="/readme/teamcoffee.png"  width="200" /❯
-    </a>
+<img src="/readme/teamcoffee.png" alt="teamcoffee" width="350"/>
 </p>
-❮img src="readme/signin.png" width="200">
+<img src="/readme/signin.png" alt="teamcoffee" />
 
 
 ## 🚩 Project Goal
@@ -19,7 +17,7 @@ Thank you for your interest!
 - [Key functions](#-key-functions)
 - [Features](#-features)
 - [How to run this project](#-how-to-run-this-project)
-- [Project Gifs](#-project-gifs)
+- [Gifs](#-gifs)
 - [Attributes](#-attributes)
 - [Authors](#-authors)
 
@@ -57,27 +55,19 @@ Let's check out the different key functions.
    ```
 
 
-## 🖼️ Project Gifs
-### Book Room
-![bookroom](/readme/bookroom.gif "Book Room function")
-<br>
-Here you can choose the date and timeslot for the room that you want to book. Also you can invite other users that have registered.
+## 💾 Gifs
 
-### Invitations
-![invitations](/readme/invite.gif "Invitations function")
-<br>
-Every user that is invited to the event gets a notification in the app and can view it here. You can either accept or decline.
 
-### Upcoming
-![invitations](/readme/upcoming.gif "Upcoming Events function")
-<br>
-When you have accepted an event, it shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to see your upcoming events.
+| Book Room  | Invitations |
+| ------------- | ------------- |
+| <p align="center"><img src="/readme/bookroom.gif" alt="booking gif" width="300" /></p>  |<p align="center"> <img src="/readme/invite.gif" alt="invitation gif" width="300" /> </p> |
+| Here you can choose the date and timeslot for the room that you want to book. Also you can invite other users that have registered.  | Every user that is invited to the event gets a notification in the app and can view it here. You can either accept or decline.  |
 
-### My Bookings
-![invitations](/readme/myevents.gif "My Bookings function")
-<br>
-If you created an event, you can see it in the my bookings page. Here you have an overview on all the users that accepted, decline or have yet to answer. One hour before the event you can open a map to watch where the accepted users are located. 
-If they are in school when the event starts they will automatically show up as "attendees" for that event. Neat, huh?
+| Upcoming  | My Bookings |
+| ------------- | ------------- |
+|<p align="center"> <img src="/readme/upcoming.gif" alt="upcoming gif" width="300" /></p>  | <p align="center"><img src="/readme/myevents.gif" alt="my events gif" width="300" /></p>  |
+| When you have accepted an event, it shows up in the upcoming event page. This is the first page an user sees when he/she logs in. Therefore it's the perfect place to see your upcoming events.  | If you created an event, you can see it in the my bookings page. Here you have an overview on all the users that accepted, decline or have yet to answer. One hour before the event you can open a map to watch where the accepted users are located. If they are in school when the event starts they will automatically show up as "attendees" for that event. Neat, huh?  |
+
 
 
 ## 💾 For developers
