@@ -1,7 +1,13 @@
-# Booking App - By Team Coffee :coffee:
+<p align="center">
+<a href=# >
+![landing](/readme/teamcoffee.png "Team Coffee")
+    </a>
+</p>
+
+
 ![landing](/readme/signin.png "Our KYH Booking App")
 
-## About
+## 🚩 Project Goal
 
 This booking app is intended to enable both students and teachers to plan their scheduling better by providing real-time oversight of free times and rooms plus enabling students to plan and arrange their own bookings/events.
 
@@ -9,7 +15,16 @@ Our current scope is to only support our local school, but there is the possibil
 
 Thank you for your interest!
 
-## Key Functions
+## What’s In This Document
+
+- [Key functions](#-key-functions)
+- [Features](#-features)
+- [How to run this project](#-how-to-run-this-project)
+- [Project Gifs](#-project-gifs)
+- [Attributes](#-attributes)
+- [Authors](#-authors)
+
+## 🔔 Key Functions
 
 Our app is connected to firebase. Here you can sign up a new user, sign in existing user, change password, reset password. Standard stuff. 
 
@@ -17,8 +32,33 @@ When you sign up you can do so with different roles: ADMIN, TEACHER, STUDENT or 
 
 Let's check out the different key functions.
 
+## 👑 Features
+### Implemented Features
+- **Create bookings** with custom descriptions and invite any users you like with the search function.
+- **Track attending students** with map and ETAs generated based on their proximity to the school.
+- **Automatically get updated** when the students are within school vicinity, *no more paperwork.*
+
+### Planned Features
+- **Intergrated help queue** allowing the teacher to effectively see who asked for help and in what order.
+- **One-click exporting** of automatically registered student attendance for easier administration.
+- **Invite by group** to save time when creating your events, like inviting a particular class.
 
 
+## 💻 How to run this project
+1. **Install from the root folder, GJTP**
+
+   ```shell
+   npm install
+
+   ```
+2. **Then just run the app**
+```shell
+   npm start
+
+   ```
+
+
+## 🖼️ Project Gifs
 ### Book Room
 ![bookroom](/readme/bookroom.gif "Book Room function")
 <br>
@@ -41,27 +81,16 @@ If you created an event, you can see it in the my bookings page. Here you have a
 If they are in school when the event starts they will automatically show up as "attendees" for that event. Neat, huh?
 
 
-**Note: This project is no longer being actively developed!**
-## Features
-### Implemented Features
-- **Create bookings** with custom descriptions and invite any users you like with the search function.
-- **Track attending students** with map and ETAs generated based on their proximity to the school.
-- **Automatically get updated** when the students are within school vicinity, *no more paperwork.*
-
-### Planned Features
-- **Intergrated help queue** allowing the teacher to effectively see who asked for help and in what order.
-- **One-click exporting** of automatically registered student attendance for easier administration.
-- **Invite by group** to save time when creating your events, like inviting a particular class.
-## Getting Started
-Project Grex uses React and Firebase. To install dependencies simply run `npm install`.
-
-## For developers
+## 💾 For developers
 The tricky parts in our Javascript functions have explanations in comment form above the functions.
 
-## Links
+## 🔗 Links
 <a href="https://trello.com/b/SlaV9KjP/project-grex">Team Coffee Trello Board</a>
 
-## Authors
+## 👏 Attributes
+<a href="https://www.robinwieruch.de/">https://www.robinwieruch.de/</a> Big thanks to Robin for his toturials about Readux, React, Saga. Always an big help. Supported us student with his books for free which was greatly appreciated. <br>
+
+## 📓 Authors
 Gustav Bergman <a href="https://github.com/Aarux">@Aarux</a> <br>
 Jesper Risell <a href="https://github.com/jesris">@jesris</a><br>
 Nina Hedman <a href="https://github.com/Naicah">@Naicah</a> <br>
