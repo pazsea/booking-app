@@ -1,11 +1,10 @@
 <p align="center">
 <a href=# >
-![landing](/readme/teamcoffee.png "Team Coffee")
+❮img src="/readme/teamcoffee.png"  width="200" /❯
     </a>
 </p>
+❮img src="readme/signin.png" width="200">
 
-
-![landing](/readme/signin.png "Our KYH Booking App")
 
 ## 🚩 Project Goal
 
